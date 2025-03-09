@@ -30,9 +30,9 @@
         <ul>
             <li><a class="Logo" href=#home><img class ="Logo" src="ElancoLogo.png" width="60" height="30"></a></li>
             <li><a href=#Home>Weight</a></li>
-            <li><a href=#Animal1>Heart Rate</a></li>
-            <li><a href=#Animal1>Behaviour Pattern</a></li>
-            <li><a href=#Animal1>Intake</a></li>
+            <li><a href=#HeartRate>Heart Rate</a></li>
+            <li><a href=#BehaviourPattern>Behaviour Pattern</a></li>
+            <li><a href=#Intake>Intake</a></li>
         </ul>
     </div>
     <h2>Here is Cainine001's Info:</h2>
