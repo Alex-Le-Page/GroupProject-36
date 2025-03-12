@@ -7,9 +7,9 @@
     <title>Document</title>
     <style>
         form {
-            float: left;
+            float: right;
             margin-top: 5%;
-            margin-left: 15%;
+            margin-right: 15%;
             
             border-color: black;
             padding: 8px;
@@ -27,28 +27,19 @@
     <?php include("NavBar.php") ?>
     <div class="NavBar">
         <ul>
-            <li><a class="Logo" href=#home><img class ="Logo" src="ElancoLogo.png" width="60" height="30"></a></li>
+            <li><a class="Logo" href="Home.php"><img class ="Logo" src="ElancoLogo.png" width="60" height="30"></a></li>
             <li><a href=#Home>Weight</a></li>
             <li><a href=#HeartRate>Heart Rate</a></li>
             <li><a href="BehaviourPattern.php">Behaviour Pattern</a></li>
             <li><a href="intake.php">Intake</a></li>
         </ul>
     </div>
-    <h2>Here is Cainine001's Info:</h2>
-    <div class="Main">
-        
-        <form>
-            <label>Heart-Rate: 109 BPM</label>
+    <h2>Intake</h2>
+    <div class = "Main">
+    <form>
+            <label>your dogs intake is normal</label>
             <br><br>
-            <label>Behaviour Pattern: Normal</label>
-            <br><br>
-            <label>Weight: 29.8kg</label>
-            <br><br>
-            <label>Temperature: 28.5 C</label>
         </form>
-        <img class="Placeholder" src="PlaceholderAnalysis.png" alt="Placeholder">
-
     </div>
-</body>
-
-</html>
+    </body>
+    
