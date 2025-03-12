@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>HeartRate</title>
+
     <style>
-        form {
+       
+       form {
             float: left;
-            margin-top: 5%;
-            margin-left: 15%;
+            margin-top: 10%;
+            margin-left: 70%;
             
             border-color: black;
             padding: 8px;
@@ -21,12 +22,12 @@
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
     </style>
-</head>
 
+</head>
 <body>
     <?php include("NavBar.php") ?>
     <div class="NavBar">
-        <ul>
+    <ul>
             <li><a class="Logo" href="Home.php"><img class ="Logo" src="ElancoLogo.png" width="60" height="30"></a></li>
             <li><a href="Weight.php">Weight</a></li>
             <li><a href="HeartRate.php">Heart Rate</a></li>
@@ -34,21 +35,15 @@
             <li><a href="intake.php">Intake</a></li>
         </ul>
     </div>
-    <h2>Here is Cainine001's Info:</h2>
-    <div class="Main">
-        
+    <h2>Heart Rate</h2>
+
+    <div class="main">
         <form>
-            <label>Heart-Rate: 109 BPM</label>
-            <br><br>
-            <label>Behaviour Pattern: Normal</label>
-            <br><br>
-            <label>Weight: 29.8kg</label>
-            <br><br>
-            <label>Temperature: 28.5 C</label>
+            <label>Your dog's heart rate is above average</label>
         </form>
-        <img class="Placeholder" src="PlaceholderAnalysis.png" alt="Placeholder">
-
     </div>
-</body>
+    
 
+    
+</body>
 </html>
