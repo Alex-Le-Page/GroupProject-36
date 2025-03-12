@@ -12,30 +12,49 @@
         body{
             background: #0E253E;
             margin-top: 0px;
+
+            text-align: center;
         }
 
         form {
-            float: left;
-            margin-top: 5%;
-            margin-left: 15%;
-            
+            width: 50%;
             border-color: black;
             padding: 8px;
             text-align: left;
-            width: 300px;
+            width: 500px;
             padding: 20px;
             background: white;
             border-radius: 8px;
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+        }
     </style>
     </head>
     <body>
-        <img scr = "ElancoLogo.png" alt = "Elanco Logo" width="60" height="30">
-        <form>
+        <img class ="Logo" src = "ElancoLogo.png" alt = "Elanco Logo" width="200" height="100">
+        <form class="form-container">
+            <label>Select account type:</label> 
+            <br><br>
             <select>
-                <option>Dog 1</option>
+                <option value = ""></option>
+                <option value = "#PetOwner">Pet Owner</option>
+                <option value = "#Vet">Vet</option>
             </select>
+
+            Select Dog:
+            <select>
+                <option value = ""></option>
+                <option value = "#Canine001">Dog 1</option>
+                <option value = "#Canine002">Dog 2</option>
+                <option value = "#Canine003">Dog 3</option>
+            </select>
+
+            <button type = "submit">
         </form>
     </body>
 </html>
