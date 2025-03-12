@@ -17,44 +17,57 @@
         }
 
         form {
-            width: 50%;
             border-color: black;
             padding: 8px;
             text-align: left;
-            width: 500px;
+            width: 200px;
             padding: 20px;
             background: white;
             border-radius: 8px;
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            margin-left: 44%;
+            margin-top: 10%;
         }
-
-        .form-container {
-            display: flex;
-            justify-content: center;
-            align-items: center; 
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: lightblue;
+            color: black;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        select{
+            background-color: white;
+            width: 100%;
+            height: 30px;
+            border-color: #0E253E;
+            border-radius: 10px;
+            text-align: center;
         }
     </style>
     </head>
     <body>
-        <img class ="Logo" src = "ElancoLogo.png" alt = "Elanco Logo" width="200" height="100">
-        <form class="form-container">
+        <div>
+            <img class ="Logo" src = "ElancoLogo.png" alt = "Elanco Logo" width="200" height="100">
+        </div>
+        <form class="form-container" action="Home.php" method="post">
             <label>Select account type:</label> 
             <br><br>
             <select>
-                <option value = ""></option>
                 <option value = "#PetOwner">Pet Owner</option>
                 <option value = "#Vet">Vet</option>
             </select>
-
-            Select Dog:
+            <br><br>
+            <label>Select Dog:</label> 
+            <br><br>
             <select>
-                <option value = ""></option>
                 <option value = "#Canine001">Dog 1</option>
                 <option value = "#Canine002">Dog 2</option>
                 <option value = "#Canine003">Dog 3</option>
             </select>
-
-            <button type = "submit">
+            <br><br>
+            <button type = "submit">Submit</button>
         </form>
     </body>
 </html>
