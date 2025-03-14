@@ -42,7 +42,6 @@
 
     // Get the row number of the date the user enters
     if ($newDate != null) {
-        
         $dateArray = explode("-", $newDate);
         $newDate = $dateArray[2] . "-" . $dateArray[1] . "-" . $dateArray[0]; // format date
 
@@ -95,6 +94,10 @@
             if ($prevDate == null) {
                 echo "No data for the previous date.";
             }
+            else{
+                $dateArray = explode("-", $prevDate);
+                $prevDate = $dateArray[2] . "-" . $dateArray[1] . "-" . $dateArray[0]; // format date
+            }
         }
 
         // Get the next date (row number + 1)
@@ -122,6 +125,10 @@
             $nextDate = $nextRow['Date'] ?? null;
             if ($nextDate == null) {
                 echo "No data for the next date.";
+            }
+            else{
+                $dateArray = explode("-", $nextDate);
+                $nextDate = $dateArray[2] . "-" . $dateArray[1] . "-" . $dateArray[0]; // format date
             }
         }
 
