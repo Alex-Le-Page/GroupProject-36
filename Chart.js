@@ -62,3 +62,78 @@ function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLa
         });
     }
 }
+
+function loadBehaviorPieChart(canvasId, behaviorDataset, graphLabel) {
+    
+    if (!behaviorDataset.length) {
+        alert("Behavior data is missing for the selected date.");
+        return;
+    } else {
+        // Count occurrences of each behavior
+        const behaviorCounts = {};
+        
+        // Process behavior data
+        for (let i = 0; i < behaviorDataset.length; i++) {
+            const behavior = behaviorDataset[i];
+            
+            if (behavior && behavior !== "") {
+                if (!behaviorCounts[behavior]) {
+                    behaviorCounts[behavior] = 0;
+                }
+                behaviorCounts[behavior]++;
+            }
+        }
+        
+        // Prepare data for the pie chart
+        const pieLabels = Object.keys(behaviorCounts);
+        const pieData = pieLabels.map(label => behaviorCounts[label]);
+        
+        const backgroundColors = [
+            'rgba(255, 99, 132, 0.8)',   // Red
+            'rgba(54, 162, 235, 0.8)',   // Blue
+            'rgba(255, 206, 86, 0.8)',   // Yellow
+            'rgba(75, 192, 192, 0.8)',   // Green
+            'rgba(153, 102, 255, 0.8)',  // Purple
+            'rgba(255, 159, 64, 0.8)'    // Orange
+        ];
+        
+        const ctx = document.getElementById(canvasId);
+        
+        return new Chart(ctx, {
+            type: "pie",
+            data: {
+                labels: pieLabels,
+                datasets: [{
+                    backgroundColor: backgroundColors.slice(0, pieLabels.length),
+                    data: pieData
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: graphLabel
+                },
+                legend: {
+                    position: 'right'
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            const behavior = data.labels[tooltipItem.index];
+                            const count = data.datasets[0].data[tooltipItem.index];
+                            const total = pieData.reduce((a, b) => a + b, 0);
+                            const percentage = Math.round((count / total) * 100);
+                            
+                            return [
+                                behavior + ": " + count + " hours",
+                                percentage + "% of the day"
+                            ];
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
