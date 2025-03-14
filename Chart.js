@@ -1,6 +1,4 @@
-function loadLineGraph(canvasId, breathingData, behaviourData, graphLabel, yLabel, xLabel, xOutputLabel, yOutputLabel, extraOutputLabel){
-
-    console.log(document.getElementById(canvasId)); // Should not be null
+function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLabel, extraOutputLabel){
 
     if (!breathingData.length || !behaviourData.length) {
         alert("Some data is missing for the selected date.");
@@ -20,7 +18,7 @@ function loadLineGraph(canvasId, breathingData, behaviourData, graphLabel, yLabe
                     fill: false, // below the graph
                     backgroundColor:"rgba(0,0,255,1.0)",
                     borderColor: "rgba(0,0,255,0.1)", // colour of line
-                    data: breathingData // breathingData from database
+                    data: dataset // breathingData from database
                 }] 
             },
             options: {
@@ -40,7 +38,7 @@ function loadLineGraph(canvasId, breathingData, behaviourData, graphLabel, yLabe
                     }]
                 },
                 tooltips: { // change the text when hovering over a value on the graph
-                    displayColors: false, // stops the colour from being shown
+                    displayColors: true, // stops the colour from being shown
                     callbacks: {
                         title: function() {
                             return null;  // Stops the title (hour) from showing 
@@ -48,11 +46,11 @@ function loadLineGraph(canvasId, breathingData, behaviourData, graphLabel, yLabe
                         label: function(tooltipItem) {
                             const hour = xValues[tooltipItem.index]; // Hour
                             const breathingRate = tooltipItem.yLabel; // Breathing rate value
-                            const activity = behaviourData[hour]; // Fallback if behaviour data is missing
+                            const activity = outputDataset[hour]; // Fallback if behaviour data is missing
 
                             return[
-                                xOutputLabel + hour,
-                                yOutputLabel + breathingRate, 
+                                xLabel + ": " + hour,
+                                yLabel + ": " + breathingRate, 
                                 extraOutputLabel + activity
                             ] // What we want to be shown when hovering over points on the graph
                         }

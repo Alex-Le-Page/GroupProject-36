@@ -1,6 +1,6 @@
 <?php 
 $db = new SQLite3('ElancoDB.db');
-$newDate = null;
+$newDate = "01-01-2021";
 $breathingData = [];
 $behaviourData = [];
 
@@ -167,15 +167,13 @@ $db->close();
 <script>
     window.onload = function() {
         loadLineGraph(
-            'lineGraph',
-            <?php echo json_encode($breathingData); ?>,
-            <?php echo json_encode($behaviourData); ?>,
-            'Breathing Rate',
-            'Breaths / Minute',
-            'Hours',
-            'Hour: ',
-            'Breathing Rate: ',
-            'Activity: '
+            'lineGraph', // chart ID
+            <?php echo json_encode($breathingData); ?>, // dataset to be displayed as the line
+            <?php echo json_encode($behaviourData); ?>, // dataset to be displayed when hoverin over a point on the graph
+            'Breathing Rate', // line label
+            'Breaths / Minute', // y axes label
+            'Hour', // x axes label
+            'Activity: ' // label for the dataset when hovering over a point on the graph
         );
     };
 </script>
