@@ -200,3 +200,67 @@ function loadBehaviorPieChart(canvasId, behaviorDataset, graphLabel) {
             }
         });
     }}
+
+function loadDoughChart(canvasId, progress, valueLeft, title, total){
+
+    //error handling to ensure data is not invalid 
+    if (progress == null){
+        alert("Cannot find dogs current progress")
+        return;
+    }else{
+
+        const ctx = document.getElementById(canvasId);
+        var xValues = [title, 'Ammount Left']
+        var yValues= [progress, valueLeft];
+        var barColors = ['#2997F6']; //color of the doughnut bar
+
+        return new Chart(ctx, {
+
+            type: "doughnut",
+            data: {
+                labels: xValues, //label for hovering over the bars
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues 
+                }]
+            },
+            options: {
+                //plugin for the text to be displayed in the center of the doughnut chart
+                plugins:{
+                    doughnutlabel: {
+                        labels: [
+                        {
+                            text: title,
+                            font: {
+                            size: 24,
+                            weight: 'bold',
+                            },
+                        },
+                        //spacing between title and data
+                        {
+                            text: " ", 
+                            font: {
+                                size: 10, 
+                            },
+                        },
+                        //display the current and total water intake e.g. 250/500 
+                        {
+                            text: `${progress}/${total}`,
+                            font: {
+                                size: 20,
+                            }
+                        },
+                        ],
+                    },
+                },
+
+                //hide the labels at the top of the graph
+                legend: { 
+                    display: false 
+                },
+                //gap size for the middle of the doughnut chart 
+                cutoutPercentage: 80,
+            },
+        });
+    }
+}
