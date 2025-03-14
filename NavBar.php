@@ -14,7 +14,8 @@
             <li><a href="Weight.php">Weight</a></li>
             <li><a href="HeartRate.php">Heart Rate</a></li>
             <li><a href="BehaviourPattern.php">Behaviour Pattern</a></li>
-            <li><a href="intake.php">Intake</a></li>
+            <li><a href="intake.php">Intake</a></li>            
+            <li><a href="BreathingRate.php">Breathing Rate</a></li>
         </ul>
     </div>
 </body>
