@@ -164,23 +164,6 @@ $db->close();
     <title>Test</title>
 </head>
 <body>
-<script>
-    window.onload = function() {
-        loadLineGraph(
-            'lineGraph', // chart ID
-            <?php echo json_encode($breathingData); ?>, // dataset to be displayed as the line
-            <?php echo json_encode($behaviourData); ?>, // dataset to be displayed when hoverin over a point on the graph
-            'Breathing Rate', // line label
-            'Breaths / Minute', // y axes label
-            'Hour', // x axes label
-            'Activity: ' // label for the dataset when hovering over a point on the graph
-        );
-    };
-</script>
-
-    <div class="chart">
-        <canvas id="lineGraph" style="width:100%;max-width:700px;"></canvas>
-    </div>
 
     <div class="buttons">
         <h1>Day</h1>
@@ -209,7 +192,24 @@ $db->close();
             <input type="text" id="day" name="day" placeholder="(DD-MM-YYYY)" required> <!-- Could do with some error checking to make sure date is in the correct format -->
             <input name="submit" type="submit" value="Find"/>
         </form>
+    </div>
 
+    <script> 
+            window.onload = function() {
+                loadBarChart(
+                    'barChart', 
+                    <?php echo json_encode($breathingData); ?>, // dataset to be displayed as the line
+                    <?php echo json_encode($behaviourData); ?>, // dataset to be displayed when hoverin over a point on the graph
+                    'Breathing Rate', // line label
+                    'Breaths / Minute', // y axes label
+                    'Hour', // x axes label
+                    'Activity: ' // label for the dataset when hovering over a point on the graph
+                );
+            };
+    </script>
+
+    <div class="chart">
+        <canvas id="barChart" style="width:100%;max-width:700px;"></canvas>
     </div>
 </body>
 </html>
