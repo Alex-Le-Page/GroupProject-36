@@ -1,6 +1,6 @@
 function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLabel, extraOutputLabel){
 
-    if (!breathingData.length || !behaviourData.length) {
+    if (!dataset.length || !outputDataset.length) {
         alert("Some data is missing for the selected date.");
         return;
     } // error handling if theres some data missing
@@ -18,7 +18,7 @@ function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLa
                     fill: false, // below the graph
                     backgroundColor:"rgba(0,0,255,1.0)",
                     borderColor: "rgba(0,0,255,0.1)", // colour of line
-                    data: dataset // breathingData from database
+                    data: dataset // dataset from database
                 }] 
             },
             options: {
@@ -38,20 +38,20 @@ function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLa
                     }]
                 },
                 tooltips: { // change the text when hovering over a value on the graph
-                    displayColors: true, // stops the colour from being shown
+                    displayColors: false, // stops the colour from being shown
                     callbacks: {
                         title: function() {
-                            return null;  // Stops the title (hour) from showing 
+                            return null;  // Stops the title from showing 
                         },
                         label: function(tooltipItem) {
                             const hour = xValues[tooltipItem.index]; // Hour
-                            const breathingRate = tooltipItem.yLabel; // Breathing rate value
-                            const activity = outputDataset[hour]; // Fallback if behaviour data is missing
+                            const yData = tooltipItem.yLabel; // Breathing rate value
+                            const outputData = outputDataset[hour]; // Fallback if behaviour data is missing
 
                             return[
                                 xLabel + ": " + hour,
-                                yLabel + ": " + breathingRate, 
-                                extraOutputLabel + activity
+                                yLabel + ": " + yData, 
+                                extraOutputLabel + outputData
                             ] // What we want to be shown when hovering over points on the graph
                         }
                     }
@@ -62,4 +62,3 @@ function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLa
         });
     }
 }
-// maybe make another function that gets the ouput message when hovering over a point - too many parameters
