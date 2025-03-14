@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        form {
+        form.notes {
             float: left;
             margin-top: 5%;
             margin-left: 15%;
-            
+
             border-color: black;
             padding: 8px;
             text-align: left;
@@ -20,14 +20,27 @@
             border-radius: 8px;
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
+
+        select {
+            background-color: white;
+            width: 100%;
+            border-color: #0E253E;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        li.dogOption {
+            margin-top: 14px;
+        }
     </style>
 </head>
 
 <body>
-    <?php include("NavBar.php") ?>
+    <?php include("NavBar.php");
+    ?>
     <div class="NavBar">
         <ul>
-            <li><a class="Logo" href="Home.php"><img class ="Logo" src="ElancoLogo.png" width="60" height="30"></a></li>
+            <li><a class="Logo" href="Home.php"><img class="Logo" src="ElancoLogo.png" width="60" height="30"></a></li>
             <li><a href="Weight.php">Weight</a></li>
             <li><a href="HeartRate.php">Heart Rate</a></li>
             <li><a href="BehaviourPattern.php">Behaviour Pattern</a></li>
@@ -36,8 +49,8 @@
     </div>
     <h2>Here is Cainine001's Info:</h2>
     <div class="Main">
-        
-        <form>
+
+        <form class = "notes">
             <label>Heart-Rate: 109 BPM</label>
             <br><br>
             <label>Behaviour Pattern: Normal</label>
