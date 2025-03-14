@@ -38,15 +38,7 @@
 <body>
     <?php include("NavBar.php");
     ?>
-    <div class="NavBar">
-        <ul>
-            <li><a class="Logo" href="Home.php"><img class="Logo" src="ElancoLogo.png" width="60" height="30"></a></li>
-            <li><a href="Weight.php">Weight</a></li>
-            <li><a href="HeartRate.php">Heart Rate</a></li>
-            <li><a href="BehaviourPattern.php">Behaviour Pattern</a></li>
-            <li><a href="intake.php">Intake</a></li>
-        </ul>
-    </div>
+    
     <h2>Here is Cainine001's Info:</h2>
     <div class="Main">
 
