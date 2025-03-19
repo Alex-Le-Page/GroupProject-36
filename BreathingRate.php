@@ -232,7 +232,7 @@
 
         <!-- Form to search for a specific date -->
         <form action="BreathingRate.php" method="post">
-            <input type="date" id="day" name="day" min = "2021-01-01" max = "2023-12-31" required>    
+            <input type="date" id="day" name="day" min = "2021-01-01" max = "2023-12-31" required>
             <input name="submit" type="submit" value="Find"/>
         </form>
     </div>

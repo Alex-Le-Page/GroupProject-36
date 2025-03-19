@@ -341,7 +341,7 @@ $db->close();
             if (!ctx) {
                 console.error("Canvas element not found:", canvasId);
                 return;
-            }
+            } 
             
             return new Chart(ctx, {
                 type: "pie",
