@@ -9,26 +9,52 @@
     $currentTime -= 1;
         
     //run a select statement to get the water intake of the dog throughout the day 
-    $query = $db->prepare('SELECT AVG(Weight) AS avgWeight, SUM(Water_Intake) AS totalIntake, SUM(Calorie_Burn) AS totalBurnt FROM Activity WHERE Hour <= :currentTime AND DogID = "CANINE001" AND Date = "01-01-2021" ');
+    $query = $db->prepare('SELECT AVG(Weight) AS avgWeight, SUM(Water_Intake) AS totalIntake, SUM(Calorie_Burn) AS totalBurnt, SUM(Activity_Level)AS steps, SUM(Food_Intake) AS totalCalories FROM Activity WHERE Hour <= :currentTime AND DogID = "CANINE001" AND Date = "01-01-2021" ');
     $query->bindValue(":currentTime", $currentTime, SQLITE3_INTEGER);
     $result = $query->execute();
 
     $row = $result->fetchArray(SQLITE3_ASSOC);
 
+    //store data from the query into variables
     $totalIntake = round($row['totalIntake']);
     $weight = $row['avgWeight'];
     $totalBurnt = round($row['totalBurnt']);
+    $totalSteps = $row['steps'];
+    $totalCalories = round($row['totalCalories']);
 
-    //calculate the ammount of water the dog needs 
+
+    //calculate the goals for the dog
     $totalMl = round($weight * 60);
+    $burntGoal = round(($weight * 2.2) * 30);
+    $calorieGoal = round(pow($weight, 0.75) * 70);
 
-    //check if the goal has been hit 
+
+    //check if the water intake goal has been hit 
     if ($totalIntake > $totalMl){
         $intakeLeft = 0;
     } else{
         //if the goal hasn't been hit then calculate the ammount left
         $intakeLeft = $totalMl - $totalIntake;
     }
+
+    if($totalSteps > 8000){
+        $stepsLeft = 0;
+    } else{
+        $stepsLeft = 8000 - $totalSteps;
+    }
+
+    if($totalBurnt > $burntGoal){
+        $burntLeft = 0;
+    } else{
+        $burntLeft = $burntGoal - $totalBurnt;
+    }
+
+    if($totalCalories > $calorieGoal){
+        $caloriesLeft = 0;
+    } else{
+        $caloriesLeft = $calorieGoal - $totalCalories;
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,12 +95,15 @@
         }
 
         .warning{
+            position: absolute;
             display: flex;
-            top: 20px;
+            top: 50px;
             right: 20px;
-            font-size: 10px;
+            font-size: 8px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             font-style: italic;
         }
+
         .charts {
             margin-top: 50px;
             width: 500px;
@@ -102,26 +131,30 @@
             <br><br>
             <label>Temperature: 28.5 C</label>
         </form>
+
     </div>
 
     <div class="warning">
-        <h1>*Please note all goals are general and may not be specific to your dog</h1>
+        <h1>*Please note all goals are a general calculation and may not be specific to your dog</h1>
     </div>
-    
+
     <script>
     window.onload = function() {
         loadDoughChart('doughChart', <?php echo json_encode($totalIntake)?>, <?php echo json_encode($intakeLeft)?>, 'Water Intake(ml)', <?php echo json_encode($totalMl)?>);
-        loadDoughChart('burnt', <?php echo json_encode($totalBurnt)?>, 100, 'Calories Burnt', 600);
-        loadDoughChart('calorieIntake', 150, 250, 'Calories needed', 550);
-        loadDoughChart('steps', 3000, 2000, 'Step Goal', 5000)
+        loadDoughChart('caloriesBurnt', <?php echo json_encode($totalBurnt)?>, <?php echo json_encode($burntLeft)?>, 'Calories Burnt', <?php echo json_encode($burntGoal)?>);
+        loadDoughChart('calorieIntake', <?php echo json_encode($totalCalories)?>, <?php echo json_encode($caloriesLeft)?>, 'Calorie Intake', <?php echo json_encode($calorieGoal)?>);
+        loadDoughChart('steps', <?php echo json_encode($totalSteps) ?>, <?php echo json_encode($stepsLeft)?>, 'Step Goal', 8000);
     }
     </script>
+
+    <!-- Add any more graphs into the charts class to have it be apart of the grid layout -->
     <div class="charts">
+
         <div class="chart">
             <canvas id="doughChart"></canvas>
         </div>
         <div class="chart">
-            <canvas id="burnt"></canvas>
+            <canvas id="caloriesBurnt"></canvas>
         </div>
         <div class="chart">
             <canvas id="calorieIntake"></canvas>
@@ -129,6 +162,7 @@
         <div class="chart">
             <canvas id="steps"></canvas>
         </div>  
+
     </div>
 </body>
 
