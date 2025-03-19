@@ -3,6 +3,12 @@ $db = new SQLite3('ElancoDB.db');
 $newDate = null;
 $behaviourData = [];
 $dogID = isset($_POST['dog']) ? $_POST['dog'] : 'CANINE001';
+$dogName = ""; // Initialize variable for dog name
+
+// Since there's no Name column in the Dog table, format the dog name based on DogID
+// Extract the number from CANINE001, CANINE002, etc.
+$dogNumber = intval(substr($dogID, -3)); // Gets the last 3 characters and converts to integer
+$dogName = "Dog " . $dogNumber;
 
 // Get the date the user entered in the form 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['day'])) {
@@ -230,7 +236,7 @@ $db->close();
 
         <div class="date-info">
         Selected Date: <?php echo $newDate; ?><br>
-        Selected Dog: Dog 1
+        Selected Dog: <?php echo htmlspecialchars($dogName); ?>
         </div>
         
         <div class="controls">
@@ -374,7 +380,7 @@ $db->close();
         loadBehaviorPieChart(
             'behaviorPieChart',
             behaviorData,
-            'Daily Behavior Distribution for <?php echo ($dogID == "CANINE001" ? "Dog 1" : ($dogID == "CANINE002" ? "Dog 2" : "Dog 3")); ?>'
+            'Daily Behavior Distribution for <?php echo htmlspecialchars($dogName); ?>'
         );
     };
     </script>
