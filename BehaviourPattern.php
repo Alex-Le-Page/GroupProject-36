@@ -151,8 +151,8 @@ $db->close();
             
             border-color: black;
             padding: 8px;
-            text-align: left;
-            width: 300px;
+            text-align: center;
+            width: 225px;
             padding: 20px;
             background: lightblue;
             border-radius: 8px;
@@ -178,22 +178,28 @@ $db->close();
             text-align: center;
             margin-bottom: 15px;
         }
+        h3 {
+            color: white;
+        }
+        p {
+            color: white;
+        }
         .chart-container {
             height: 400px;
             margin: 20px 0;
         }
         .controls {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         .date-nav {
             display: flex;
             align-items: center;
         }
         .date-nav form {
-            margin: 10px 5px;
+            margin: 10px 10px;
         }
         .dog-select {
             display: flex;
@@ -214,9 +220,10 @@ $db->close();
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            margin: 5px;
         }
         .explanation {
-            background-color: #f0f8ff;
+            background-color: #0E253E;
             padding: 15px;
             border-radius: 8px;
             margin-top: 20px;
@@ -232,7 +239,7 @@ $db->close();
             .explanation li {
             float: none;
             background-color: transparent;
-            color: black;
+            color: white;
             margin-bottom: 8px;
         }
     </style>
@@ -288,14 +295,6 @@ $db->close();
         <div class="explanation">
             <h3>What This Means For Pet Owners:</h3>
             <p>This pie chart shows how your dog spends their day. Each slice represents the percentage of time your dog spends in different activities:</p>
-            <ul>
-                <li><strong>Sleeping:</strong> Dogs typically sleep 12-14 hours per day. This is normal and healthy.</li>
-                <li><strong>Normal Activity:</strong> Quiet, calm periods when your dog is awake but not particularly active.</li>
-                <li><strong>Playing:</strong> Active play time is important for your dog's physical and mental health.</li>
-                <li><strong>Walking:</strong> Regular walks help keep your dog physically fit and mentally stimulated.</li>
-                <li><strong>Eating:</strong> Dogs typically eat 1-2 meals per day, taking up a small portion of their time.</li>
-            </ul>
-            <p>Understanding your dog's activity patterns can help you provide appropriate care and identify any unusual changes in behavior.</p>
         </div>
     </div>
 
@@ -341,7 +340,7 @@ $db->close();
             if (!ctx) {
                 console.error("Canvas element not found:", canvasId);
                 return;
-            }
+            } 
             
             return new Chart(ctx, {
                 type: "pie",
@@ -398,11 +397,5 @@ $db->close();
     </script>
 </body>
 </html>
-    <div class = "Main">
-    <form>
-            <label>your dogs behaviour is normal</label>
-            <br><br>
-        </form>
-    </div>
-    </body>
+
     
