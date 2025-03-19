@@ -24,15 +24,9 @@
 </head>
 
 <body>
-    <?php include("NavBar.php") ?>
     <div class="NavBar">
-    <ul>
-            <li><a class="Logo" href="Home.php"><img class ="Logo" src="ElancoLogo.png" width="60" height="30"></a></li>
-            <li><a href="Weight.php">Weight</a></li>
-            <li><a href="HeartRate.php">Heart Rate</a></li>
-            <li><a href="BehaviourPattern.php">Behaviour Pattern</a></li>
-            <li><a href="intake.php">Intake</a></li>
-        </ul>
+    <?php include("NavBar.php") ?>
+
     </div>
     <h2>Intake</h2>
     <div class = "Main">

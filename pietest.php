@@ -3,6 +3,12 @@ $db = new SQLite3('ElancoDB.db');
 $newDate = null;
 $behaviourData = [];
 $dogID = isset($_POST['dog']) ? $_POST['dog'] : 'CANINE001';
+$dogName = ""; // Initialize variable for dog name
+
+// Since there's no Name column in the Dog table, format the dog name based on DogID
+// Extract the number from CANINE001, CANINE002, etc.
+$dogNumber = intval(substr($dogID, -3)); // Gets the last 3 characters and converts to integer
+$dogName = "Dog " . $dogNumber;
 
 // Get the date the user entered in the form 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['day'])) {
@@ -135,7 +141,6 @@ $db->close();
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -144,21 +149,6 @@ $db->close();
     <script src="newchart.js"></script>
     <title>Pet Behavior Chart</title>
     <style>
-        form {
-            float: right;
-            margin-top: 5%;
-            margin-right: 15%;
-            
-            border-color: black;
-            padding: 8px;
-            text-align: center;
-            width: 225px;
-            padding: 20px;
-            background: lightblue;
-            border-radius: 8px;
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-        }
-
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -178,28 +168,22 @@ $db->close();
             text-align: center;
             margin-bottom: 15px;
         }
-        h3 {
-            color: white;
-        }
-        p {
-            color: white;
-        }
         .chart-container {
             height: 400px;
             margin: 20px 0;
         }
         .controls {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
         .date-nav {
             display: flex;
             align-items: center;
         }
         .date-nav form {
-            margin: 10px 10px;
+            margin: 10px 5px;
         }
         .dog-select {
             display: flex;
@@ -220,10 +204,9 @@ $db->close();
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            margin: 5px;
         }
         .explanation {
-            background-color: #0E253E;
+            background-color: #f0f8ff;
             padding: 15px;
             border-radius: 8px;
             margin-top: 20px;
@@ -239,23 +222,21 @@ $db->close();
             .explanation li {
             float: none;
             background-color: transparent;
-            color: white;
+            color: black;
             margin-bottom: 8px;
         }
     </style>
 </head>
-
 <body>
-    <div class="NavBar">
-        <?php include("NavBar.php") ?>
-    </div>
-    <h2>Behaviour Pattern</h2>
-    <div class="container">
+
+    <?php include("NavBar.php") ?>
+        
+        <div class="container">
         <h1>Dog Behavior Distribution</h1>
 
         <div class="date-info">
         Selected Date: <?php echo $newDate; ?><br>
-        Selected Dog: Dog 1
+        Selected Dog: <?php echo htmlspecialchars($dogName); ?>
         </div>
         
         <div class="controls">
@@ -295,6 +276,14 @@ $db->close();
         <div class="explanation">
             <h3>What This Means For Pet Owners:</h3>
             <p>This pie chart shows how your dog spends their day. Each slice represents the percentage of time your dog spends in different activities:</p>
+            <ul>
+                <li><strong>Sleeping:</strong> Dogs typically sleep 12-14 hours per day. This is normal and healthy.</li>
+                <li><strong>Normal Activity:</strong> Quiet, calm periods when your dog is awake but not particularly active.</li>
+                <li><strong>Playing:</strong> Active play time is important for your dog's physical and mental health.</li>
+                <li><strong>Walking:</strong> Regular walks help keep your dog physically fit and mentally stimulated.</li>
+                <li><strong>Eating:</strong> Dogs typically eat 1-2 meals per day, taking up a small portion of their time.</li>
+            </ul>
+            <p>Understanding your dog's activity patterns can help you provide appropriate care and identify any unusual changes in behavior.</p>
         </div>
     </div>
 
@@ -340,7 +329,7 @@ $db->close();
             if (!ctx) {
                 console.error("Canvas element not found:", canvasId);
                 return;
-            } 
+            }
             
             return new Chart(ctx, {
                 type: "pie",
@@ -391,11 +380,9 @@ $db->close();
         loadBehaviorPieChart(
             'behaviorPieChart',
             behaviorData,
-            'Daily Behavior Distribution for <?php echo ($dogID == "CANINE001" ? "Dog 1" : ($dogID == "CANINE002" ? "Dog 2" : "Dog 3")); ?>'
+            'Daily Behavior Distribution for <?php echo htmlspecialchars($dogName); ?>'
         );
     };
     </script>
 </body>
 </html>
-
-    
