@@ -15,11 +15,11 @@ try {
     $endDate = date('d-m-Y', strtotime($selectedDate));
     $startDate = date('d-m-Y', strtotime($selectedDate . ' -30 days'));
 
-    $query = "SELECT AVG(`Heart_Rate`) as averageHeartRate, COUNT(*) as count
-    FROM Activity
-    WHERE substr(Date, 7, 4) || substr(Date, 4, 2) || substr(Date, 1, 2) 
-          BETWEEN substr(:startDate, 7, 4) || substr(:startDate, 4, 2) || substr(:startDate, 1, 2)
-          AND substr(:endDate, 7, 4) || substr(:endDate, 4, 2) || substr(:endDate, 1, 2)";
+    $query="SELECT AVG(`Heart_Rate`) as averageHeartRate, COUNT(*) as count
+            FROM Activity
+            WHERE substr(Date, 7, 4) || substr(Date, 4, 2) || substr(Date, 1, 2) 
+            BETWEEN substr(:startDate, 7, 4) || substr(:startDate, 4, 2) || substr(:startDate, 1, 2)
+            AND substr(:endDate, 7, 4) || substr(:endDate, 4, 2) || substr(:endDate, 1, 2)";
 
     $stmt = $db->prepare($query);
     $stmt->bindValue(':startDate', $startDate, SQLITE3_TEXT);
