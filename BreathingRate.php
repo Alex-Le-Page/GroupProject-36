@@ -121,17 +121,17 @@
     </div>
 
     <script>
-    window.onload = function() {
-        loadLineGraph(
-            'lineGraph', // chart ID
-            <?php echo json_encode($breathingData); ?>, // dataset to be displayed as the line
-            <?php echo json_encode($behaviourData); ?>, // dataset to be displayed when hoverin over a point on the graph
-            'Breathing Rate', // line label
-            'Breaths / Minute', // y axes label
-            'Hour', // x axes label
-            'Activity: ' // label for the dataset when hovering over a point on the graph
-        );
-    };
+        window.onload = function() {
+            loadLineGraph(
+                'lineGraph', // chart ID
+                <?php echo json_encode($breathingData); ?>, // dataset to be displayed as the line
+                <?php echo json_encode($behaviourData); ?>, // dataset to be displayed when hoverin over a point on the graph
+                'Breathing Rate', // line label
+                'Breaths / Minute', // y axes label
+                'Hour', // x axes label
+                'Activity: ' // label for the dataset when hovering over a point on the graph
+            );
+        };
     </script>
 
     <div class="chart">

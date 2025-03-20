@@ -63,7 +63,6 @@ function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLa
     }
 }
 
-
 function loadBarChart(canvasId, dataset, outputDataset, graphLabel, yLabel, xLabel, extraOutputLabel){
 
     if (!dataset.length || !outputDataset.length) {
@@ -262,5 +261,31 @@ function loadDoughChart(canvasId, progress, valueLeft, title, total){
                 cutoutPercentage: 80,
             },
         });
+    }
+}
+
+function FindLowerBound(arrangedDataset) {
+    var median = FindMedian(arrangedDataset); // median of whole array
+
+    var lowerHalf = arrangedDataset.filter(num => num < median); // new array for lower half
+
+    return FindMedian(lowerHalf); // find median of lower half (this is the lower boundary)
+}
+
+function FindUpperBound(arrangedDataset) {
+    var median = FindMedian(arrangedDataset); // median of whole array
+
+    var upperHalf = arrangedDataset.filter(num => num > median); // new array for upper half
+    
+    return FindMedian(upperHalf); // find median of upper half (this is the upper boundary)
+}
+
+function FindMedian(arrangedDataset) {
+    if (arrangedDataset.length % 2 == 0) { // finds median if array length is even
+        var middle1 = arrangedDataset[arrangedDataset.length / 2 - 1];
+        var middle2 = arrangedDataset[arrangedDataset.length / 2];
+        return (middle1 + middle2) / 2;
+    } else { // finds median if array length is odd
+        return arrangedDataset[Math.floor(arrangedDataset.length / 2)];
     }
 }
