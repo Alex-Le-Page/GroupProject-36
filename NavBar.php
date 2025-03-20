@@ -26,6 +26,8 @@
 <?php
     session_start();
 
+    $date = $_SESSION['Date']; // retrieves the selected date from previous pages
+
     // Get the date the user clicked
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['datePicker'])) {
         $date = $_POST['datePicker'];
@@ -52,7 +54,7 @@
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script>
             // Get the session date value, or give a default date
-            const phpDate = "<?php echo !empty($date) ? $date : '23-12-2023'; ?>";
+            const phpDate = "<?php echo !empty($date) ? $date : '31-12-2023'; ?>";
 
             const datePicker = flatpickr("#datePicker", {
                 enableTime: false, // Time selection option
