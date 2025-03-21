@@ -1,61 +1,3 @@
-<?php 
-
-    $db = new SQLite3('ElancoDB.db');
-
-    //get the time from when the user opens the website
-    $currentTime = date("G");
-
-    //account for databases time format (starting at 0)
-    $currentTime -= 1;
-        
-    //run a select statement to get the water intake of the dog throughout the day 
-    $query = $db->prepare('SELECT AVG(Weight) AS avgWeight, SUM(Water_Intake) AS totalIntake, SUM(Calorie_Burn) AS totalBurnt, SUM(Activity_Level)AS steps, SUM(Food_Intake) AS totalCalories FROM Activity WHERE Hour <= :currentTime AND DogID = "CANINE001" AND Date = "01-01-2021" ');
-    $query->bindValue(":currentTime", $currentTime, SQLITE3_INTEGER);
-    $result = $query->execute();
-
-    $row = $result->fetchArray(SQLITE3_ASSOC);
-
-    //store data from the query into variables
-    $totalIntake = round($row['totalIntake']);
-    $weight = $row['avgWeight'];
-    $totalBurnt = round($row['totalBurnt']);
-    $totalSteps = $row['steps'];
-    $totalCalories = round($row['totalCalories']);
-
-
-    //calculate the goals for the dog
-    $totalMl = round($weight * 60);
-    $burntGoal = round(($weight * 2.2) * 30);
-    $calorieGoal = round(pow($weight, 0.75) * 70);
-
-
-    //check if the water intake goal has been hit 
-    if ($totalIntake > $totalMl){
-        $intakeLeft = 0;
-    } else{
-        //if the goal hasn't been hit then calculate the ammount left
-        $intakeLeft = $totalMl - $totalIntake;
-    }
-
-    if($totalSteps > 8000){
-        $stepsLeft = 0;
-    } else{
-        $stepsLeft = 8000 - $totalSteps;
-    }
-
-    if($totalBurnt > $burntGoal){
-        $burntLeft = 0;
-    } else{
-        $burntLeft = $burntGoal - $totalBurnt;
-    }
-
-    if($totalCalories > $calorieGoal){
-        $caloriesLeft = 0;
-    } else{
-        $caloriesLeft = $calorieGoal - $totalCalories;
-    }
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -117,6 +59,71 @@
 
 <body>
     <?php include("NavBar.php");
+    
+        $db = new SQLite3('ElancoDB.db');
+
+        //get date selected from the navbar callender
+        $date = $_SESSION['Date'];
+        
+        //get the time from when the user opens the website
+        $currentTime = date("G");
+
+        //account for databases time format (starting at 0)
+        $currentTime -= 1;
+            
+        //run a select statement to get the water intake of the dog throughout the day 
+        $query = $db->prepare('SELECT 
+        AVG(Weight) AS avgWeight, 
+        SUM(Water_Intake) AS totalIntake, 
+        SUM(Calorie_Burn) AS totalBurnt, 
+        SUM(Activity_Level)AS steps, 
+        SUM(Food_Intake) AS totalCalories 
+        FROM Activity WHERE Hour <= :currentTime AND DogID = "CANINE001" AND Date = :calDate');
+        $query->bindValue(":currentTime", $currentTime, SQLITE3_INTEGER);
+        $query->bindValue(":calDate", $date, SQLITE3_TEXT);
+        $result = $query->execute();
+
+        $row = $result->fetchArray(SQLITE3_ASSOC);
+
+        //store data from the query into variables
+        $totalIntake = round($row['totalIntake']);
+        $weight = $row['avgWeight'];
+        $totalBurnt = round($row['totalBurnt']);
+        $totalSteps = $row['steps'];
+        $totalCalories = round($row['totalCalories']);
+
+
+        //calculate the goals for the dog
+        $totalMl = round($weight * 60);
+        $burntGoal = round(($weight * 2.2) * 30);
+        $calorieGoal = round(pow($weight, 0.75) * 70);
+
+
+        //check if the water intake goal has been hit 
+        if ($totalIntake > $totalMl){
+            $intakeLeft = 0;
+        } else{
+            //if the goal hasn't been hit then calculate the ammount left
+            $intakeLeft = $totalMl - $totalIntake;
+        }
+
+        if($totalSteps > 8000){
+            $stepsLeft = 0;
+        } else{
+            $stepsLeft = 8000 - $totalSteps;
+        }
+
+        if($totalBurnt > $burntGoal){
+            $burntLeft = 0;
+        } else{
+            $burntLeft = $burntGoal - $totalBurnt;
+        }
+
+        if($totalCalories > $calorieGoal){
+            $caloriesLeft = 0;
+        } else{
+            $caloriesLeft = $calorieGoal - $totalCalories;
+        }
     ?>
     
     <h2>Here is Cainine001's Info:</h2>
@@ -147,7 +154,7 @@
     }
     </script>
 
-    <!-- Add any more graphs into the charts class to have it be apart of the grid layout -->
+    <!--add any more graphs into the charts class to have it be apart of the grid layout -->
     <div class="charts">
 
         <div class="chart">

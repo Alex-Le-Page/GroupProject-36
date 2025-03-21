@@ -287,6 +287,39 @@ function loadDoughChart(canvasId, progress, valueLeft, title, total){
     }
 }
 
+function loadRadarChart(canvasId, data ){
+
+    const ctx = document.getElementById(canvasId);
+    const values = data
+
+    return new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels:
+            ['Normal', 'Walking', 'Eating', 'Sleeping', 'Playing'],
+            datasets: [{
+                label: 'Dogs behaviour',
+                data: values,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 0.8)',
+                borderWidth: 2,
+            }]
+        },
+        options: {
+            scale: {
+                ticks: {
+                    //set the min and max values for the chart
+                    min:0,
+                    max:12,
+                },
+                pointLabels:{
+                    fontSize: 14,
+                }
+            }
+        }
+    })
+}
+
 function FindLowerBound(arrangedDataset) {
     var median = FindMedian(arrangedDataset); // median of whole array
 
