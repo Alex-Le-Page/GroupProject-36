@@ -10,7 +10,7 @@
 
     <style>
        
-       form {
+       form :not(.calendar){
             float: left;
             margin-top: 10%;
             margin-left: 70%;
