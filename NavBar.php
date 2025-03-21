@@ -66,7 +66,8 @@
         <li><a href="BehaviourPattern.php">Behaviour Pattern</a></li>
         <li><a href="intake.php">Intake</a></li>
         <li><a href="BreathingRate.php">Breathing Rate</a></li>
-        <li>
+        <li><a href="Steps.php">Steps</a></li>
+
             <!-- Date picker -->
             <form class = "calendar"  method="post">
                 <input type="text" name="datePicker" id="datePicker" placeholder="Select a date" readonly onchange="this.form.submit()">
