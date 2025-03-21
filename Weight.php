@@ -7,7 +7,7 @@
 
     <style>
        
-        form {
+        form.notes {
             float: left;
             margin-top: 10%;
             margin-left: 70%;
@@ -31,7 +31,7 @@
     <h2>Weight</h2>
 
     <div class="main">
-        <form>
+        <form class = "notes">
             <label>Your dog's weight is normal</label>
         </form>
     </div>

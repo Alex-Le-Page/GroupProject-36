@@ -8,15 +8,24 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
+        img.calendar{
+            width: 40px;
+            height: 40px;
+            margin-top: 3px;
+            position: absolute;right: 0;
+            cursor: pointer;
+        }
+
         .date-picker-icon {
             cursor: pointer;
             width: 40px;
             height: 40px;
+            
         }
 
         #datePicker {
             visibility: hidden;
-            position: absolute;
+            position: absolute;right: 0;
             /* Hide the input box but keep it in navbar so that the calendar dropdown is in the correct place */
         }
     </style>
@@ -57,12 +66,13 @@
         <li><a href="BehaviourPattern.php">Behaviour Pattern</a></li>
         <li><a href="intake.php">Intake</a></li>
         <li><a href="BreathingRate.php">Breathing Rate</a></li>
-
-        <!-- Date picker -->
-        <form method="post">
-            <input type="text" name="datePicker" id="datePicker" placeholder="Select a date" readonly onchange="this.form.submit()">
-            <img src="CalendarIcon.png" alt="Date Picker Icon" id="datePickerIcon" class="date-picker-icon">
-        </form>
+        <li>
+            <!-- Date picker -->
+            <form class = "calendar"  method="post">
+                <input type="text" name="datePicker" id="datePicker" placeholder="Select a date" readonly onchange="this.form.submit()">
+                <img class = "calendar" src="CalendarIcon.png" alt="Date Picker Icon" id="datePickerIcon" class="date-picker-icon">
+            </form>
+        </li>
 
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script>

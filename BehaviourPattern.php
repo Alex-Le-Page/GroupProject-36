@@ -144,7 +144,7 @@ $db->close();
     <script src="newchart.js"></script>
     <title>Pet Behavior Chart</title>
     <style>
-        form {
+        form :not(.calendar){
             float: right;
             margin-top: 5%;
             margin-right: 15%;
@@ -163,14 +163,6 @@ $db->close();
             font-family: Arial, sans-serif;
             margin: 0;
             background-color: #f9f9f9;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         h1 {
             margin: 30px;
@@ -204,17 +196,6 @@ $db->close();
         .dog-select {
             display: flex;
             align-items: center;
-        }
-        button {
-            background-color: #0E253E;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0E253E;
         }
         input[type="text"] {
             padding: 8px;
@@ -258,35 +239,6 @@ $db->close();
         Selected Dog: Dog 1
         </div>
         
-        <div class="controls">
-            <div class="date-nav">
-                <?php if (isset($prevDate)) { ?>
-                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                        <input type="hidden" name="day" value="<?php echo($prevDate);?>">
-                        <input type="hidden" name="dog" value="<?php echo($dogID);?>">
-                        <button type="submit">
-                            <i class='bx bx-chevron-left'></i> Previous Day
-                        </button>
-                    </form>
-                <?php } ?>
-                
-                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                    <input type="text" id="day" name="day" placeholder="Date (DD-MM-YYYY)" value="<?php echo $newDate; ?>" required>
-                    <input type="hidden" name="dog" value="<?php echo($dogID);?>">
-                    <button type="submit">Find</button>
-                </form>
-                
-                <?php if (isset($nextDate)) { ?>
-                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                        <input type="hidden" name="day" value="<?php echo($nextDate);?>">
-                        <input type="hidden" name="dog" value="<?php echo($dogID);?>">
-                        <button type="submit">
-                            Next Day <i class='bx bx-chevron-right'></i>
-                        </button>
-                    </form>
-                <?php } ?>
-            </div>
-        </div>
         
         <div class="chart-container">
             <canvas id="behaviorPieChart"></canvas>

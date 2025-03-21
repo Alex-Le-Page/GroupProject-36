@@ -7,11 +7,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="Chart.js"></script>
-    <title>Document</title>
-
+    <title>Breathing Rate</title>
+    <link rel = "stylesheet" href = "dateStyles.css">
     <style>
-        div.graphText{
-            margin-top: 5%;
+        div.chart{
+            margin-left: 15%;
+            width: 110% !important;
+            max-width: 1000px; /* Adjust this to make it bigger */
         }
     </style>
 </head>
@@ -24,7 +26,6 @@
 
     <div class = "graphText">
     <?php
-    
     if (!isset($_SESSION['Date'])) {
         echo "No date Selected";
         exit;
@@ -62,7 +63,7 @@
             echo "No data found for the selected date: " . $newDate;
             exit();
         }
-        echo "Selected Date: " . $newDate ."<br>";
+        echo "<p style = 'text-decoration: underline; margin-bottom: 1px;'> Selected Date: " . $newDate ."<br></p>";
 
         // Fetch breathing rates for the given date
         $query = $db->prepare('SELECT Breathing_Rate FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = "CANINE001"');
@@ -137,7 +138,7 @@
     </script>
 
     <div class="chart">
-        <canvas id="lineGraph" style="width:100%;max-width:700px;"></canvas>
+        <canvas id="lineGraph" style="height: 300px;"></canvas>
     </div>
 </body>
 

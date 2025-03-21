@@ -13,32 +13,55 @@ function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLa
             type: "line",
             data: {
                 labels: xValues,
+                
                 datasets: [{
-                    label: graphLabel, // label for the line
-                    fill: false, // below the graph
-                    backgroundColor:"rgba(0,0,255,1.0)",
-                    borderColor: "rgba(0,0,255,0.1)", // colour of line
-                    data: dataset // dataset from database
+                    label: graphLabel, //label for the line
+                    fill: false,
+                    backgroundColor: "white", //Dot fill color
+                    borderColor: "rgb(8, 109, 152)", //Line Colour
+                    pointBorderColor: "darkblue", //Dot border colour
+                    pointBackgroundColor: "darkblue", //Dot fill colour
+                    pointRadius: 2, //Size of the dots
+                    pointHoverRadius: 6, //Dot size on hover
+                    borderWidth: 2, //Line thicknes
+                    tension: 0.3, //Adds smoothness to the line
+                    data: dataset //dataset from database
                 }] 
             },
             options: {
                 scales: {
                     yAxes: [{
-                        scaleLabel:{
+                        scaleLabel: {
                             display: true,
-                            labelString: yLabel
+                            labelString: yLabel,
+                            fontSize: 16,
+                            fontFamily: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                            fontColor: "#0E253E"
+                        },
+                        ticks: {
+                            fontSize: 10,
+                            fontFamily: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                            fontColor: "#0E253E"
                         }
                     }],
                     xAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: xLabel
+                            labelString: xLabel,
+                            fontSize: 16,
+                            fontFamily: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                            fontColor: "#0E253E"
+                        },
+                        ticks: {
+                            fontSize: 10,
+                            fontFamily: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                            fontColor: "#0E253E"
                         }
 
                     }]
                 },
-                tooltips: { // change the text when hovering over a value on the graph
-                    displayColors: false, // stops the colour from being shown
+                tooltips:{
+                    displayColors: false, // stops the colour from being shown when hovering over a bar
                     callbacks: {
                         title: function() {
                             return null;  // Stops the title from showing 
@@ -56,6 +79,7 @@ function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLa
                         }
                     }
                 },
+                
                 responsive: true,
                 maintainAspectRatio: false,
             }
