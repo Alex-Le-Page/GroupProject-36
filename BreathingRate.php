@@ -29,7 +29,9 @@
         echo "No date Selected";
         exit;
     }
-    $newDate = $_SESSION['Date']; // retrieves the selected date (from navbar)
+    else{
+        $newDate = $_SESSION['Date']; // retrieves the selected date (from navbar)
+    }
 
     $db = new SQLite3('ElancoDB.db');
     $breathingData = [];

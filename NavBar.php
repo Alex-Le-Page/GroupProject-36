@@ -26,13 +26,26 @@
 <?php
     session_start();
 
-    $date = $_SESSION['Date']; // retrieves the selected date from previous pages
+    if (!isset($_SESSION['Date'])) {
+        echo "No date Selected";
+    }
+    else{
+        $date = $_SESSION['Date']; // retrieves the selected date (from navbar)
+    }
 
     // Get the date the user clicked
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['datePicker'])) {
         $date = $_POST['datePicker'];
 
+        $hour = substr($date, 11, 2);
+        $date = substr($date, 0, -3);
+        
+        if($hour < 10){
+            $hour = substr($hour, 1, 1);
+        }
+
         $_SESSION['Date'] = $date;
+        $_SESSION['Hour'] = $hour;
     }
 ?>
 
@@ -57,8 +70,9 @@
             const phpDate = "<?php echo !empty($date) ? $date : '31-12-2023'; ?>";
 
             const datePicker = flatpickr("#datePicker", {
-                enableTime: false, // Time selection option
-                dateFormat: "d-m-Y", // Set date format
+                enableTime: true, // Time selection option
+                time_24hr: true, //Time to 24 hour
+                dateFormat: "d-m-Y-H", // Set date format
                 defaultDate: phpDate, // Set the date in calendar dropdown
                 minDate: "01-01-2021", // Minimum date
                 maxDate: "31-12-2023", // Maximum date
