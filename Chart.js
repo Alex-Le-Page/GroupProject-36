@@ -87,14 +87,13 @@ function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLa
     }
 }
 
-function loadBarChart(canvasId, dataset, outputDataset, graphLabel, yLabel, xLabel, extraOutputLabel){
+function loadBarChart(canvasId, dataset, outputDataset, xValues, graphLabel, yLabel, xLabel, extraOutputLabel){
 
     if (!dataset.length || !outputDataset.length) {
         alert("Some data is missing for the selected date.");
         return;
     } // error handling if theres some data missing
     else{
-        const xValues = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
 
         const ctx = document.getElementById(canvasId);
 
@@ -222,7 +221,7 @@ function loadBehaviorPieChart(canvasId, behaviorDataset, graphLabel) {
                 }
             }
         });
-    }}
+}}
 
 function loadDoughChart(canvasId, progress, valueLeft, title, total){
 
