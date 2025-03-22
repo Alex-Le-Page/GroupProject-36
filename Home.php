@@ -63,13 +63,14 @@
         $db = new SQLite3('ElancoDB.db');
 
         //get date selected from the navbar callender
-        $date = $_SESSION['Date'];
-        
-        //get the time from when the user opens the website
-        $currentTime = date("G");
-
-        //account for databases time format (starting at 0)
-        $currentTime -= 1;
+        if (!isset($_SESSION['Date'])) {
+            echo "No date Selected";
+            exit;
+        }
+        else{
+            $calDate = $_SESSION['Date']; // retrieves the selected date and time (from navbar)
+            $calTime = $_SESSION['Hour'];
+        }
             
         //run a select statement to get the water intake of the dog throughout the day 
         $query = $db->prepare('SELECT 
@@ -79,8 +80,8 @@
         SUM(Activity_Level)AS steps, 
         SUM(Food_Intake) AS totalCalories 
         FROM Activity WHERE Hour <= :currentTime AND DogID = "CANINE001" AND Date = :calDate');
-        $query->bindValue(":currentTime", $currentTime, SQLITE3_INTEGER);
-        $query->bindValue(":calDate", $date, SQLITE3_TEXT);
+        $query->bindValue(":currentTime", $calTime, SQLITE3_INTEGER);
+        $query->bindValue(":calDate", $calDate, SQLITE3_TEXT);
         $result = $query->execute();
 
         $row = $result->fetchArray(SQLITE3_ASSOC);

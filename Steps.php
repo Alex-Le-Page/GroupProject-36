@@ -33,6 +33,14 @@
         $newDate = $_SESSION['Date']; // retrieves the selected date (from navbar)
     }
 
+    if (!isset($_SESSION['Dog'])) {
+        echo "No dog Selected";
+        exit;
+    }
+    else{
+        $dogID = $_SESSION['Dog']; // retrieves the selected dog (from navbar)
+    }
+
     $db = new SQLite3('ElancoDB.db');
     $activityLevelData = [];
     $behaviourData = [];
@@ -64,8 +72,9 @@
         echo "Selected Date: " . $newDate ."<br>";
 
         // Fetch steps for the given date
-        $query = $db->prepare('SELECT Activity_Level FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = "CANINE001"');
+        $query = $db->prepare('SELECT Activity_Level FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = :dogID');
         $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
+        $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
         $result = $query->execute();
 
         // Check if the query executed successfully
@@ -98,7 +107,7 @@
                         $hours[] = $count;
                     } 
                     else {
-                        $startNum = $count - $prevEmpty;
+                        $startNum = ($count - $prevEmpty) + 1;
                         $hours[] = $startNum . " - " . ($count); // creates a range of hours where 0 steps are completed
                     }
                 } 
@@ -137,10 +146,11 @@
         INNER JOIN Behaviour ON Activity.BehaviourID = Behaviour.BehaviourID
         WHERE Date = :newDate 
         AND Hour >= 0 AND Hour <= 23 
-        AND DogID = "CANINE001"
+        AND DogID = :dogID
         ');
 
         $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
+        $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
         $result = $query->execute();
 
         // Check if the query executed successfully

@@ -33,6 +33,7 @@
 <body>
 
 <?php
+    $db = new SQLite3('ElancoDB.db');
     session_start();
 
     if (!isset($_SESSION['Date'])) {
@@ -56,6 +57,29 @@
         $_SESSION['Date'] = $date;
         $_SESSION['Hour'] = $hour;
     }
+
+    
+    if (!isset($_SESSION['Dog'])) {
+        echo "No dog Selected";
+    }
+    else{
+        $selectedDog = $_SESSION['Dog']; // retrieves the selected dog (from navbar)
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['selectDog'])) {
+        $selectedDog = $_POST['selectDog'];
+        $_SESSION['Dog'] = $selectedDog;
+    }
+
+    $findDogQuery = $db->prepare("SELECT DISTINCT DogID FROM Activity");
+    $findDogresult = $findDogQuery->execute();
+    if ($findDogresult) {
+        while ($row = $findDogresult->fetchArray(SQLITE3_ASSOC)) {
+            $dogIDs[] = $row['DogID']; // store results in an array
+        }
+    }
+
+    $db->close();
 ?>
 
 <div class="NavBar">
@@ -68,6 +92,20 @@
         <li><a href="BreathingRate.php">Breathing Rate</a></li>
         <li><a href="Steps.php">Steps</a></li>
 
+        <li>
+            <form method="post">
+            <select id="selectDog" name="selectDog" onchange="this.form.submit()">
+            <option value="">Select a Dog</option>
+                <?php foreach ($dogIDs as $dogID): ?>
+                    <option value="<?= $dogID ?>" <?= $selectedDog == $dogID ? 'selected' : '' ?>>
+                        <?= $dogID ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            </form>
+        </li>
+
+        <li>
             <!-- Date picker -->
             <form class = "calendar"  method="post">
                 <input type="text" name="datePicker" id="datePicker" placeholder="Select a date" readonly onchange="this.form.submit()">
