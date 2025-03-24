@@ -36,7 +36,7 @@
         }
     ?>
     
-    <h2>Here is <?php echo $dogID; ?>'s Info:</h2> <br>
+    <h2>Here is <?php echo $dogID; ?>'s Info for Steps:</h2> <br>
 
 
     <div class = "graphText">

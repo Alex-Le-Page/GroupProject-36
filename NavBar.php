@@ -86,6 +86,7 @@
         <li><a href="intake.php">Intake</a></li>
         <li><a href="BreathingRate.php">Breathing Rate</a></li>
         <li><a href="Steps.php">Steps</a></li>
+        <li><a href="CalorieBurn.php">Calorie Burn</a></li>
 
         <li>
             <form method="post">

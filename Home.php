@@ -174,7 +174,7 @@
             <canvas id="caloriesBurnt"></canvas>
         </div>
         <div class="chart">
-            <canvas id="calorieIntake"></canvas>
+            <canvas id="calorieIntake"></canvas>A
         </div>  
         <div class="chart">
             <canvas id="steps"></canvas>

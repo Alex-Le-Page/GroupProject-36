@@ -221,7 +221,8 @@ function loadBehaviorPieChart(canvasId, behaviorDataset, graphLabel) {
                 }
             }
         });
-}}
+    }
+}
 
 function loadDoughChart(canvasId, progress, valueLeft, title, total){
 
