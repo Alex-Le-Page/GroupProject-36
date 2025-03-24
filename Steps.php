@@ -17,29 +17,30 @@
 </head>
 
 <body>
-    <?php include("NavBar.php");?>
+    <?php include("NavBar.php");
     
-    <h2>Here is Cainine001's Info:</h2> <br>
+        if (!isset($_SESSION['Date'])) {
+            echo "No date Selected";
+            exit;
+        }
+        else{
+            $newDate = $_SESSION['Date']; // retrieves the selected date (from navbar)
+        }
+
+        if (!isset($_SESSION['Dog'])) {
+            echo "No dog Selected";
+            exit;
+        }
+        else{
+            $dogID = $_SESSION['Dog']; // retrieves the selected dog (from navbar)
+        }
+    ?>
+    
+    <h2>Here is <?php echo $dogID; ?>'s Info:</h2> <br>
 
 
     <div class = "graphText">
     <?php
-    
-    if (!isset($_SESSION['Date'])) {
-        echo "No date Selected";
-        exit;
-    }
-    else{
-        $newDate = $_SESSION['Date']; // retrieves the selected date (from navbar)
-    }
-
-    if (!isset($_SESSION['Dog'])) {
-        echo "No dog Selected";
-        exit;
-    }
-    else{
-        $dogID = $_SESSION['Dog']; // retrieves the selected dog (from navbar)
-    }
 
     $db = new SQLite3('ElancoDB.db');
     $activityLevelData = [];

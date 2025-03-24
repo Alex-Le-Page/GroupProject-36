@@ -71,6 +71,14 @@
             $calDate = $_SESSION['Date']; // retrieves the selected date and time (from navbar)
             $calTime = $_SESSION['Hour'];
         }
+
+        if (!isset($_SESSION['Dog'])) {
+            echo "No dog Selected";
+            exit;
+        }
+        else{
+            $dogID = $_SESSION['Dog']; // retrieves the selected dog (from navbar)
+        }
             
         //run a select statement to get the water intake of the dog throughout the day 
         $query = $db->prepare('SELECT 
@@ -79,9 +87,10 @@
         SUM(Calorie_Burn) AS totalBurnt, 
         SUM(Activity_Level)AS steps, 
         SUM(Food_Intake) AS totalCalories 
-        FROM Activity WHERE Hour <= :currentTime AND DogID = "CANINE001" AND Date = :calDate');
-        $query->bindValue(":currentTime", $calTime, SQLITE3_INTEGER);
+        FROM Activity WHERE Hour <= :calTime AND DogID = :dogID AND Date = :calDate');
+        $query->bindValue(":calTime", $calTime, SQLITE3_INTEGER);
         $query->bindValue(":calDate", $calDate, SQLITE3_TEXT);
+        $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
         $result = $query->execute();
 
         $row = $result->fetchArray(SQLITE3_ASSOC);
@@ -127,7 +136,7 @@
         }
     ?>
     
-    <h2>Here is Cainine001's Info:</h2>
+    <h2>Here is <?php echo $dogID; ?>'s Summary:</h2>
     <div class="Main">
 
         <form class = "notes">
@@ -143,7 +152,7 @@
     </div>
 
     <div class="warning">
-        <h1>*Please note all goals are a general calculation and may not be specific to your dog</h1>
+        <h1>*Please note all goals are a general calculations and may not be specific to your dog</h1>
     </div>
 
     <script>

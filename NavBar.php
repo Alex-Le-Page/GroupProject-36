@@ -36,13 +36,10 @@
     $db = new SQLite3('ElancoDB.db');
     session_start();
 
-    if (!isset($_SESSION['Date'])) {
-        echo "No date Selected";
-    }
-    else{
+    if (isset($_SESSION['Date'])) {
         $date = $_SESSION['Date']; // retrieves the selected date (from navbar)
     }
-
+    
     // Get the date the user clicked
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['datePicker'])) {
         $date = $_POST['datePicker'];
@@ -59,13 +56,11 @@
     }
 
     
-    if (!isset($_SESSION['Dog'])) {
-        echo "No dog Selected";
-    }
-    else{
+    $selectedDog = "";
+    if (isset($_SESSION['Dog'])) {
         $selectedDog = $_SESSION['Dog']; // retrieves the selected dog (from navbar)
     }
-
+    
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['selectDog'])) {
         $selectedDog = $_POST['selectDog'];
         $_SESSION['Dog'] = $selectedDog;
