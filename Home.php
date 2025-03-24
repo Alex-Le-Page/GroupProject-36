@@ -1,8 +1,6 @@
 <?php 
 
     require_once 'UpperLowerBoundFunctions.php';
-    // include("NavBar.php");
-
     include("NavBar.php");
     
         $db = new SQLite3('ElancoDB.db');
@@ -309,8 +307,6 @@
     <?php echo "Selected date: " . $selectedDate; ?>
     <?php echo "Records found: " . $recordCount; ?>
     <h2>Here is Cainine001's Info:</h2>
-    <?php 
-    ?>
     
     <h2>Here is <?php echo $dogID; ?>'s Summary:</h2>
     <div class="Main">
@@ -344,7 +340,7 @@
     <div class="charts">
 
         <div class="chart">
-            <div id="heart">Heart Rate; <?php echo $heartRate; ?> BPM</div>
+            <div id="heart"></div>
         </div>
         <div class="chart">
             <canvas id="doughChart"></canvas>
