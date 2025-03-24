@@ -19,13 +19,8 @@
 </head>
 
 <body>
-    <?php include("NavBar.php");?>
-    
-    <h2>Here is Cainine001's Info:</h2> <br>
+    <?php include("NavBar.php");
 
-
-    <div class = "graphText">
-    <?php
     if (!isset($_SESSION['Date'])) {
         echo "No date Selected";
         exit;
@@ -34,6 +29,21 @@
         $newDate = $_SESSION['Date']; // retrieves the selected date (from navbar)
     }
 
+    if (!isset($_SESSION['Dog'])) {
+        echo "No dog Selected";
+        exit;
+    }
+    else{
+        $dogID = $_SESSION['Dog']; // retrieves the selected dog (from navbar)
+    }
+    ?>
+    
+    <h2>Here is <?php echo $dogID; ?>'s info for Breathing Rate:</h2> <br>
+
+
+    <div class = "graphText">
+    <?php
+     
     $db = new SQLite3('ElancoDB.db');
     $breathingData = [];
     $behaviourData = [];
@@ -66,8 +76,9 @@
         echo "<p style = 'text-decoration: underline; margin-bottom: 1px;'> Selected Date: " . $newDate ."<br></p>";
 
         // Fetch breathing rates for the given date
-        $query = $db->prepare('SELECT Breathing_Rate FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = "CANINE001"');
+        $query = $db->prepare('SELECT Breathing_Rate FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = :dogID');
         $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
+        $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
         $result = $query->execute();
 
         // Check if the query executed successfully
@@ -93,10 +104,11 @@
         INNER JOIN Behaviour ON Activity.BehaviourID = Behaviour.BehaviourID
         WHERE Date = :newDate 
         AND Hour >= 0 AND Hour <= 23 
-        AND DogID = "CANINE001"
+        AND DogID = :dogID
         ');
 
         $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
+        $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
         $result = $query->execute();
 
         // Check if the query executed successfully
