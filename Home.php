@@ -1,10 +1,84 @@
-<<<<<<< HEAD
 <?php 
 
     require_once 'UpperLowerBoundFunctions.php';
-    include("NavBar.php");
+    // include("NavBar.php");
 
-    $db = new SQLite3('ElancoDB.db');
+    include("NavBar.php");
+    
+        $db = new SQLite3('ElancoDB.db');
+
+        //get date selected from the navbar callender
+        if (!isset($_SESSION['Date'])) {
+            echo "No date Selected";
+            exit;
+        }
+        else{
+            $calDate = $_SESSION['Date']; // retrieves the selected date and time (from navbar)
+            $calTime = $_SESSION['Hour'];
+        }
+
+        if (!isset($_SESSION['Dog'])) {
+            echo "No dog Selected";
+            exit;
+        }
+        else{
+            $dogID = $_SESSION['Dog']; // retrieves the selected dog (from navbar)
+        }
+            
+        //run a select statement to get the water intake of the dog throughout the day 
+        $query = $db->prepare('SELECT 
+        AVG(Weight) AS avgWeight, 
+        SUM(Water_Intake) AS totalIntake, 
+        SUM(Calorie_Burn) AS totalBurnt, 
+        SUM(Activity_Level)AS steps, 
+        SUM(Food_Intake) AS totalCalories 
+        FROM Activity WHERE Hour <= :calTime AND DogID = :dogID AND Date = :calDate');
+        $query->bindValue(":calTime", $calTime, SQLITE3_INTEGER);
+        $query->bindValue(":calDate", $calDate, SQLITE3_TEXT);
+        $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
+        $result = $query->execute();
+
+        $row = $result->fetchArray(SQLITE3_ASSOC);
+
+        //store data from the query into variables
+        $totalIntake = round($row['totalIntake']);
+        $weight = $row['avgWeight'];
+        $totalBurnt = round($row['totalBurnt']);
+        $totalSteps = $row['steps'];
+        $totalCalories = round($row['totalCalories']);
+
+
+        //calculate the goals for the dog
+        $totalMl = round($weight * 60);
+        $burntGoal = round(($weight * 2.2) * 30);
+        $calorieGoal = round(pow($weight, 0.75) * 70);
+
+
+        //check if the water intake goal has been hit 
+        if ($totalIntake > $totalMl){
+            $intakeLeft = 0;
+        } else{
+            //if the goal hasn't been hit then calculate the ammount left
+            $intakeLeft = $totalMl - $totalIntake;
+        }
+
+        if($totalSteps > 8000){
+            $stepsLeft = 0;
+        } else{
+            $stepsLeft = 8000 - $totalSteps;
+        }
+
+        if($totalBurnt > $burntGoal){
+            $burntLeft = 0;
+        } else{
+            $burntLeft = $burntGoal - $totalBurnt;
+        }
+
+        if($totalCalories > $calorieGoal){
+            $caloriesLeft = 0;
+        } else{
+            $caloriesLeft = $calorieGoal - $totalCalories;
+        }
 
     //get the time from when the user opens the website
     $currentTime = date("G");
@@ -143,8 +217,6 @@
     }
     
 ?>
-=======
->>>>>>> 3a47146ed9552131c23128fc73b368596fb038ad
 <!DOCTYPE html>
 <html lang="en">
 
@@ -234,91 +306,13 @@
 </head>
 
 <body>
-<<<<<<< HEAD
     <?php echo "Selected date: " . $selectedDate; ?>
     <?php echo "Records found: " . $recordCount; ?>
     <h2>Here is Cainine001's Info:</h2>
-=======
-    <?php include("NavBar.php");
-    
-        $db = new SQLite3('ElancoDB.db');
-
-        //get date selected from the navbar callender
-        if (!isset($_SESSION['Date'])) {
-            echo "No date Selected";
-            exit;
-        }
-        else{
-            $calDate = $_SESSION['Date']; // retrieves the selected date and time (from navbar)
-            $calTime = $_SESSION['Hour'];
-        }
-
-        if (!isset($_SESSION['Dog'])) {
-            echo "No dog Selected";
-            exit;
-        }
-        else{
-            $dogID = $_SESSION['Dog']; // retrieves the selected dog (from navbar)
-        }
-            
-        //run a select statement to get the water intake of the dog throughout the day 
-        $query = $db->prepare('SELECT 
-        AVG(Weight) AS avgWeight, 
-        SUM(Water_Intake) AS totalIntake, 
-        SUM(Calorie_Burn) AS totalBurnt, 
-        SUM(Activity_Level)AS steps, 
-        SUM(Food_Intake) AS totalCalories 
-        FROM Activity WHERE Hour <= :calTime AND DogID = :dogID AND Date = :calDate');
-        $query->bindValue(":calTime", $calTime, SQLITE3_INTEGER);
-        $query->bindValue(":calDate", $calDate, SQLITE3_TEXT);
-        $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
-        $result = $query->execute();
-
-        $row = $result->fetchArray(SQLITE3_ASSOC);
-
-        //store data from the query into variables
-        $totalIntake = round($row['totalIntake']);
-        $weight = $row['avgWeight'];
-        $totalBurnt = round($row['totalBurnt']);
-        $totalSteps = $row['steps'];
-        $totalCalories = round($row['totalCalories']);
-
-
-        //calculate the goals for the dog
-        $totalMl = round($weight * 60);
-        $burntGoal = round(($weight * 2.2) * 30);
-        $calorieGoal = round(pow($weight, 0.75) * 70);
-
-
-        //check if the water intake goal has been hit 
-        if ($totalIntake > $totalMl){
-            $intakeLeft = 0;
-        } else{
-            //if the goal hasn't been hit then calculate the ammount left
-            $intakeLeft = $totalMl - $totalIntake;
-        }
-
-        if($totalSteps > 8000){
-            $stepsLeft = 0;
-        } else{
-            $stepsLeft = 8000 - $totalSteps;
-        }
-
-        if($totalBurnt > $burntGoal){
-            $burntLeft = 0;
-        } else{
-            $burntLeft = $burntGoal - $totalBurnt;
-        }
-
-        if($totalCalories > $calorieGoal){
-            $caloriesLeft = 0;
-        } else{
-            $caloriesLeft = $calorieGoal - $totalCalories;
-        }
+    <?php 
     ?>
     
     <h2>Here is <?php echo $dogID; ?>'s Summary:</h2>
->>>>>>> 3a47146ed9552131c23128fc73b368596fb038ad
     <div class="Main">
 
         <form class = "notes">
@@ -350,7 +344,7 @@
     <div class="charts">
 
         <div class="chart">
-            <div id="heart"></div>
+            <div id="heart">Heart Rate; <?php echo $heartRate; ?> BPM</div>
         </div>
         <div class="chart">
             <canvas id="doughChart"></canvas>
