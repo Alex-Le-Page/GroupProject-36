@@ -47,41 +47,13 @@
         }
 
         .charts {
-            margin-top: 50px;
-            width: 500px;
-            height: 500px;
+            margin-top: 0;
+            width: 600px;
+            height: 600px;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-        }
-
-        #heart {
-            position: relative;
-            width: 100px;
-            height: 90px;
-            margin-top: 10px;
-        }
-
-        #heart::before, #heart::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            width: 52px;
-            height: 80px;
-            border-radius: 50px 50px 0 0;
-            background: <?php echo $heartColour; ?>
-        }
-
-        #heart::before {
-            left: 50px;
-            transform: rotate(-45deg);
-            transform-origin: 0 100%;
-        }
-
-        #heart::after {
-            left: 0;
-            transform: rotate(45deg);
-            transform-origin: 100% 100%;
+            grid-template-rows: repeat(3, 1fr);
+            gap: 5px;
         }
     </style>
 </head>
@@ -230,7 +202,7 @@
     $allDayStmt->bindValue(':selectedDate', $calDate, SQLITE3_TEXT);
     $allDayResult = $allDayStmt->execute();
 
-    // collect all heart rates for the day
+    // populate array
     while ($row = $allDayResult->fetchArray(SQLITE3_ASSOC)) {
     $arrangedDataset[] = $row['Heart_Rate'];
     }
@@ -292,12 +264,86 @@
         $statusText = 'Error: ' . $e->getMessage(); // catch to see if any errors occur
     }
     
-    echo "Selected date: " . $calDate;
-    echo "Records found: " . $recordCount;
+    
+    $weightValue = 0;
+    $weightColour = '#4CAF50';
+    $weightStatusText = '';
+    $weightRecordCount = 0;
+    $weightDataset = [];
+
+    try {
+        // get all weights for the day to calculate bounds
+        $allWeightQuery = "SELECT Weight
+        FROM Activity
+        WHERE Date = :selectedDate";
+
+        $allWeightStmt = $db->prepare($allWeightQuery);
+        $allWeightStmt->bindValue(':selectedDate', $calDate, SQLITE3_TEXT);
+        $allWeightResult = $allWeightStmt->execute();
+
+        // populate array
+        while ($row = $allWeightResult->fetchArray(SQLITE3_ASSOC)) {
+            $weightDataset[] = $row['Weight'];
+        }
+
+        $weightRecordCount = count($weightDataset);
+
+        // get the weight for the specific hour if provided
+        if ($calTime !== null) {
+            $hourWeightQuery = "SELECT Weight
+            FROM Activity
+            WHERE Date = :selectedDate 
+            AND Hour = :selectedHour";
+
+            $hourWeightStmt = $db->prepare($hourWeightQuery);
+            $hourWeightStmt->bindValue(':selectedDate', $calDate, SQLITE3_TEXT);
+            $hourWeightStmt->bindValue(':selectedHour', $calTime, SQLITE3_INTEGER);
+            $hourWeightResult = $hourWeightStmt->execute();
+
+            $hourWeightRow = $hourWeightResult->fetchArray(SQLITE3_ASSOC);
+
+            // if we found a weight for the specific hour, use it
+            if ($hourWeightRow) {
+                $weightValue = $hourWeightRow['Weight'];
+            } elseif ($weightRecordCount > 0) {
+                // if no weight for specific hour but we have data for the day,
+                // use the average weight of the day
+                $weightValue = array_sum($weightDataset) / $weightRecordCount;
+                $weightStatusText = 'No data for hour ' . $calTime . '. Showing average weight for the day.';
+            }
+        } elseif ($weightRecordCount > 0) {
+            // no hour selected, use the average weight for the day
+            $weightValue = array_sum($weightDataset) / $weightRecordCount;
+        }
+
+    // calculate bounds only if we have records
+    if ($weightRecordCount > 0) {
+        // calculate the bounds using imported functions
+        $weightLowerBound = FindLowerBound($weightDataset);
+        $weightUpperBound = FindUpperBound($weightDataset);
+
+        // set status text if it wasn't set by the hour check
+        if (empty($weightStatusText)) {
+            // logic to decide the status based on calculated bounds
+            if ($weightValue > $weightUpperBound) {
+                $weightColour = '#F44336'; 
+                $weightStatusText = 'Alert: Weight above upper bound';
+            } elseif ($weightValue < $weightLowerBound) {
+                $weightColour = '#FFC107'; 
+                $weightStatusText = 'Alert: Weight below lower bound';
+            } else {
+                $weightColour = '#4CAF50';
+                $weightStatusText = 'Normal weight (within bounds)';
+            }
+        }
+    } else {
+        $weightStatusText = 'No weight data found for selected date';
+    }
+    } catch (Exception $e) {
+        $weightStatusText = 'Error: ' . $e->getMessage();
+    }
 
 ?>
-    <h2>Here is Cainine001's Info:</h2>
-    
     <h2>Here is <?php echo $dogID; ?>'s Summary:</h2>
     <div class="Main">
 
@@ -328,10 +374,39 @@
 
     <!--add any more graphs into the charts class to have it be apart of the grid layout -->
     <div class="charts">
-
-        <div class="chart">
-            <div id="heart"></div>
+    <div class="chart">
+        <div style="text-align: center; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+            <svg width="120" height="110" viewBox="0 0 100 90">
+                <!-- heart path for heart shape -->
+                <path d="M50,30 C60,10 90,10 90,40 C90,65 50,85 50,85 C50,85 10,65 10,40 C10,10 40,10 50,30 Z" 
+                      style="fill: <?php echo $heartColour; ?>;" />
+                      <!-- text for the heart rate in bpm inside heart -->
+                <text x="50" y="55" text-anchor="middle" fill="white" font-weight="bold" font-size="14">
+                    <?php echo $heartRate; ?>
+                </text>
+                <text x="50" y="70" text-anchor="middle" fill="white" font-size="10">
+                    BPM
+                </text>
+            </svg>
         </div>
+    </div>
+    <div class="chart">
+        <div style="text-align: center; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+            <svg width="120" height="110" viewBox="0 0 100 90">
+                <!-- circle for weight -->
+                <circle cx="50" cy="45" r="40" 
+                    style="fill: <?php echo $weightColour; ?>;" />
+                
+                <!-- text inside the circle -->
+                <text x="50" y="45" text-anchor="middle" fill="white" font-weight="bold" font-size="14">
+                    <?php echo number_format($weightValue, 1); ?>
+                </text>
+                <text x="50" y="60" text-anchor="middle" fill="white" font-size="10">
+                    KG
+                </text>
+            </svg>
+        </div>
+    </div>
         <div class="chart">
             <canvas id="doughChart"></canvas>
         </div>
@@ -339,7 +414,7 @@
             <canvas id="caloriesBurnt"></canvas>
         </div>
         <div class="chart">
-            <canvas id="calorieIntake"></canvas>A
+            <canvas id="calorieIntake"></canvas>
         </div>  
         <div class="chart">
             <canvas id="steps"></canvas>
