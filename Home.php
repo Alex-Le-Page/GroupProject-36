@@ -393,11 +393,11 @@
         <div class="chart">
             <div style="text-align: center; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
                 <svg width="120" height="120" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Kettlebell shape with dynamic color -->
+                    <!-- kettlebell shape -->
                     <path d="M24.107 12.087h-4.086c0.649-0.851 1.045-1.887 1.045-3.040 0-2.799-2.269-5.067-5.067-5.067s-5.067 2.269-5.067 5.067c0 1.153 0.397 2.189 1.045 3.040h-4.085l-6.080 14.187h28.375l-6.080-14.187zM16 12.087c-1.679 0-3.040-1.361-3.040-3.040 0-1.678 1.362-3.040 3.040-3.040s3.040 1.361 3.040 3.040-1.361 3.040-3.040 3.040z"
                         fill="<?php echo $weightColour; ?>"></path>
                     
-                    <!-- Weight value text positioned in the center of the kettlebell -->
+                    <!-- weight value inside icon -->
                     <text x="16" y="20" text-anchor="middle" fill="white" font-weight="bold" font-size="5">
                         <?php echo number_format($weightValue, 1); ?>
                     </text>
