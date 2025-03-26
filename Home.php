@@ -64,6 +64,39 @@
             transform: scale(1.1);
             filter: drop-shadow(0 0 10px #4CAF50);
         }
+
+        .box {
+            margin-left: 35%;
+            width: 620px;
+            padding: 20px 10px;
+            background: linear-gradient(to bottom right, #ffffff, #f0f8ff);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);
+            transition: all 1s ease;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #0E253E;
+            
+        }
+
+        .box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #0E253E,rgb(33, 61, 92),rgb(56, 100, 148));
+            border-radius: 15px 15px 0 0;
+        }
+
+        .box:hover {
+            box-shadow: 0 15px 30px rgba(14, 37, 62, 0.75), 0 0 25px rgba(14, 37, 62, 0.68);
+            transform: translateY(-7px);
+        }
+
+
+        
     </style>
 </head>
 
@@ -377,6 +410,27 @@
     </script>
 
     <!--add any more graphs into the charts class to have it be apart of the grid layout -->
+<div class="box">
+    <h3 class="h3Header">Here's how your dog is doing!</h3>
+    <style>
+        .h3Header {
+        color: #0E253E;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-size: 1.8rem;
+        padding-bottom: 8px;
+        position: relative;
+        }
+
+        .h3Header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, #0E253E,rgb(44, 102, 138));
+        }
+    </style>
     <div class="charts">
         <div class="chart">
             <div style="text-align: center; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
@@ -427,6 +481,7 @@
         </div>  
 
     </div>
+<div>
 </body>
 
 </html>
