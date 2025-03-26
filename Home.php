@@ -126,21 +126,16 @@
         $result = $query->execute();
 
         $row = $result->fetchArray(SQLITE3_ASSOC);
-
         //store data from the query into variables
         $totalIntake = round($row['totalIntake']);
         $weight = $row['avgWeight'];
         $totalBurnt = round($row['totalBurnt']);
         $totalSteps = $row['steps'];
         $totalCalories = round($row['totalCalories']);
-
-
         //calculate the goals for the dog
         $totalMl = round($weight * 60);
         $burntGoal = round(($weight * 2.2) * 30);
         $calorieGoal = round(pow($weight, 0.75) * 70);
-
-
         //check if the water intake goal has been hit 
         if ($totalIntake > $totalMl){
             $intakeLeft = 0;
