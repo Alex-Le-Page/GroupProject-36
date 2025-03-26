@@ -55,6 +55,15 @@
             grid-template-rows: repeat(3, 1fr);
             gap: 5px;
         }
+
+        .charts svg {
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .charts svg:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px #4CAF50);
+        }
     </style>
 </head>
 
@@ -242,10 +251,10 @@
         if (empty($statusText)) {
         // logic to decide the status based on calculated bounds
             if ($heartRate > $upperBound) {
-            $heartColour = '#F44336'; 
+            $heartColour = '#FF9C09'; 
             $statusText = 'Alert: Heart rate above upper bound';
             } elseif ($heartRate < $lowerBound) {
-            $heartColour = '#FFC107'; 
+            $heartColour = '#FF9C09'; 
             $statusText = 'Alert: Heart rate below lower bound';
             } else {
             $heartColour = '#4CAF50';
@@ -321,10 +330,10 @@
         if (empty($weightStatusText)) {
             // logic to decide the status based on calculated bounds
             if ($weightValue > $weightUpperBound) {
-                $weightColour = '#F44336'; 
+                $weightColour = '#FF9C09'; 
                 $weightStatusText = 'Alert: Weight above upper bound';
             } elseif ($weightValue < $weightLowerBound) {
-                $weightColour = '#FFC107'; 
+                $weightColour = '#FF9C09'; 
                 $weightStatusText = 'Alert: Weight below lower bound';
             } else {
                 $weightColour = '#4CAF50';
