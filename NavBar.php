@@ -46,6 +46,7 @@
 
         $hour = substr($date, 11, 2);
         $date = substr($date, 0, -3);
+        $year = substr($date, 6, 8);
         
         if($hour < 10){
             $hour = substr($hour, 1, 1);
@@ -53,6 +54,7 @@
 
         $_SESSION['Date'] = $date;
         $_SESSION['Hour'] = $hour;
+        $_SESSION['Year'] = $year;
     }
 
     

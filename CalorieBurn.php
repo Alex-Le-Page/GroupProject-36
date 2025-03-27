@@ -144,7 +144,8 @@
                 'Calorie Burn', // line label
                 'Calories Burnt', // y axes label
                 'Hour', // x axes label
-                'Activity: ' // label for the dataset when hovering over a point on the graph
+                'Activity: ', // label for the dataset when hovering over a point on the graph
+                [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23] //x axis values 
             );
         };
     </script>
