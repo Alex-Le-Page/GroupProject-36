@@ -191,6 +191,18 @@
         exit();
     }
 
+    $arrangedDataset = [];
+    // Fetch heart rates for the given date
+    $query = $db->prepare('SELECT Heart_Rate FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = :dogID ORDER BY Heart_Rate DESC');
+    $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
+    $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
+    $result = $query->execute();
+
+    // Populate $heartData array with heart rates
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+       $arrangedDataset[] = $row['Heart_Rate'];
+    }
+
     $query = $db->prepare('SELECT Heart_Rate FROM Activity WHERE Date = :newDate AND Hour = :hour AND DogID = :dogID');
     $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
     $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
