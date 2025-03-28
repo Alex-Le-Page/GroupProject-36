@@ -101,12 +101,6 @@
     <div class = "graphText">
     <?php 
 
-    if (!isset($_SESSION['Date'])) {
-        echo "No date Selected";
-        exit;
-    }
-    $newDate = $_SESSION['Date']; // retrieves the selected date (from navbar)
-
     $db = new SQLite3('ElancoDB.db');
     $heartData = [];
     $behaviourData = [];
@@ -226,93 +220,11 @@
     } else {
         echo "Error executing the query.<br>";
     }
-    
-
-   require_once 'UpperLowerBoundFunctions.php';
-
-   $heartRate = 0;
-    $heartColour = '#4CAF50';
-    $statusText = '';
-    $recordCount = 0;
-    $arrangedDataset = [];
-
-    try {
-        // get all heart rates for the day to calculate bounds
-    $allDayQuery = "SELECT Heart_Rate
-    FROM Activity
-    WHERE Date = :selectedDate";
-
-    $allDayStmt = $db->prepare($allDayQuery);
-    $allDayStmt->bindValue(':selectedDate', $newDate, SQLITE3_TEXT);
-    $allDayResult = $allDayStmt->execute();
-
-    // populate array
-    while ($row = $allDayResult->fetchArray(SQLITE3_ASSOC)) {
-    $arrangedDataset[] = $row['Heart_Rate'];
-    }
-
-    $recordCount = count($arrangedDataset);
-
-    // get the heart rate for the specific hour if provided
-    if ($newTime !== null) {
-        $hourQuery = "SELECT Heart_Rate
-        FROM Activity
-        WHERE Date = :selectedDate 
-        AND Hour = :selectedHour";
-
-    $hourStmt = $db->prepare($hourQuery);
-    $hourStmt->bindValue(':selectedDate', $newDate, SQLITE3_TEXT);
-    $hourStmt->bindValue(':selectedHour', $newTime, SQLITE3_INTEGER);
-    $hourResult = $hourStmt->execute();
-
-    $hourRow = $hourResult->fetchArray(SQLITE3_ASSOC);
-
-    // if we found a heart rate for the specific hour, use it
-    if ($hourRow) {
-        $heartRate = $hourRow['Heart_Rate'];
-        } elseif ($recordCount > 0) {
-        // if no heart rate for specific hour but we have data for the day,
-        // use the highest heart rate of the day
-        $heartRate = max($arrangedDataset);
-        $statusText = 'No data for hour ' . $newTime . '. Showing highest heart rate for the day.';
-        }
-        } elseif ($recordCount > 0) {
-        // no hour selected, use the highest heart rate for the day
-        $heartRate = max($arrangedDataset);
-        }
-
-        // calculate bounds only if we have records
-        if ($recordCount > 0) {
-        // calculate the bounds using our imported functions
-            $lowerBound = FindLowerBound($arrangedDataset);
-            $upperBound = FindUpperBound($arrangedDataset);
-
-        // set status text if it wasn't set by the hour check
-        if (empty($statusText)) {
-        // logic to decide the status based on calculated bounds
-            if ($heartRate > $upperBound) {
-            $heartColour = '#FF9C09'; 
-            $statusText = 'Alert: Heart rate above upper bound';
-            } elseif ($heartRate < $lowerBound) {
-            $heartColour = '#FF9C09'; 
-            $statusText = 'Alert: Heart rate below lower bound';
-            } else {
-            $heartColour = '#4CAF50';
-            $statusText = 'Normal heart rate (within bounds)';
-            }
-        }
-        } else {
-            $statusText = 'No data found for selected date';
-        }
-    } catch (Exception $e) {
-        $statusText = 'Error: ' . $e->getMessage(); // catch to see if any errors occur
-    }
-
     $db->close();
     ?>
 
     <script>
-       const boundsReceived = <?php echo json_encode($boundsReceived); ?>;
+        const boundsReceived = <?php echo json_encode($boundsReceived); ?>;
         const currentDate = <?php echo json_encode($newDate); ?>;
         const currentDogID = <?php echo json_encode($dogID); ?>; // set php variables in js
 
@@ -345,22 +257,6 @@
 
     <div class="chart">
         <canvas id="lineGraph" style="width:100%;max-width:700px;"></canvas>
-    </div>
-    <div class="chart">
-        <div style="text-align: center; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
-            <svg width="420" height="330" viewBox="0 0 100 90">
-                <!-- heart path for heart shape -->
-                <path d="M50,30 C60,10 90,10 90,40 C90,65 50,85 50,85 C50,85 10,65 10,40 C10,10 40,10 50,30 Z" 
-                    style="fill: <?php echo $heartColour; ?>;" />
-                    <!-- text for the heart rate in bpm inside heart -->
-                <text x="50" y="55" text-anchor="middle" fill="white" font-weight="bold" font-size="14">
-                    <?php echo $heartRate; ?>
-                </text>
-                <text x="50" y="70" text-anchor="middle" fill="white" font-size="10">
-                    BPM
-                </text>
-            </svg>
-        </div>
     </div>
 
     <div class="main">

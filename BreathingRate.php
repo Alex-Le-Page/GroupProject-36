@@ -8,12 +8,18 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="Chart.js"></script>
     <title>Breathing Rate</title>
-    <link rel = "stylesheet" href = "dateStyles.css">
     <style>
         div.chart{
             margin-left: 15%;
             width: 110% !important;
             max-width: 1000px; /* Adjust this to make it bigger */
+        }
+
+        .trafficLight {
+            height: 75px;
+            width: 75px;
+            border-radius: 50%;
+            display: inline-block;
         }
     </style>
 </head>
@@ -27,6 +33,7 @@
     }
     else{
         $newDate = $_SESSION['Date']; // retrieves the selected date (from navbar)
+        $hour = $_SESSION['Hour'];
     }
 
     if (!isset($_SESSION['Dog'])) {
@@ -36,6 +43,16 @@
     else{
         $dogID = $_SESSION['Dog']; // retrieves the selected dog (from navbar)
     }
+
+    // Check if bounds are received
+    $boundsReceived = isset($_GET['upperBound']) && isset($_GET['lowerBound']) && isset($_GET['date']) && isset($_GET['dogID']);
+    $upperBound = $boundsReceived ? $_GET['upperBound'] : null;
+    $lowerBound = $boundsReceived ? $_GET['lowerBound'] : null;
+
+    if ($boundsReceived && ($_GET['date'] !== $newDate || $_GET['dogID'] !== $dogID)) {
+        $boundsReceived = false;
+    } // Find new bounds if date or dogID has changed
+
     ?>
     
     <h2>Here is <?php echo $dogID; ?>'s info for Breathing Rate:</h2> <br>
@@ -47,7 +64,6 @@
     $db = new SQLite3('ElancoDB.db');
     $breathingData = [];
     $behaviourData = [];
-
 
     // Get the row number of the date the user enters
     if ($newDate != null) {
@@ -131,8 +147,55 @@
         exit();
     }
 
+    $arrangedDataset = [];
+    // Fetch heart rates for the given date
+    $query = $db->prepare('SELECT Breathing_Rate FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = :dogID ORDER BY Breathing_Rate DESC');
+    $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
+    $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
+    $result = $query->execute();
+
+    // Populate $heartData array with heart rates
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+       $arrangedDataset[] = $row['Breathing_Rate'];
+    }
+
+    $query = $db->prepare('SELECT Breathing_Rate FROM Activity WHERE Date = :newDate AND Hour = :hour AND DogID = :dogID');
+    $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
+    $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
+    $query->bindValue(':hour', $hour, SQLITE3_TEXT);
+    $result = $query->execute();
+
+    if ($result) {
+        $row = $result->fetchArray(SQLITE3_ASSOC); 
+        if ($row) {
+            $currentBR = $row['Breathing_Rate']; 
+        } else {
+            $currentBR = null;
+            echo "No heart rate data found for the specified date, hour, and dog.<br>";
+        }
+    } else {
+        echo "Error executing the query.<br>";
+    }
+
+
     $db->close();
     ?>
+
+    <script>
+        const boundsReceived = <?php echo json_encode($boundsReceived); ?>;
+        const currentDate = <?php echo json_encode($newDate); ?>;
+        const currentDogID = <?php echo json_encode($dogID); ?>; // set php variables in js
+
+        if (!boundsReceived) { 
+            const dataset = <?php echo json_encode($arrangedDataset); ?>; // converts php array to js
+            const calculatedUpperBound = FindUpperBound(dataset);
+            const calculatedLowerBound = FindLowerBound(dataset); // uses js functions to find upper and lower bounds
+
+            // Reload the page with upperBound, lowerBound, and other parameters
+            window.location.href = `${window.location.pathname}?upperBound=${encodeURIComponent(calculatedUpperBound)}&lowerBound=${encodeURIComponent(calculatedLowerBound)}&date=${encodeURIComponent(currentDate)}&dogID=${encodeURIComponent(currentDogID)}`;
+        }
+    </script>
+
     </div>
 
     <script>
@@ -152,6 +215,25 @@
 
     <div class="chart">
         <canvas id="lineGraph" style="height: 300px;"></canvas>
+    </div>
+
+    <div class="main">
+            <?php 
+                echo "The current Breathing Rate of the dog is: ". $currentBR .".<br>";
+
+                if($currentBR > $upperBound){
+                    echo "<label>This is higher than normal.</label><br>";
+                    echo "<span class='trafficLight' style='background-color: red'></span>";
+                }
+                else if($currentBR < $lowerBound){
+                    echo "<label>This is lower than normal.</label><br>";
+                    echo "<span class='trafficLight' style='background-color: red'></span>";
+                }
+                else{
+                    echo "<label>This is normal.</label><br>";
+                    echo "<span class='trafficLight' style='background-color: green'></span>";
+                }
+            ?>
     </div>
 </body>
 
