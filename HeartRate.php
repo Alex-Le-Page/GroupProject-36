@@ -10,40 +10,104 @@
 
     <style>
        
-       form {
-            float: left;
-            margin-top: 10%;
-            margin-left: 70%;
+    form :not(.calendar){
+        float: left;
+        margin-top: 10%;
+        margin-left: 70%;
+        
+        border-color: black;
+        padding: 8px;
+        text-align: left;
+        width: 300px;
+        padding: 20px;
+        background: lightblue;
+        border-radius: 8px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
             
-            border-color: black;
-            padding: 8px;
-            text-align: left;
-            width: 300px;
-            padding: 20px;
-            background: lightblue;
-            border-radius: 8px;
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-        }
+    .chart:first-of-type {
+        position: relative;
+        width: 700px;
+        display: block;
+    }
+
+    .chart:first-of-type canvas {
+        height: 300px !important; /* Reduce the height while maintaining width */
+        width: 100% !important;
+    }
+
+    .chart:last-of-type {
+        position: absolute;
+        top: 400px;     
+        left: 850px;    
+        width: 200px;
+        height: 200px;
+    }
+
+    /* Optional hover effect */
+    .chart:last-of-type svg {
+        transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .chart:last-of-type svg:hover {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 8px rgba(76, 175, 80, 0.6));
+    }
+
+    .trafficLight {
+        height: 75px;
+        width: 75px;
+        border-radius: 50%;
+        display: inline-block;
+    }
     </style>
 
 </head>
 <body>
     <div class="NavBar">
-        <?php include("NavBar.php") ?>
+    <?php include("NavBar.php");
+
+    if (!isset($_SESSION['Date'])) {
+        echo "No date Selected";
+        exit;
+    }
+    else{
+        $newDate = $_SESSION['Date']; // retrieves the selected date (from navbar)
+        $hour = $_SESSION['Hour'];
+    }
+
+    if (!isset($_SESSION['Dog'])) {
+        echo "No dog Selected";
+        exit;
+    }
+    else{
+        $dogID = $_SESSION['Dog']; // retrieves the selected dog (from navbar)
+    }
+
+    // Check if bounds are received
+    $boundsReceived = isset($_GET['upperBound']) && isset($_GET['lowerBound']) && isset($_GET['date']) && isset($_GET['dogID']);
+    $upperBound = $boundsReceived ? $_GET['upperBound'] : null;
+    $lowerBound = $boundsReceived ? $_GET['lowerBound'] : null;
+
+    if ($boundsReceived && ($_GET['date'] !== $newDate || $_GET['dogID'] !== $dogID)) {
+        $boundsReceived = false;
+    } // Find new bounds if date or dogID has changed
+
+    ?>
     </div>
     
-    <h2>Heart Rate</h2>
-
-    <div class="main">
-        <form>
-            <label>Your dog's heart rate is above average</label>
-        </form>
-    </div>
+    <h2>Here is <?php echo $dogID; ?>'s info for Heart Rate:</h2> <br>
     
     <div class = "graphText">
     <?php 
+
+    if (!isset($_SESSION['Date'])) {
+        echo "No date Selected";
+        exit;
+    }
+    $newDate = $_SESSION['Date']; // retrieves the selected date (from navbar)
+
     $db = new SQLite3('ElancoDB.db');
-    $newDate = "2021-01-01";
     $heartData = [];
     $behaviourData = [];
 
@@ -52,16 +116,7 @@
         $newDate = $_POST['day'];
     }
 
-    // Check if a date is provided
-    if ($newDate == null || empty($newDate)) {
-        echo "No date provided. Please enter a valid date.";
-        exit();
-    }
-
-    // Get the row number of the date the user enters
     if ($newDate != null) {
-        $dateArray = explode("-", $newDate);
-        $newDate = $dateArray[2] . "-" . $dateArray[1] . "-" . $dateArray[0]; // format date
 
         $rowID = $db->prepare('
         WITH cte AS (
@@ -86,126 +141,191 @@
         }
         echo "Selected Date: " . $newDate ."<br>";
 
-        // Get the previous date (row number - 1)
-        if ($row != null) {
-            $currentRow = $row['row_num'];
-            $currentRow = $currentRow - 1;
+       // Fetch heart rates for the given date
+       $query = $db->prepare('SELECT Heart_Rate FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = :dogID');
+       $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
+       $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
+       $result = $query->execute();
 
-            $prevQuery = $db->prepare('
-            WITH cte AS (
-                SELECT Date, ROW_NUMBER() OVER() AS row_num 
-                FROM (SELECT DISTINCT Date FROM Activity)
-            )
-            SELECT Date FROM cte WHERE row_num=:row_num');
+       // Check if the query executed successfully
+       if (!$result) {
+           echo "Error executing query for heart rates.";
+           exit();
+       }
 
-            $prevQuery->bindValue(":row_num", $currentRow, SQLITE3_INTEGER);
-            $prevResult = $prevQuery->execute();
+       if ($result->numColumns() == 0) {
+           echo "No heart rate data found for the selected date: " . $newDate;
+           exit();
+       }
 
-            // Check if previous date query execution is successful
-            if (!$prevResult) {
-                echo "Error fetching previous date.";
-                exit();
-            }
+       // Populate $heartData array with heart rates
+       while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+           $heartData[] = $row['Heart_Rate'];
+       }
 
-            $prevRow = $prevResult->fetchArray(SQLITE3_ASSOC);
-            $prevDate = $prevRow['Date'] ?? null;
-            if ($prevDate == null) {
-                echo "No data for the previous date.";
-            }
-            else{
-                $dateArray = explode("-", $prevDate);
-                $prevDate = $dateArray[2] . "-" . $dateArray[1] . "-" . $dateArray[0]; // format date
-            }
-        }
+       // Fetch behaviour patterns for the given date
+       $query = $db->prepare('
+       SELECT Behaviour.Behaviour_Pattern 
+       FROM Activity 
+       INNER JOIN Behaviour ON Activity.BehaviourID = Behaviour.BehaviourID
+       WHERE Date = :newDate 
+       AND Hour >= 0 AND Hour <= 23 
+       AND DogID = :dogID
+       ');
 
-        // Get the next date (row number + 1)
-        if ($row != null) {
-            $currentRow = $row['row_num'];
-            $currentRow = $currentRow + 1;
+       $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
+       $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
+       $result = $query->execute();
 
-            $nextQuery = $db->prepare('
-            WITH cte AS (
-                SELECT Date, ROW_NUMBER() OVER() AS row_num 
-                FROM (SELECT DISTINCT Date FROM Activity)
-            )
-            SELECT Date FROM cte WHERE row_num=:row_num');
+       // Check if the query executed successfully
+       if (!$result) {
+           echo "Error executing query for behaviour patterns.";
+           exit();
+       }
 
-            $nextQuery->bindValue(":row_num", $currentRow, SQLITE3_INTEGER);
-            $nextResult = $nextQuery->execute();
+       if ($result->numColumns() == 0) {
+           echo "No behaviour patterns found for the selected date: " . $newDate;
+           exit();
+       }
 
-            // Check if next date query execution is successful
-            if (!$nextResult) {
-                echo "Error fetching next date.";
-                exit();
-            }
-
-            $nextRow = $nextResult->fetchArray(SQLITE3_ASSOC);
-            $nextDate = $nextRow['Date'] ?? null;
-            if ($nextDate == null) {
-                echo "No data for the next date.";
-            }
-            else{
-                $dateArray = explode("-", $nextDate);
-                $nextDate = $dateArray[2] . "-" . $dateArray[1] . "-" . $dateArray[0]; // format date
-            }
-        }
-
-        // Fetch heart rates for the given date
-        $query = $db->prepare('SELECT Heart_Rate FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = "CANINE001"');
-        $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
-        $result = $query->execute();
-
-        // Check if the query executed successfully
-        if (!$result) {
-            echo "Error executing query for heart rates.";
-            exit();
-        }
-
-        if ($result->numColumns() == 0) {
-            echo "No heart rate data found for the selected date: " . $newDate;
-            exit();
-        }
-
-        // Populate $heartData array with heart rates
-        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-            $heartData[] = $row['Heart_Rate'];
-        }
-
-        // Fetch behaviour patterns for the given date
-        $query = $db->prepare('
-        SELECT Behaviour.Behaviour_Pattern 
-        FROM Activity 
-        INNER JOIN Behaviour ON Activity.BehaviourID = Behaviour.BehaviourID
-        WHERE Date = :newDate 
-        AND Hour >= 0 AND Hour <= 23 
-        AND DogID = "CANINE001"
-        ');
-
-        $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
-        $result = $query->execute();
-
-        // Check if the query executed successfully
-        if (!$result) {
-            echo "Error executing query for behaviour patterns.";
-            exit();
-        }
-
-        if ($result->numColumns() == 0) {
-            echo "No behaviour patterns found for the selected date: " . $newDate;
-            exit();
-        }
-
-        // Populate $behaviourData array with heart rates
-        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-            $behaviourData[] = $row['Behaviour_Pattern'];
-        }
+       // Populate $behaviourData array with heart rates
+       while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+           $behaviourData[] = $row['Behaviour_Pattern'];
+       }
     } else {
         echo "Invalid or missing date input.";
         exit();
     }
 
+    $arrangedDataset = [];
+    // Fetch heart rates for the given date
+    $query = $db->prepare('SELECT Heart_Rate FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = :dogID ORDER BY Heart_Rate DESC');
+    $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
+    $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
+    $result = $query->execute();
+
+    // Populate $heartData array with heart rates
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+       $arrangedDataset[] = $row['Heart_Rate'];
+    }
+
+    $query = $db->prepare('SELECT Heart_Rate FROM Activity WHERE Date = :newDate AND Hour = :hour AND DogID = :dogID');
+    $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
+    $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
+    $query->bindValue(':hour', $hour, SQLITE3_TEXT);
+    $result = $query->execute();
+
+    if ($result) {
+        $row = $result->fetchArray(SQLITE3_ASSOC); 
+        if ($row) {
+            $currentHR = $row['Heart_Rate']; 
+        } else {
+            $currentHR = null;
+            echo "No heart rate data found for the specified date, hour, and dog.<br>";
+        }
+    } else {
+        echo "Error executing the query.<br>";
+    }
+    
+
+   require_once 'UpperLowerBoundFunctions.php';
+
+   $heartRate = 0;
+    $heartColour = '#4CAF50';
+    $statusText = '';
+    $recordCount = 0;
+    $arrangedDataset = [];
+
+    try {
+        // get all heart rates for the day to calculate bounds
+    $allDayQuery = "SELECT Heart_Rate
+    FROM Activity
+    WHERE Date = :selectedDate";
+
+    $allDayStmt = $db->prepare($allDayQuery);
+    $allDayStmt->bindValue(':selectedDate', $newDate, SQLITE3_TEXT);
+    $allDayResult = $allDayStmt->execute();
+
+    // populate array
+    while ($row = $allDayResult->fetchArray(SQLITE3_ASSOC)) {
+    $arrangedDataset[] = $row['Heart_Rate'];
+    }
+
+    $recordCount = count($arrangedDataset);
+
+    // get the heart rate for the specific hour if provided
+    if ($newTime !== null) {
+        $hourQuery = "SELECT Heart_Rate
+        FROM Activity
+        WHERE Date = :selectedDate 
+        AND Hour = :selectedHour";
+
+    $hourStmt = $db->prepare($hourQuery);
+    $hourStmt->bindValue(':selectedDate', $newDate, SQLITE3_TEXT);
+    $hourStmt->bindValue(':selectedHour', $newTime, SQLITE3_INTEGER);
+    $hourResult = $hourStmt->execute();
+
+    $hourRow = $hourResult->fetchArray(SQLITE3_ASSOC);
+
+    // if we found a heart rate for the specific hour, use it
+    if ($hourRow) {
+        $heartRate = $hourRow['Heart_Rate'];
+        } elseif ($recordCount > 0) {
+        // if no heart rate for specific hour but we have data for the day,
+        // use the highest heart rate of the day
+        $heartRate = max($arrangedDataset);
+        $statusText = 'No data for hour ' . $newTime . '. Showing highest heart rate for the day.';
+        }
+        } elseif ($recordCount > 0) {
+        // no hour selected, use the highest heart rate for the day
+        $heartRate = max($arrangedDataset);
+        }
+
+        // calculate bounds only if we have records
+        if ($recordCount > 0) {
+        // calculate the bounds using our imported functions
+            $lowerBound = FindLowerBound($arrangedDataset);
+            $upperBound = FindUpperBound($arrangedDataset);
+
+        // set status text if it wasn't set by the hour check
+        if (empty($statusText)) {
+        // logic to decide the status based on calculated bounds
+            if ($heartRate > $upperBound) {
+            $heartColour = '#FF9C09'; 
+            $statusText = 'Alert: Heart rate above upper bound';
+            } elseif ($heartRate < $lowerBound) {
+            $heartColour = '#FF9C09'; 
+            $statusText = 'Alert: Heart rate below lower bound';
+            } else {
+            $heartColour = '#4CAF50';
+            $statusText = 'Normal heart rate (within bounds)';
+            }
+        }
+        } else {
+            $statusText = 'No data found for selected date';
+        }
+    } catch (Exception $e) {
+        $statusText = 'Error: ' . $e->getMessage(); // catch to see if any errors occur
+    }
+
     $db->close();
     ?>
+
+    <script>
+       const boundsReceived = <?php echo json_encode($boundsReceived); ?>;
+        const currentDate = <?php echo json_encode($newDate); ?>;
+        const currentDogID = <?php echo json_encode($dogID); ?>; // set php variables in js
+
+        if (!boundsReceived) { 
+            const dataset = <?php echo json_encode($arrangedDataset); ?>; // converts php array to js
+            const calculatedUpperBound = FindUpperBound(dataset);
+            const calculatedLowerBound = FindLowerBound(dataset); // uses js functions to find upper and lower bounds
+
+            // Reload the page with upperBound, lowerBound, and other parameters
+            window.location.href = `${window.location.pathname}?upperBound=${encodeURIComponent(calculatedUpperBound)}&lowerBound=${encodeURIComponent(calculatedLowerBound)}&date=${encodeURIComponent(currentDate)}&dogID=${encodeURIComponent(currentDogID)}`;
+        }
+    </script>
+
     </div>
 
     <script>
@@ -217,7 +337,8 @@
             'Heart Rate', // line label
             'Beats / Minute', // y axes label
             'Hour', // x axes label
-            'Activity: ' // label for the dataset when hovering over a point on the graph
+            'Activity: ', // label for the dataset when hovering over a point on the graph
+            [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23] //x axis labels 
         );
     };
     </script>
@@ -225,35 +346,42 @@
     <div class="chart">
         <canvas id="lineGraph" style="width:100%;max-width:700px;"></canvas>
     </div>
-
-    <div class="buttons">
-        <h1>Day</h1>
-        <!-- Set the previous button to hold the value of the previous date and submit that previous date to PHP -->
-        <?php if (isset($prevDate)) { ?>
-            <form action="HeartRate.php" method="post">
-                <input type="hidden" name="day" value="<?php echo($prevDate);?>">
-                <button type="submit" id="prevDay">
-                    <i class='bx bx-chevron-left'></i>
-                </button>
-            </form>
-        <?php } ?>
-
-        <!-- Set the next button to hold the value of the next date and submit that next date to PHP -->
-        <?php if (isset($nextDate)) { ?>
-            <form action="HeartRate.php" method="post">
-                <input type="hidden" name="day" value="<?php echo ($nextDate); ?>">
-                <button type="submit" id="nextDay">
-                    <i class='bx bx-chevron-right'></i>
-                </button>
-            </form>
-        <?php } ?>
-
-        <!-- Form to search for a specific date -->
-        <form action="HeartRate.php" method="post">
-            <input type="date" id="day" name="day" min = "2021-01-01" max = "2023-12-31" required>    
-            <input name="submit" type="submit" value="Find"/>
-        </form>
+    <div class="chart">
+        <div style="text-align: center; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+            <svg width="420" height="330" viewBox="0 0 100 90">
+                <!-- heart path for heart shape -->
+                <path d="M50,30 C60,10 90,10 90,40 C90,65 50,85 50,85 C50,85 10,65 10,40 C10,10 40,10 50,30 Z" 
+                    style="fill: <?php echo $heartColour; ?>;" />
+                    <!-- text for the heart rate in bpm inside heart -->
+                <text x="50" y="55" text-anchor="middle" fill="white" font-weight="bold" font-size="14">
+                    <?php echo $heartRate; ?>
+                </text>
+                <text x="50" y="70" text-anchor="middle" fill="white" font-size="10">
+                    BPM
+                </text>
+            </svg>
+        </div>
     </div>
+
+    <div class="main">
+            <?php 
+                echo "The current Heart Rate of the dog is: ". $currentHR .".<br>";
+
+                if($currentHR > $upperBound){
+                    echo "<label>This is higher than normal.</label><br>";
+                    echo "<span class='trafficLight' style='background-color: red'></span>";
+                }
+                else if($currentHR < $lowerBound){
+                    echo "<label>This is lower than normal.</label><br>";
+                    echo "<span class='trafficLight' style='background-color: red'></span>";
+                }
+                else{
+                    echo "<label>This is normal.</label><br>";
+                    echo "<span class='trafficLight' style='background-color: green'></span>";
+                }
+            ?>
+    </div>
+
 </body>
 
 </html>

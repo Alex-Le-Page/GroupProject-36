@@ -1,11 +1,11 @@
-function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLabel, extraOutputLabel){
+function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLabel, extraOutputLabel, xlblValues){
 
     if (!dataset.length || !outputDataset.length) {
         alert("Some data is missing for the selected date.");
         return;
     } // error handling if theres some data missing
     else{
-        const xValues = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+        const xValues = xlblValues;
 
         const ctx = document.getElementById(canvasId);
 
@@ -13,32 +13,55 @@ function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLa
             type: "line",
             data: {
                 labels: xValues,
+                
                 datasets: [{
-                    label: graphLabel, // label for the line
-                    fill: false, // below the graph
-                    backgroundColor:"rgba(0,0,255,1.0)",
-                    borderColor: "rgba(0,0,255,0.1)", // colour of line
-                    data: dataset // dataset from database
+                    label: graphLabel, //label for the line
+                    fill: false,
+                    backgroundColor: "white", //Dot fill color
+                    borderColor: "rgb(8, 109, 152)", //Line Colour
+                    pointBorderColor: "darkblue", //Dot border colour
+                    pointBackgroundColor: "darkblue", //Dot fill colour
+                    pointRadius: 2, //Size of the dots
+                    pointHoverRadius: 6, //Dot size on hover
+                    borderWidth: 2, //Line thicknes
+                    tension: 0.3, //Adds smoothness to the line
+                    data: dataset //dataset from database
                 }] 
             },
             options: {
                 scales: {
                     yAxes: [{
-                        scaleLabel:{
+                        scaleLabel: {
                             display: true,
-                            labelString: yLabel
+                            labelString: yLabel,
+                            fontSize: 16,
+                            fontFamily: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                            fontColor: "#0E253E"
+                        },
+                        ticks: {
+                            fontSize: 10,
+                            fontFamily: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                            fontColor: "#0E253E"
                         }
                     }],
                     xAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: xLabel
+                            labelString: xLabel,
+                            fontSize: 16,
+                            fontFamily: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                            fontColor: "#0E253E"
+                        },
+                        ticks: {
+                            fontSize: 10,
+                            fontFamily: "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+                            fontColor: "#0E253E"
                         }
 
                     }]
                 },
-                tooltips: { // change the text when hovering over a value on the graph
-                    displayColors: false, // stops the colour from being shown
+                tooltips:{
+                    displayColors: false, // stops the colour from being shown when hovering over a bar
                     callbacks: {
                         title: function() {
                             return null;  // Stops the title from showing 
@@ -56,6 +79,7 @@ function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLa
                         }
                     }
                 },
+                
                 responsive: true,
                 maintainAspectRatio: false,
             }
@@ -63,15 +87,13 @@ function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLa
     }
 }
 
-
-function loadBarChart(canvasId, dataset, outputDataset, graphLabel, yLabel, xLabel, extraOutputLabel){
+function loadBarChart(canvasId, dataset, outputDataset, xValues, graphLabel, yLabel, xLabel, extraOutputLabel){
 
     if (!dataset.length || !outputDataset.length) {
         alert("Some data is missing for the selected date.");
         return;
     } // error handling if theres some data missing
     else{
-        const xValues = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
 
         const ctx = document.getElementById(canvasId);
 
@@ -153,12 +175,12 @@ function loadBehaviorPieChart(canvasId, behaviorDataset, graphLabel) {
         const pieData = pieLabels.map(label => behaviorCounts[label]);
         
         const backgroundColors = [
-            'rgba(255, 99, 132, 0.8)',   // Red
-            'rgba(54, 162, 235, 0.8)',   // Blue
-            'rgba(255, 206, 86, 0.8)',   // Yellow
-            'rgba(75, 192, 192, 0.8)',   // Green
-            'rgba(153, 102, 255, 0.8)',  // Purple
-            'rgba(255, 159, 64, 0.8)'    // Orange
+            'rgba(255, 99, 132, 0.8)', 
+            'rgba(54, 162, 235, 0.8)',  
+            'rgba(255, 206, 86, 0.8)',  
+            'rgba(75, 192, 192, 0.8)',  
+            'rgba(153, 102, 255, 0.8)',  
+            'rgba(255, 159, 64, 0.8)'    
         ];
         
         const ctx = document.getElementById(canvasId);
@@ -199,7 +221,8 @@ function loadBehaviorPieChart(canvasId, behaviorDataset, graphLabel) {
                 }
             }
         });
-    }}
+    }
+}
 
 function loadDoughChart(canvasId, progress, valueLeft, title, total){
 
@@ -262,5 +285,64 @@ function loadDoughChart(canvasId, progress, valueLeft, title, total){
                 cutoutPercentage: 80,
             },
         });
+    }
+}
+
+function loadRadarChart(canvasId, data ){
+
+    const ctx = document.getElementById(canvasId);
+    const values = data
+
+    return new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels:
+            ['Normal', 'Walking', 'Eating', 'Sleeping', 'Playing'],
+            datasets: [{
+                label: 'Dogs behaviour',
+                data: values,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 0.8)',
+                borderWidth: 2,
+            }]
+        },
+        options: {
+            scale: {
+                ticks: {
+                    //set the min and max values for the chart
+                    min:0,
+                    max:12,
+                },
+                pointLabels:{
+                    fontSize: 14,
+                }
+            }
+        }
+    })
+}
+
+function FindLowerBound(arrangedDataset) {
+    var median = FindMedian(arrangedDataset); // median of whole array
+
+    var lowerHalf = arrangedDataset.filter(num => num < median); // new array for lower half
+
+    return FindMedian(lowerHalf); // find median of lower half (this is the lower boundary)
+}
+
+function FindUpperBound(arrangedDataset) {
+    var median = FindMedian(arrangedDataset); // median of whole array
+
+    var upperHalf = arrangedDataset.filter(num => num > median); // new array for upper half
+    
+    return FindMedian(upperHalf); // find median of upper half (this is the upper boundary)
+}
+
+function FindMedian(arrangedDataset) {
+    if (arrangedDataset.length % 2 == 0) { // finds median if array length is even
+        var middle1 = arrangedDataset[arrangedDataset.length / 2 - 1];
+        var middle2 = arrangedDataset[arrangedDataset.length / 2];
+        return (middle1 + middle2) / 2;
+    } else { // finds median if array length is odd
+        return arrangedDataset[Math.floor(arrangedDataset.length / 2)];
     }
 }

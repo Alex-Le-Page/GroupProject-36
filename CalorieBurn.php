@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="Chart.js"></script>
-    <title>Breathing Rate</title>
+    <title>Calorie Burn</title>
     <link rel = "stylesheet" href = "dateStyles.css">
     <style>
         div.chart{
@@ -38,14 +38,14 @@
     }
     ?>
     
-    <h2>Here is <?php echo $dogID; ?>'s info for Breathing Rate:</h2> <br>
+    <h2>Here is <?php echo $dogID; ?>'s info for Calories Burnt:</h2> <br>
 
 
     <div class = "graphText">
     <?php
      
     $db = new SQLite3('ElancoDB.db');
-    $breathingData = [];
+    $caloriesBurnt = [];
     $behaviourData = [];
 
 
@@ -76,25 +76,25 @@
         echo "<p style = 'text-decoration: underline; margin-bottom: 1px;'> Selected Date: " . $newDate ."<br></p>";
 
         // Fetch breathing rates for the given date
-        $query = $db->prepare('SELECT Breathing_Rate FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = :dogID');
+        $query = $db->prepare('SELECT Calorie_Burn FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = :dogID');
         $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
         $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
         $result = $query->execute();
 
         // Check if the query executed successfully
         if (!$result) {
-            echo "Error executing query for breathing rates.";
+            echo "Error executing query for calorie burn.";
             exit();
         }
 
         if ($result->numColumns() == 0) {
-            echo "No breathing rate data found for the selected date: " . $newDate;
+            echo "No calorie burn data found for the selected date: " . $newDate;
             exit();
         }
 
-        // Populate $breathingData array with breathing rates
+        // Populate $caloriesBurnt array with breathing rates
         while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-            $breathingData[] = $row['Breathing_Rate'];
+            $caloriesBurnt[] = $row['Calorie_Burn'];
         }
 
         // Fetch behaviour patterns for the given date
@@ -139,13 +139,13 @@
         window.onload = function() {
             loadLineGraph(
                 'lineGraph', // chart ID
-                <?php echo json_encode($breathingData); ?>, // dataset to be displayed as the line
+                <?php echo json_encode($caloriesBurnt); ?>, // dataset to be displayed as the line
                 <?php echo json_encode($behaviourData); ?>, // dataset to be displayed when hoverin over a point on the graph
-                'Breathing Rate', // line label
-                'Breaths / Minute', // y axes label
+                'Calorie Burn', // line label
+                'Calories Burnt', // y axes label
                 'Hour', // x axes label
                 'Activity: ', // label for the dataset when hovering over a point on the graph
-                [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23] //x axis labels 
+                [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23] //x axis values 
             );
         };
     </script>
