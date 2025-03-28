@@ -10,22 +10,22 @@
 
     <style>
        
-       form :not(.calendar){
-            float: left;
-            margin-top: 10%;
-            margin-left: 70%;
+    form :not(.calendar){
+        float: left;
+        margin-top: 10%;
+        margin-left: 70%;
+        
+        border-color: black;
+        padding: 8px;
+        text-align: left;
+        width: 300px;
+        padding: 20px;
+        background: lightblue;
+        border-radius: 8px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
             
-            border-color: black;
-            padding: 8px;
-            text-align: left;
-            width: 300px;
-            padding: 20px;
-            background: lightblue;
-            border-radius: 8px;
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-        }
-            
-        .chart:first-of-type {
+    .chart:first-of-type {
         position: relative;
         width: 700px;
         display: block;
@@ -53,6 +53,13 @@
         transform: scale(1.1);
         filter: drop-shadow(0 0 8px rgba(76, 175, 80, 0.6));
     }
+
+    .trafficLight {
+        height: 75px;
+        width: 75px;
+        border-radius: 50%;
+        display: inline-block;
+    }
     </style>
 
 </head>
@@ -60,32 +67,36 @@
     <div class="NavBar">
     <?php include("NavBar.php");
 
-if (!isset($_SESSION['Date'])) {
-    echo "No date Selected";
-    exit;
-}
-else{
-    $newDate = $_SESSION['Date']; // retrieves the selected date (from navbar)
-    $newTime = $_SESSION['Hour'];
-}
+    if (!isset($_SESSION['Date'])) {
+        echo "No date Selected";
+        exit;
+    }
+    else{
+        $newDate = $_SESSION['Date']; // retrieves the selected date (from navbar)
+        $hour = $_SESSION['Hour'];
+    }
 
-if (!isset($_SESSION['Dog'])) {
-    echo "No dog Selected";
-    exit;
-}
-else{
-    $dogID = $_SESSION['Dog']; // retrieves the selected dog (from navbar)
-}
+    if (!isset($_SESSION['Dog'])) {
+        echo "No dog Selected";
+        exit;
+    }
+    else{
+        $dogID = $_SESSION['Dog']; // retrieves the selected dog (from navbar)
+    }
+
+    // Check if bounds are received
+    $boundsReceived = isset($_GET['upperBound']) && isset($_GET['lowerBound']) && isset($_GET['date']) && isset($_GET['dogID']);
+    $upperBound = $boundsReceived ? $_GET['upperBound'] : null;
+    $lowerBound = $boundsReceived ? $_GET['lowerBound'] : null;
+
+    if ($boundsReceived && ($_GET['date'] !== $newDate || $_GET['dogID'] !== $dogID)) {
+        $boundsReceived = false;
+    } // Find new bounds if date or dogID has changed
+
     ?>
     </div>
     
     <h2>Here is <?php echo $dogID; ?>'s info for Heart Rate:</h2> <br>
-
-    <div class="main">
-        <form>
-            <label>Your dog's heart rate is above average</label>
-        </form>
-    </div>
     
     <div class = "graphText">
     <?php 
@@ -181,10 +192,41 @@ else{
        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
            $behaviourData[] = $row['Behaviour_Pattern'];
        }
-   } else {
-       echo "Invalid or missing date input.";
-       exit();
-   }
+    } else {
+        echo "Invalid or missing date input.";
+        exit();
+    }
+
+    $arrangedDataset = [];
+    // Fetch heart rates for the given date
+    $query = $db->prepare('SELECT Heart_Rate FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = :dogID ORDER BY Heart_Rate DESC');
+    $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
+    $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
+    $result = $query->execute();
+
+    // Populate $heartData array with heart rates
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+       $arrangedDataset[] = $row['Heart_Rate'];
+    }
+
+    $query = $db->prepare('SELECT Heart_Rate FROM Activity WHERE Date = :newDate AND Hour = :hour AND DogID = :dogID');
+    $query->bindValue(':newDate', $newDate, SQLITE3_TEXT);
+    $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
+    $query->bindValue(':hour', $hour, SQLITE3_TEXT);
+    $result = $query->execute();
+
+    if ($result) {
+        $row = $result->fetchArray(SQLITE3_ASSOC); 
+        if ($row) {
+            $currentHR = $row['Heart_Rate']; 
+        } else {
+            $currentHR = null;
+            echo "No heart rate data found for the specified date, hour, and dog.<br>";
+        }
+    } else {
+        echo "Error executing the query.<br>";
+    }
+    
 
    require_once 'UpperLowerBoundFunctions.php';
 
@@ -268,6 +310,22 @@ else{
 
     $db->close();
     ?>
+
+    <script>
+       const boundsReceived = <?php echo json_encode($boundsReceived); ?>;
+        const currentDate = <?php echo json_encode($newDate); ?>;
+        const currentDogID = <?php echo json_encode($dogID); ?>; // set php variables in js
+
+        if (!boundsReceived) { 
+            const dataset = <?php echo json_encode($arrangedDataset); ?>; // converts php array to js
+            const calculatedUpperBound = FindUpperBound(dataset);
+            const calculatedLowerBound = FindLowerBound(dataset); // uses js functions to find upper and lower bounds
+
+            // Reload the page with upperBound, lowerBound, and other parameters
+            window.location.href = `${window.location.pathname}?upperBound=${encodeURIComponent(calculatedUpperBound)}&lowerBound=${encodeURIComponent(calculatedLowerBound)}&date=${encodeURIComponent(currentDate)}&dogID=${encodeURIComponent(currentDogID)}`;
+        }
+    </script>
+
     </div>
 
     <script>
@@ -303,6 +361,25 @@ else{
                 </text>
             </svg>
         </div>
+    </div>
+
+    <div class="main">
+            <?php 
+                echo "The current Heart Rate of the dog is: ". $currentHR .".<br>";
+
+                if($currentHR > $upperBound){
+                    echo "<label>This is higher than normal.</label><br>";
+                    echo "<span class='trafficLight' style='background-color: red'></span>";
+                }
+                else if($currentHR < $lowerBound){
+                    echo "<label>This is lower than normal.</label><br>";
+                    echo "<span class='trafficLight' style='background-color: red'></span>";
+                }
+                else{
+                    echo "<label>This is normal.</label><br>";
+                    echo "<span class='trafficLight' style='background-color: green'></span>";
+                }
+            ?>
     </div>
 
 </body>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Home</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel"></script>
     <script src="chart.js"></script>
@@ -108,7 +108,7 @@
     
         $db = new SQLite3('ElancoDB.db');
 
-        //get date selected from the navbar callender
+        //get date selected from the navbar calendar
         if (!isset($_SESSION['Date'])) {
             echo "No date Selected";
             exit;
@@ -175,53 +175,6 @@
         } else{
             $caloriesLeft = $calorieGoal - $totalCalories;
         }
-        
-    //run a select statement to get the water intake of the dog throughout the day 
-    $query = $db->prepare('SELECT AVG(Weight) AS avgWeight, SUM(Water_Intake) AS totalIntake, SUM(Calorie_Burn) AS totalBurnt, SUM(Activity_Level)AS steps, SUM(Food_Intake) AS totalCalories FROM Activity WHERE Hour <= :currentTime AND DogID = "CANINE001" AND Date = :selectedDate');
-    $query->bindValue(":currentTime", $calTime, SQLITE3_INTEGER);
-    $query->bindValue(":selectedDate", $calDate, SQLITE3_TEXT);
-    $result = $query->execute();
-
-    $row = $result->fetchArray(SQLITE3_ASSOC);
-
-    //store data from the query into variables
-    $totalIntake = round($row['totalIntake']);
-    $weight = $row['avgWeight'];
-    $totalBurnt = round($row['totalBurnt']);
-    $totalSteps = $row['steps'];
-    $totalCalories = round($row['totalCalories']);
-
-
-    //calculate the goals for the dog
-    $totalMl = round($weight * 60);
-    $burntGoal = round(($weight * 2.2) * 30);
-    $calorieGoal = round(pow($weight, 0.75) * 70);
-
-
-    //check if the water intake goal has been hit 
-    if ($totalIntake > $totalMl){
-        $intakeLeft = 0;
-    } else{
-        //if the goal hasn't been hit then calculate the ammount left
-        $intakeLeft = $totalMl - $totalIntake;
-    }
-    if($totalSteps > 8000){
-        $stepsLeft = 0;
-    } else{
-        $stepsLeft = 8000 - $totalSteps;
-    }
-
-    if($totalBurnt > $burntGoal){
-        $burntLeft = 0;
-    } else{
-        $burntLeft = $burntGoal - $totalBurnt;
-    }
-
-    if($totalCalories > $calorieGoal){
-        $caloriesLeft = 0;
-    } else{
-        $caloriesLeft = $calorieGoal - $totalCalories;
-    }
 
     $heartRate = 0;
     $heartColour = '#4CAF50';
@@ -433,6 +386,19 @@
     </style>
     <div class="charts">
         <div class="chart">
+            <canvas id="doughChart"></canvas>
+        </div>
+        <div class="chart">
+            <canvas id="caloriesBurnt"></canvas>
+        </div>
+        <div class="chart">
+            <canvas id="calorieIntake"></canvas>
+        </div>  
+        <div class="chart">
+            <canvas id="steps"></canvas>
+        </div>  
+
+        <div class="chart">
             <div style="text-align: center; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
                 <svg width="120" height="110" viewBox="0 0 100 90">
                     <!-- heart path for heart shape -->
@@ -467,18 +433,6 @@
                 </svg>
             </div>
         </div>
-        <div class="chart">
-            <canvas id="doughChart"></canvas>
-        </div>
-        <div class="chart">
-            <canvas id="caloriesBurnt"></canvas>
-        </div>
-        <div class="chart">
-            <canvas id="calorieIntake"></canvas>
-        </div>  
-        <div class="chart">
-            <canvas id="steps"></canvas>
-        </div>  
 
     </div>
 <div>
