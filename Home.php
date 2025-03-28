@@ -9,11 +9,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel"></script>
     <script src="chart.js"></script>
     <style>
-        form.notes {
+         form.notes {
             float: left;
             margin-top: 5%;
-            margin-left: 15%;
-
+            margin-left: 10%;
             border-color: black;
             padding: 8px;
             text-align: left;
@@ -22,7 +21,7 @@
             background: lightblue;
             border-radius: 8px;
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-        }
+        } 
 
         select {
             background-color: white;
@@ -46,57 +45,27 @@
             font-style: italic;
         }
 
-        .charts {
-            margin-top: 0;
-            width: 600px;
-            height: 600px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            gap: 5px;
-        }
-
-        .charts svg {
-            transition: transform 0.3s ease, filter 0.3s ease;
-        }
-
-        .charts svg:hover {
-            transform: scale(1.1);
-            filter: drop-shadow(0 0 10px #4CAF50);
-        }
-
-        .box {
-            margin-left: 35%;
-            width: 620px;
-            padding: 20px 10px;
-            background: linear-gradient(to bottom right, #ffffff, #f0f8ff);
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);
-            transition: all 1s ease;
-            position: relative;
-            overflow: hidden;
-            border: 3px solid #0E253E;
-            
-        }
-
-        .box::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
+        .chart {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 100%;
-            height: 5px;
-            background: linear-gradient(to right, #0E253E,rgb(33, 61, 92),rgb(56, 100, 148));
-            border-radius: 15px 15px 0 0;
+            height: 100%;
         }
-
-        .box:hover {
-            box-shadow: 0 15px 30px rgba(14, 37, 62, 0.75), 0 0 25px rgba(14, 37, 62, 0.68);
-            transform: translateY(-7px);
-        }
-
 
         
+
+        .charts {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 5px;
+            margin: 0 auto;
+        }
+
     </style>
 </head>
 
@@ -186,10 +155,12 @@
         // get all heart rates for the day to calculate bounds
     $allDayQuery = "SELECT Heart_Rate
     FROM Activity
-    WHERE Date = :selectedDate";
+    WHERE Date = :selectedDate
+    AND DogID = :dogID";
 
     $allDayStmt = $db->prepare($allDayQuery);
     $allDayStmt->bindValue(':selectedDate', $calDate, SQLITE3_TEXT);
+    $allDayStmt->bindValue(':dogID', $dogID, SQLITE3_TEXT);
     $allDayResult = $allDayStmt->execute();
 
     // populate array
@@ -204,11 +175,13 @@
         $hourQuery = "SELECT Heart_Rate
         FROM Activity
         WHERE Date = :selectedDate 
-        AND Hour = :selectedHour";
+        AND Hour = :selectedHour
+        AND DogID = :dogID";
 
     $hourStmt = $db->prepare($hourQuery);
     $hourStmt->bindValue(':selectedDate', $calDate, SQLITE3_TEXT);
     $hourStmt->bindValue(':selectedHour', $calTime, SQLITE3_INTEGER);
+    $hourStmt->bindValue(':dogID', $dogID, SQLITE3_TEXT);
     $hourResult = $hourStmt->execute();
 
     $hourRow = $hourResult->fetchArray(SQLITE3_ASSOC);
@@ -265,10 +238,12 @@
         // get all weights for the day to calculate bounds
         $allWeightQuery = "SELECT Weight
         FROM Activity
-        WHERE Date = :selectedDate";
+        WHERE Date = :selectedDate
+        AND DogID = :dogID";
 
         $allWeightStmt = $db->prepare($allWeightQuery);
         $allWeightStmt->bindValue(':selectedDate', $calDate, SQLITE3_TEXT);
+        $allWeightStmt->bindValue(':dogID', $dogID, SQLITE3_TEXT);
         $allWeightResult = $allWeightStmt->execute();
 
         // populate array
@@ -283,11 +258,13 @@
             $hourWeightQuery = "SELECT Weight
             FROM Activity
             WHERE Date = :selectedDate 
-            AND Hour = :selectedHour";
+            AND Hour = :selectedHour
+            AND DogID = :dogID";
 
             $hourWeightStmt = $db->prepare($hourWeightQuery);
             $hourWeightStmt->bindValue(':selectedDate', $calDate, SQLITE3_TEXT);
             $hourWeightStmt->bindValue(':selectedHour', $calTime, SQLITE3_INTEGER);
+            $hourWeightStmt->bindValue(':dogID', $dogID, SQLITE3_TEXT);
             $hourWeightResult = $hourWeightStmt->execute();
 
             $hourWeightRow = $hourWeightResult->fetchArray(SQLITE3_ASSOC);
@@ -334,10 +311,9 @@
     }
 
 ?>
-    <h2>Here is <?php echo $dogID; ?>'s Summary:</h2>
+    <h2 class="h2Header">Here is <?php echo $dogID; ?>'s Summary:</h2>
     <div class="Main">
-
-        <form class = "notes">
+         <form class = "notes">
             <label>Heart-Rate: <?php echo $heartRate; ?></label>
             <br><br>
             <label>Behaviour Pattern: Normal</label>
@@ -345,7 +321,7 @@
             <label>Weight: 29.8kg</label>
             <br><br>
             <label>Temperature: 28.5 C</label>
-        </form>
+        </form> 
 
     </div>
 
@@ -364,24 +340,61 @@
 
     <!--add any more graphs into the charts class to have it be apart of the grid layout -->
 <div class="box">
-    <h3 class="h3Header">Here's how your dog is doing!</h3>
     <style>
-        .h3Header {
-        color: #0E253E;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-        font-size: 1.8rem;
-        padding-bottom: 8px;
-        position: relative;
+        .h2Header {
+            color: #0E253E;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 1.8rem;
+            padding-bottom: 8px;
+            position: relative;
         }
 
-        .h3Header::after {
-            content: '';
+         .box {
+            margin: 0 auto;
+            padding-right: 100px;
+            width: 50%;
+            height: 600px;
+            background: linear-gradient(to bottom right, #ffffff, #f0f8ff);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);
+            transition: all 1s ease;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #0E253E;
+        }
+
+        .box::before {
+            content: "";
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(to right, #0E253E,rgb(44, 102, 138));
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #0E253E,rgb(33, 61, 92),rgb(56, 100, 148));
+            border-radius: 15px 15px 0 0;
+        }
+
+        .box:hover {
+            box-shadow: 0 15px 30px rgba(14, 37, 62, 0.75), 0 0 25px rgba(14, 37, 62, 0.68);
+            transform: translateY(-7px);
+        } 
+
+        .heart {
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .weight {
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .heart:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px <?php echo $heartColour; ?>);
+        }
+
+        .weight:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px <?php echo $weightColour; ?>);
         }
     </style>
     <div class="charts">
@@ -399,8 +412,7 @@
         </div>  
 
         <div class="chart">
-            <div style="text-align: center; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
-                <svg width="120" height="110" viewBox="0 0 100 90">
+                <a href="HeartRate.php"><svg class="heart" width="150" height="150" viewBox="0 0 100 90">
                     <!-- heart path for heart shape -->
                     <path d="M50,30 C60,10 90,10 90,40 C90,65 50,85 50,85 C50,85 10,65 10,40 C10,10 40,10 50,30 Z" 
                         style="fill: <?php echo $heartColour; ?>;" />
@@ -411,12 +423,10 @@
                     <text x="50" y="70" text-anchor="middle" fill="white" font-size="10">
                         BPM
                     </text>
-                </svg>
+                </svg></a>
             </div>
-        </div>
         <div class="chart">
-            <div style="text-align: center; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
-                <svg width="120" height="120" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <a href="Weight.php"><svg class="weight" width="150" height="150" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                     <!-- kettlebell shape -->
                     <path d="M24.107 12.087h-4.086c0.649-0.851 1.045-1.887 1.045-3.040 0-2.799-2.269-5.067-5.067-5.067s-5.067 2.269-5.067 5.067c0 1.153 0.397 2.189 1.045 3.040h-4.085l-6.080 14.187h28.375l-6.080-14.187zM16 12.087c-1.679 0-3.040-1.361-3.040-3.040 0-1.678 1.362-3.040 3.040-3.040s3.040 1.361 3.040 3.040-1.361 3.040-3.040 3.040z"
                         fill="<?php echo $weightColour; ?>"></path>
@@ -430,12 +440,11 @@
                     <text x="16" y="24" text-anchor="middle" fill="white" font-size="3">
                         KG
                     </text>
-                </svg>
+                </svg></a>
             </div>
-        </div>
 
     </div>
-<div>
+    </div>
 </body>
 
 </html>
