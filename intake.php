@@ -7,11 +7,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="Chart.js"></script>
-    <title>Document</title>
+    <title>Intake</title>
     <style>
-        form :not(.calendar){
+        label{
             float: right;
-            margin-top: 5%;
+            margin-top: 0%;
             margin-right: 15%;
             
             border-color: black;
@@ -224,14 +224,16 @@
     <div class="foodChart">
         <canvas id="foodChart" style="width:100%;max-width:700px;"></canvas>
     </div>
+    <div>
+        <form>
+            <label>Your dog's intake is normal</label>
+            <br><br>
+        </form>
+    </div>
     <div class="waterChart">
         <canvas id="waterChart" style="width:100%;max-width:700px;"></canvas>
     </div>
 
-    <form>
-            <label>your dogs intake is normal</label>
-            <br><br>
-        </form>
-    </div>
-    </body>
+    
+</body>
     
