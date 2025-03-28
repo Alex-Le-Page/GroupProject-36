@@ -12,7 +12,8 @@
         form.notes {
             float: left;
             margin-top: 5%;
-            margin-left: 15%;
+            margin-left: 10%;
+            margin-right: 5%;
 
             border-color: black;
             padding: 8px;
@@ -333,18 +334,74 @@
         $weightStatusText = 'Error: ' . $e->getMessage();
     }
 
+    
+    //get data for the summary box on the left of the home screen
+    $sumQuery = $db->prepare('SELECT 
+    BehaviourID, 
+    Temperature, 
+    BarkingID, 
+    Breathing_Rate, 
+    Water_Intake,
+    Calorie_Burn,
+    Food_Intake,
+    Activity_Level
+    FROM Activity WHERE DogID = :dogID AND Date = :calDate AND Hour = :calTime');
+
+    $sumQuery->bindValue(":calTime", $calTime, SQLITE3_INTEGER);
+    $sumQuery->bindValue(":calDate", $calDate, SQLITE3_TEXT);
+    $sumQuery->bindValue(':dogID', $dogID, SQLITE3_TEXT);
+    $result = $sumQuery->execute();
+
+    $row = $result->fetchArray(SQLITE3_ASSOC);
+
+    $behaviourID = $row['BehaviourID'];
+    $temp = $row['Temperature'];
+    $barkingID = $row['BarkingID'];
+    $breathingRate = $row['Breathing_Rate'];
+    $wtrIntake = $row['Water_Intake'];
+    $calBurnt = $row['Calorie_Burn'];
+    $calIntake = $row['Food_Intake'];
+    $steps = $row['Activity_Level'];
+
+    //get the behaviour and barking patterns from their tables
+    $behaviourQuery = $db->prepare('SELECT Behaviour_Pattern FROM Behaviour WHERE BehaviourID = :behaviourID');
+    $behaviourQuery->bindValue(":behaviourID", $behaviourID, SQLITE3_INTEGER);
+
+    $behaviourRes = $behaviourQuery->execute();
+    $row = $behaviourRes->fetchArray(SQLITE3_ASSOC);
+
+    $behaviour = $row['Behaviour_Pattern'];
+
+    $barkingQuery = $db->prepare('SELECT Barking_Frequency FROM Barking WHERE BarkingID = :barkingID');
+    $barkingQuery->bindValue(":barkingID", $barkingID, SQLITE3_INTEGER);
+
+    $barkingRes = $barkingQuery->execute();
+    $row = $barkingRes->fetchArray(SQLITE3_ASSOC);
+
+    $barking = $row['Barking_Frequency'];
+
 ?>
     <h2>Here is <?php echo $dogID; ?>'s Summary:</h2>
     <div class="Main">
 
         <form class = "notes">
             <label>Heart-Rate: <?php echo $heartRate; ?></label>
-            <br><br>
-            <label>Behaviour Pattern: Normal</label>
-            <br><br>
-            <label>Weight: 29.8kg</label>
-            <br><br>
-            <label>Temperature: 28.5 C</label>
+            <br><br><br>
+            <label>Behaviour Pattern: <?php echo $behaviour; ?></label>
+            <br><br><br>
+            <label>Barking Frequency: <?php echo $barking;?> </label>
+            <br><br><br>
+            <label>Weight: <?php echo $weightValue; ?></label>
+            <br><br><br>
+            <label>Temperature: <?php echo $temp; ?></label>
+            <br><br><br>
+            <label>Calorie Intake: <?php echo $calIntake ;?></label>
+            <br><br><br>
+            <label>Calories Burnt: <?php echo $calBurnt; ?></label>
+            <br><br><br>
+            <label>Water Intake: <?php echo $wtrIntake; ?></label>
+            <br><br><br>
+            <label> Steps: <?php echo $steps; ?></label>
         </form>
 
     </div>
