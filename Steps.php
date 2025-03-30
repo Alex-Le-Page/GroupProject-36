@@ -24,7 +24,10 @@
             exit;
         }
         else{
+            $calHour = $_SESSION['Hour'];
             $newDate = $_SESSION['Date']; // retrieves the selected date (from navbar)
+            $calMonth = $_SESSION['Month'];
+            $calYear = $_SESSION['Year'];
         }
 
         if (!isset($_SESSION['Dog'])) {
@@ -175,6 +178,83 @@
         exit();
     }
 
+    $query = $db-> prepare('
+    SELECT Sum(Activity_Level) As totalSteps From Activity
+    Where   Date = :newDate 
+    AND     DogID = :dogID 
+    ');
+
+    $query->bindValue(":newDate", $newDate, SQLITE3_TEXT);
+    $query->bindValue(":dogID", $dogID);
+    $result = $query->execute();
+
+    if($row = $result->fetchArray(SQLITE3_ASSOC)){
+        $totalSteps = $row['totalSteps'];
+    }
+    else {
+        echo "No data found for month.";
+    }
+
+    $query = $db-> prepare('
+    SELECT Sum(Activity_Level) As totalSteps From Activity
+    Where   substr(Date, 7, 4) = :calYear 
+    AND     substr(Date, 4, 2) = :calMonth 
+    AND     DogID = :dogID 
+    ');
+
+    $query->bindValue(":calYear", $calYear, SQLITE3_TEXT);
+    $query->bindValue(":calMonth", $calMonth, SQLITE3_TEXT);
+    $query->bindValue(":dogID", $dogID);
+    $result = $query->execute();
+
+    if($row = $result->fetchArray(SQLITE3_ASSOC)){
+        $totalSteps = $row['totalSteps'];
+    }
+    else {
+        echo "No data found for month.";
+    }
+
+    switch($calMonth){// switch case to find average steps per day depending on the month
+        case '01':
+        case '03':
+        case '05':
+        case '07':
+        case '08':
+        case '10':
+        case '12': // months with 31 days
+            $avgSteps = round($totalSteps/31, 0);
+            break;
+        case '04':
+        case '06':
+        case '09':
+        case '11': // months with 30 days
+            $avgSteps = round($totalSteps/30, 0);
+            break;
+        case 02; // months with 28 days, only feb (doesnt account for leap years, but none of the data falls in a leap year)
+            $avgSteps = round($totalSteps/28, 0);
+            break;
+        default:
+            $avgSteps = 0;
+            break;
+    }
+
+    $query = $db-> prepare('
+    SELECT Sum(Activity_Level) As totalSteps From Activity
+    Where   Date = :calDate 
+    AND     DogID = :dogID 
+    ');
+
+    $query->bindValue(":calDate", $newDate, SQLITE3_TEXT);
+    $query->bindValue(":dogID", $dogID);
+    $result = $query->execute();
+
+    if($row = $result->fetchArray(SQLITE3_ASSOC)){
+        $totalSteps = $row['totalSteps'];
+    }
+    else {
+        echo "No data found for month.";
+    }
+
     $db->close();
     ?>
     </div>
@@ -197,6 +277,9 @@
     <div class="chart">
         <canvas id="barChart" style="width:100%;max-width:700px;"></canvas>
     </div>
+
+    <p>The average steps per day for your dog is: <strong><?php echo $avgSteps; ?></strong>.</p>
+    <p>Your dog has completed <strong><?php echo $totalSteps; ?></strong> today.</p>
 </body>
 
 </html>

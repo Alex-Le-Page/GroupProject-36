@@ -36,24 +36,32 @@
     $db = new SQLite3('ElancoDB.db');
     session_start();
 
+    if (!isset($_SESSION['AccountType'])) {
+        header("Location: login.php"); // Redirect if not logged in
+        exit;
+    }
+    $accountType = $_SESSION['AccountType'];
+
     if (isset($_SESSION['Date'])) {
         $date = $_SESSION['Date']; // retrieves the selected date (from navbar)
     }
     
-    // Get the date the user clicked
+    // set the date the user clicked
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['datePicker'])) {
         $date = $_POST['datePicker'];
 
         $hour = substr($date, 11, 2);
         $date = substr($date, 0, -3);
+        $month = substr($date, 3, 2);
         $year = substr($date, 6, 8);
         
         if($hour < 10){
             $hour = substr($hour, 1, 1);
         }
 
-        $_SESSION['Date'] = $date;
         $_SESSION['Hour'] = $hour;
+        $_SESSION['Date'] = $date;
+        $_SESSION['Month'] = $month;
         $_SESSION['Year'] = $year;
     }
 
@@ -90,6 +98,7 @@
         <li><a href="Steps.php">Steps</a></li>
         <li><a href="CalorieBurn.php">Calorie Burn</a></li>
 
+        <?php if($accountType == "Vet"): ?>
         <li>
             <form method="post">
             <select id="selectDog" name="selectDog" onchange="this.form.submit()">
@@ -102,6 +111,7 @@
             </select>
             </form>
         </li>
+        <?php endif; ?>
 
         <li>
             <!-- Date picker -->
