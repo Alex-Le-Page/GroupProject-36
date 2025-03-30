@@ -6,14 +6,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="Chart.js"></script>
+    <link href='titleStyle.css' rel='stylesheet'>
     <title>HeartRate</title>
-    <link rel = "stylesheet" href = "titleStyle.css">
 
-
-    <style>
-       
-  
-            
+    <style>  
     div.chart{
         margin-left: 15%;
         height: 300px;
@@ -39,14 +35,10 @@
         filter: drop-shadow(0 0 8px rgba(76, 175, 80, 0.6));
     }
 
-  
-
     div.main{
         margin-left: 42.5%;
         margin-top: 1%;
     }
-
-
     </style>
 
 </head>
@@ -267,6 +259,10 @@
             ?>
         </form>
     </div>
+
+    <form class = "notes">
+        <label>This graph shows the dog's heart rate (Beats Per Minute) per hour, throughout the selected date.</label>
+    </form>
 
 </body>
 

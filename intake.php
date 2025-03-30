@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="Chart.js"></script>
+    <link href='titleStyle.css' rel='stylesheet'>
     <title>Intake</title>
     <style>
         h1{
@@ -200,6 +201,10 @@
     </div>
 
 
+    <h2>Here is <?php echo $dogID; ?>'s info for Intake:</h2>
+
+    <?php echo "<p class = 'title'> Selected Date: " . $date ."<p><br>"; ?>
+
     <div class = "Main">
 
     <h1>Here is <?php echo $dogID; ?>'s Behaviour for the day:</h1>
@@ -231,7 +236,6 @@
             );
         };
     </script>
-
     
     <div class="foodChart">
         <canvas id="foodChart" style="width:100%;max-width:700px;"></canvas>
@@ -240,6 +244,12 @@
         <canvas id="waterChart" style="width:100%;max-width:700px;"></canvas>
     </div>
 
-    
+    <form class = "notes">
+        <label>This graph shows the dog's food intake (calories) per hour, throughout the selected date.</label>
+    </form>
+    <form class = "notes">
+        <label>This graph shows the dog's water intake (milliliters) per hour, throughout the selected date.</label>
+    </form>
+
 </body>
     

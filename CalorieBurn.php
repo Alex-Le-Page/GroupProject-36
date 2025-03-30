@@ -153,6 +153,10 @@
     <div class="chart">
         <canvas id="lineGraph" style="height: 300px;"></canvas>
     </div>
+
+    <form class = "notes">
+        <label>This graph shows the dog's calories burnt per hour, throughout the selected date.</label>
+    </form>
 </body>
 
 </html>

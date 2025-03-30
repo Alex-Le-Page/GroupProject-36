@@ -4,27 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> 
+    <link href='titleStyle.css' rel='stylesheet'>    
     <script src="Chart.js"></script>    
     <title>Weight</title>
 
     <style>
-       
-        form.notes {
-            float: left;
-            margin-top: 10%;
-            margin-left: 70%;
-            
-            border-color: black;
-            padding: 8px;
-            text-align: left;
-            width: 300px;
-            padding: 20px;
-            background: lightblue;
-            border-radius: 8px;
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-        }
-
         div.chart{
             height: 500px;
         }
@@ -103,7 +88,9 @@
         }    
     ?>
     </div>
-    <h2>Weight</h2>
+    <h2>Here is <?php echo $dogID; ?>'s info for Weight:</h2>
+
+    <?php echo "<p class = 'title'> Selected year: " . $calYear ."<p><br>"; ?>
 
     <div class="main">
 
@@ -125,7 +112,7 @@
             <canvas id="weightGraph"></canvas>
         </div>
         <form class = "notes">
-            <label>Your dog's weight is normal</label>
+            <label>This graph shows the average weight of the dog per month over the course of a year.</label>
         </form>
     </div>
 </body>
