@@ -26,11 +26,42 @@
             left: 25px;
             top: 175px;
         }
+
         .waterChart{
             width: 700px;
             position: absolute;
             left: 770px;
             top: 175px;
+        }
+
+        .foodNote {
+            float: left;
+            margin-top: 25%;
+            margin-left: 10%;
+            
+            border-color: black;
+            padding: 8px;
+            text-align: left;
+            width: 300px;
+            padding: 20px;
+            background: lightblue;
+            border-radius: 8px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        
+        .waterNote {
+            float: right;
+            margin-top: 25%;
+            margin-right: 10%;
+            
+            border-color: black;
+            padding: 8px;
+            text-align: left;
+            width: 300px;
+            padding: 20px;
+            background: lightblue;
+            border-radius: 8px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
 
     </style>
@@ -207,8 +238,6 @@
 
     <div class = "Main">
 
-    <h1>Here is <?php echo $dogID; ?>'s Behaviour for the day:</h1>
-
     <script>
         window.onload = function() {
             loadBarChart(
@@ -244,10 +273,10 @@
         <canvas id="waterChart" style="width:100%;max-width:700px;"></canvas>
     </div>
 
-    <form class = "notes">
+    <form class = "foodNote">
         <label>This graph shows the dog's food intake (calories) per hour, throughout the selected date.</label>
     </form>
-    <form class = "notes">
+    <form class = "waterNote">
         <label>This graph shows the dog's water intake (milliliters) per hour, throughout the selected date.</label>
     </form>
 
