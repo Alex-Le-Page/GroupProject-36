@@ -13,11 +13,8 @@
             float: left;
             margin-top: 5%;
             margin-left: 10%;
-<<<<<<< HEAD
-=======
             margin-right: 5%;
 
->>>>>>> a29b859770932253a99df0b87919516e049a18fd
             border-color: black;
             padding: 8px;
             text-align: left;
@@ -409,9 +406,11 @@
         }
 
          .box {
-            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding-right: 100px;
-            width: 50%;
+            width: 60%;
             height: 600px;
             background: linear-gradient(to bottom right, #ffffff, #f0f8ff);
             border-radius: 15px;
@@ -455,6 +454,65 @@
             transform: scale(1.1);
             filter: drop-shadow(0 0 10px <?php echo $weightColour; ?>);
         }
+
+        /* Add to your existing style section */
+.box {
+    width: 60%; /* Keep your original width */
+    max-width: 800px; /* Prevent it from getting too wide */
+    height: auto; /* Allow height to adjust based on content */
+    overflow: auto; /* Add scrolling if needed */
+}
+
+.charts {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 5px;
+}
+
+.chart {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%; /* Create square proportions */
+    position: relative;
+}
+
+.chart a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chart canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Adjust form size */
+form.notes {
+    width: 25%;
+    min-width: 250px;
+    max-width: 300px;
+}
+
+
+.h2Header {
+    font-size: 1.5rem; /* Relative to base font */
+}
+
     </style>
     <div class="charts">
         <div class="chart">
@@ -471,7 +529,7 @@
         </div>  
 
         <div class="chart">
-                <a href="HeartRate.php"><svg class="heart" width="150" height="150" viewBox="0 0 100 90">
+                <a href="HeartRate.php"><svg class="heart" width="120" height="120" viewBox="0 0 100 90">
                     <!-- heart path for heart shape -->
                     <path d="M50,30 C60,10 90,10 90,40 C90,65 50,85 50,85 C50,85 10,65 10,40 C10,10 40,10 50,30 Z" 
                         style="fill: <?php echo $heartColour; ?>;" />
@@ -485,7 +543,7 @@
                 </svg></a>
             </div>
         <div class="chart">
-                <a href="Weight.php"><svg class="weight" width="150" height="150" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <a href="Weight.php"><svg class="weight" width="120" height="120" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                     <!-- kettlebell shape -->
                     <path d="M24.107 12.087h-4.086c0.649-0.851 1.045-1.887 1.045-3.040 0-2.799-2.269-5.067-5.067-5.067s-5.067 2.269-5.067 5.067c0 1.153 0.397 2.189 1.045 3.040h-4.085l-6.080 14.187h28.375l-6.080-14.187zM16 12.087c-1.679 0-3.040-1.361-3.040-3.040 0-1.678 1.362-3.040 3.040-3.040s3.040 1.361 3.040 3.040-1.361 3.040-3.040 3.040z"
                         fill="<?php echo $weightColour; ?>"></path>
