@@ -258,11 +258,12 @@
                 }
             ?>
         </form>
+        <form class = "heartNotes">
+            <label>This graph shows the dog's heart rate (Beats Per Minute) per hour, throughout the selected date.</label>
+        </form>
     </div>
 
-    <form class = "notes">
-        <label>This graph shows the dog's heart rate (Beats Per Minute) per hour, throughout the selected date.</label>
-    </form>
+    
 
 </body>
 

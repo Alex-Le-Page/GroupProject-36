@@ -14,11 +14,11 @@
         h1{
             color: #0E253E;
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-            font-size: 1.8rem;
+            font-size: 1.2rem;
             padding-bottom: 8px;
-            position: relative;
-            margin-top: 50px;
-            margin-left: 50px;
+            position: absolute;
+            top: 80px;
+            left: 10%;
         }
 
         h2{
@@ -27,7 +27,7 @@
             font-size: 1.2rem;
             padding-bottom: 8px;
             position: absolute;
-            top: 150px;
+            top: 38px;
             left: 725px;
         }
 
@@ -36,14 +36,14 @@
             height: 500px;
             position: absolute;
             left: 100px;
-            top: 175px;
+            top: 125px;
         }
         .barChart{
             width: 400px;
             height: 400px;
             position: absolute;
             left: 885px;
-            top: 225px;
+            top: 190px;
         }
 
     </style>
@@ -176,7 +176,7 @@
         ?>
     </div>
 
-    <h2>Here is <?php echo $dogID; ?>'s for Behaviour:</h2>
+    <h2>Here is <?php echo $dogID; ?>'s for Barking Frequency:</h2>
 
     <script>
         window.onload = function() {
@@ -202,18 +202,20 @@
         <canvas id="behaviour"></canvas>
     </div>
 
-    <h1>Here is <?php echo $dogID; ?>'s for Barking Frequency:</h1>
+    <h1>Here is <?php echo $dogID; ?>'s for Behaviour:</h1>
 
     <div class="barChart">
         <canvas id="barking"></canvas>
     </div>
+    <div class = "noteWrapper">
+        <form class = "notes">
+            <label>This graph shows the total time the dog spent doing a certain activity, throughout the selected date.</label>
+        </form>
 
-    <form class = "notes">
-        <label>This graph shows the total time the dog spent doing a certain activity, throughout the selected date.</label>
-    </form>
-
-    <form class = "notes">
-        <label>This graph shows the dogs barking frequency per hour, throughout the selected date.</label>
-    </form>
+        <form class = "notes">
+            <label>This graph shows the dogs barking frequency per hour, throughout the selected date.</label>
+        </form>
+    </div>
+    
 </body>
 </html>

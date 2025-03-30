@@ -231,12 +231,13 @@
 
                 }
             ?>
+            
         </form>
+        <form class = "breathNotes">
+                <label>This graph shows the dog's breathing rate (breaths per minute) per hour, throughout the selected date.</label>
+        </form> 
     </div>
-
-    <form class = "notes">
-        <label>This graph shows the dog's breathing rate (breaths per minute) per hour, throughout the selected date.</label>
-    </form>
+    
 </body>
 
 </html>

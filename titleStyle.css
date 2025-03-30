@@ -23,6 +23,7 @@ div.main{
 }
 
 form.TraffContainer{
+    float: left;    
     border-color: black;
     padding: 8px;
     width: 206px;
@@ -31,18 +32,48 @@ form.TraffContainer{
     border-radius: 8px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     text-align: center;
+    
+}
+
+div.noteWrapper{
+    margin-top: 38%;
+    margin-left: -15%;
 }
 
 form.notes {
     float: left;
-    margin-top: 10%;
-    margin-left: 70%;
-    
+    margin-left: 25%;    
     border-color: black;
     padding: 8px;
     text-align: left;
     width: 300px;
-    padding: 20px;
+    padding: 10px;
+    background: lightblue;
+    border-radius: 8px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+form.breathNotes {
+    float: left;
+    margin-left: 8%;   
+    margin-bottom: 5%;
+    border-color: black;
+    padding: 8px;
+    text-align: left;
+    width: 300px;
+    padding: 10px;
+    background: lightblue;
+    border-radius: 8px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+form.heartNotes {
+    float: left;
+    margin-left: 8%;   
+    margin-bottom: 5%;
+    border-color: black;
+    padding: 8px;
+    text-align: left;
+    width: 300px;
+    padding: 10px;
     background: lightblue;
     border-radius: 8px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
