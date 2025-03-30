@@ -12,8 +12,11 @@
             width: 40px;
             height: 40px;
             margin-top: 3px;
-            position: absolute;right: 0;
+            position: absolute;right: 5%;
             cursor: pointer;
+        }
+        a.logout{
+            position: absolute;right: 0;
         }
 
         .date-picker-icon {
@@ -96,7 +99,6 @@
         <li><a href="BreathingRate.php">Breathing Rate</a></li>
         <li><a href="Steps.php">Steps</a></li>
         <li><a href="CalorieBurn.php">Calorie Burn</a></li>
-
         <?php if($accountType == "Vet"): ?>
         <li>
             <form method="post">
@@ -111,7 +113,7 @@
             </form>
         </li>
         <?php endif; ?>
-
+        <li><a class = "logout" href="Login.php">Logout</a></li>
         <li>
             <!-- Date picker -->
             <form class = "calendar"  method="post">
@@ -120,7 +122,7 @@
             </form>
         </li>
 
-        <li><a href="Login.php">Logout</a></li>
+      
 
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script>

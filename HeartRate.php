@@ -120,7 +120,7 @@
             echo "No data found for the selected date: " . $newDate;
             exit();
         }
-        echo "<p class = 'title'> Selected Date: " . $newDate ."<p><br>";
+        echo "<p class = 'title'> Selected Date: " . $newDate ."</p>";
 
        // Fetch heart rates for the given date
        $query = $db->prepare('SELECT Heart_Rate FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = :dogID');

@@ -61,7 +61,7 @@ li {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-li a:not(.Logo, .logout) {
+li a:not(.Logo) {
     display: block;
     color: white;
     text-align: center;
