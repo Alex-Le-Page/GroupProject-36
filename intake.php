@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="Chart.js"></script>
+    <link href='titleStyle.css' rel='stylesheet'>
     <title>Intake</title>
     <style>
         h1{
@@ -25,11 +26,42 @@
             left: 25px;
             top: 175px;
         }
+
         .waterChart{
             width: 700px;
             position: absolute;
             left: 770px;
             top: 175px;
+        }
+
+        .foodNote {
+            float: left;
+            margin-top: 25%;
+            margin-left: 10%;
+            
+            border-color: black;
+            padding: 8px;
+            text-align: left;
+            width: 300px;
+            padding: 20px;
+            background: lightblue;
+            border-radius: 8px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        
+        .waterNote {
+            float: right;
+            margin-top: 25%;
+            margin-right: 10%;
+            
+            border-color: black;
+            padding: 8px;
+            text-align: left;
+            width: 300px;
+            padding: 20px;
+            background: lightblue;
+            border-radius: 8px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
 
     </style>
@@ -200,9 +232,11 @@
     </div>
 
 
-    <div class = "Main">
+    <h2>Here is <?php echo $dogID; ?>'s info for Intake:</h2>
 
-    <h1>Here is <?php echo $dogID; ?>'s Behaviour for the day:</h1>
+    <?php echo "<p class = 'title'> Selected Date: " . $date ."<p><br>"; ?>
+
+    <div class = "Main">
 
     <script>
         window.onload = function() {
@@ -231,7 +265,6 @@
             );
         };
     </script>
-
     
     <div class="foodChart">
         <canvas id="foodChart" style="width:100%;max-width:700px;"></canvas>
@@ -240,6 +273,12 @@
         <canvas id="waterChart" style="width:100%;max-width:700px;"></canvas>
     </div>
 
-    
+    <form class = "foodNote">
+        <label>This graph shows the dog's food intake (calories) per hour, throughout the selected date.</label>
+    </form>
+    <form class = "waterNote">
+        <label>This graph shows the dog's water intake (milliliters) per hour, throughout the selected date.</label>
+    </form>
+
 </body>
     

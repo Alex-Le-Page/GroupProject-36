@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="Chart.js"></script>
+    <link href='titleStyle.css' rel='stylesheet'>
     <title>Pet Behavior Chart</title>
     <style>
 
@@ -44,7 +45,6 @@
             left: 885px;
             top: 225px;
         }
-
 
     </style>
 </head>
@@ -176,7 +176,7 @@
         ?>
     </div>
 
-    <h1>Here is <?php echo $dogID; ?>'s Behaviour for the day:</h1>
+    <h2>Here is <?php echo $dogID; ?>'s for Behaviour:</h2>
 
     <script>
         window.onload = function() {
@@ -202,10 +202,18 @@
         <canvas id="behaviour"></canvas>
     </div>
 
-    <h2>Here is <?php echo $dogID; ?>'s Barking Frequency for the day:</h2>
+    <h1>Here is <?php echo $dogID; ?>'s for Barking Frequency:</h1>
 
     <div class="barChart">
         <canvas id="barking"></canvas>
     </div>
+
+    <form class = "notes">
+        <label>This graph shows the total time the dog spent doing a certain activity, throughout the selected date.</label>
+    </form>
+
+    <form class = "notes">
+        <label>This graph shows the dogs barking frequency per hour, throughout the selected date.</label>
+    </form>
 </body>
 </html>

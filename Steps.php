@@ -280,8 +280,14 @@
         <canvas id="barChart" style="width:100%;max-width:700px;"></canvas>
     </div>
 
-    <p>The average steps per day for your dog is: <strong><?php echo $avgSteps; ?></strong>.</p>
-    <p>Your dog has completed <strong><?php echo $totalSteps; ?></strong> today.</p>
+    <form class = "notes">
+        <label>The average steps per day for your dog is: <strong><?php echo $avgSteps; ?></strong>.</label>
+        <label>Your dog has completed <strong><?php echo $totalSteps; ?></strong> today.</label>
+    </form>
+
+    <form class = "notes">
+        <label>This graph shows the steps per hour completed by the dog, throughout the selected date.</label>
+    </form>
 </body>
 
 </html>
