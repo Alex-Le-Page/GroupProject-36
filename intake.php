@@ -7,11 +7,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="Chart.js"></script>
-    <title>Document</title>
+    <title>Intake</title>
     <style>
-        form :not(.calendar){
+        label{
             float: right;
-            margin-top: 5%;
+            margin-top: 0%;
             margin-right: 15%;
             
             border-color: black;
@@ -181,7 +181,7 @@
         $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
         $result = $query->execute();
 
-        // Populate $behaviourData array with breathing rates
+        //fill an array with the behaviour data over the day
         while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
             $behaviourData[] = $row['Behaviour_Pattern'];
         }
@@ -197,17 +197,19 @@
     <script>
         window.onload = function() {
             loadBarChart(
-                'foodChart',
-                <?php echo json_encode($foodIntakeData); ?>,
-                <?php echo json_encode($behaviourData); ?>, // dataset to be displayed when hoverin over a point on the graph
-                <?php echo json_encode($hours); ?>,
-                'Calories',
-                'Food Intake',
-                'Hour',
-                'Activity:'
+                'bar', //type of bar chart
+                'foodChart', //canvas ID
+                <?php echo json_encode($foodIntakeData); ?>, //data to be displayed
+                <?php echo json_encode($behaviourData); ?>, //data to be shown when hovering over a point
+                <?php echo json_encode($hours); ?>, //data for the x axis label
+                'Calories', //label at the top of the chart
+                'Food Intake', //y label
+                'Hour', //x label
+                'Activity:' //label for the data shown when hovering over a point
             );
 
             loadBarChart(
+                'bar',
                 'waterChart',
                 <?php echo json_encode($waterIntakeData)?>,
                 <?php echo json_encode($behaviourData); ?>, 
@@ -224,14 +226,16 @@
     <div class="foodChart">
         <canvas id="foodChart" style="width:100%;max-width:700px;"></canvas>
     </div>
+    <div>
+        <form>
+            <label>Your dog's intake is normal</label>
+            <br><br>
+        </form>
+    </div>
     <div class="waterChart">
         <canvas id="waterChart" style="width:100%;max-width:700px;"></canvas>
     </div>
 
-    <form>
-            <label>your dogs intake is normal</label>
-            <br><br>
-        </form>
-    </div>
-    </body>
+    
+</body>
     
