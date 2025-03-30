@@ -9,20 +9,29 @@
     <script src="Chart.js"></script>
     <title>Intake</title>
     <style>
-        label{
-            float: right;
-            margin-top: 0%;
-            margin-right: 15%;
-            
-            border-color: black;
-            padding: 8px;
-            text-align: left;
-            width: 300px;
-            padding: 20px;
-            background: lightblue;
-            border-radius: 8px;
+        h1{
+            color: #0E253E;
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 1.8rem;
+            padding-bottom: 8px;
+            position: relative;
+            margin-top: 50px;
+            margin-left: 50px;
         }
+
+        .foodChart{
+            width: 700px;
+            position: absolute;
+            left: 25px;
+            top: 175px;
+        }
+        .waterChart{
+            width: 700px;
+            position: absolute;
+            left: 770px;
+            top: 175px;
+        }
+
     </style>
 </head>
 
@@ -191,8 +200,9 @@
     </div>
 
 
-    <h2>Intake</h2>
     <div class = "Main">
+
+    <h1>Here is <?php echo $dogID; ?>'s Behaviour for the day:</h1>
 
     <script>
         window.onload = function() {
@@ -225,12 +235,6 @@
     
     <div class="foodChart">
         <canvas id="foodChart" style="width:100%;max-width:700px;"></canvas>
-    </div>
-    <div>
-        <form>
-            <label>Your dog's intake is normal</label>
-            <br><br>
-        </form>
     </div>
     <div class="waterChart">
         <canvas id="waterChart" style="width:100%;max-width:700px;"></canvas>
