@@ -9,6 +9,8 @@ function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLa
 
         const ctx = document.getElementById(canvasId);
 
+        const fontFamily = ''
+
         return new Chart(ctx, { 
             type: "line",
             data: {

@@ -8,13 +8,13 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="Chart.js"></script>
     <title>Calorie Burn</title>
-    <link rel = "stylesheet" href = "dateStyles.css">
+    <link rel = "stylesheet" href = "titleStyle.css">
     <style>
-        div.chart{
-            margin-left: 15%;
-            width: 110% !important;
-            max-width: 1000px; /* Adjust this to make it bigger */
-        }
+    div.chart{
+        margin-left: 15%;
+        width: 110% !important;
+        max-width: 1000px; /* Adjust this to make it bigger */
+    }
     </style>
 </head>
 
@@ -73,7 +73,7 @@
             echo "No data found for the selected date: " . $newDate;
             exit();
         }
-        echo "<p style = 'text-decoration: underline; margin-bottom: 1px;'> Selected Date: " . $newDate ."<br></p>";
+        echo "<p class = 'title'> Selected Date: " . $newDate ."<br></p>";
 
         // Fetch breathing rates for the given date
         $query = $db->prepare('SELECT Calorie_Burn FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = :dogID');

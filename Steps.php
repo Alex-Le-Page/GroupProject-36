@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel = "stylesheet" href = "titleStyle.css">
     <script src="Chart.js"></script>
     <title>Document</title>
 
@@ -73,7 +74,7 @@
             echo "No data found for the selected date: " . $newDate;
             exit();
         }
-        echo "Selected Date: " . $newDate ."<br>";
+        echo "<p class = 'title'> Selected Date: " . $newDate ."<p><br>";
 
         // Fetch steps for the given date
         $query = $db->prepare('SELECT Activity_Level FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = :dogID');

@@ -7,33 +7,18 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="Chart.js"></script>
     <title>HeartRate</title>
+    <link rel = "stylesheet" href = "titleStyle.css">
+
 
     <style>
        
-    form :not(.calendar){
-        float: left;
-        margin-top: 10%;
-        margin-left: 70%;
-        
-        border-color: black;
-        padding: 8px;
-        text-align: left;
-        width: 300px;
-        padding: 20px;
-        background: lightblue;
-        border-radius: 8px;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    }
+  
             
-    .chart:first-of-type {
-        position: relative;
-        width: 700px;
-        display: block;
-    }
-
-    .chart:first-of-type canvas {
-        height: 300px !important; /* Reduce the height while maintaining width */
-        width: 100% !important;
+    div.chart{
+        margin-left: 15%;
+        height: 300px;
+        width: 110% !important;
+        max-width: 1000px; /* Adjust this to make it bigger */
     }
 
     .chart:last-of-type {
@@ -54,12 +39,14 @@
         filter: drop-shadow(0 0 8px rgba(76, 175, 80, 0.6));
     }
 
-    .trafficLight {
-        height: 75px;
-        width: 75px;
-        border-radius: 50%;
-        display: inline-block;
+  
+
+    div.main{
+        margin-left: 42.5%;
+        margin-top: 1%;
     }
+
+
     </style>
 
 </head>
@@ -133,7 +120,7 @@
             echo "No data found for the selected date: " . $newDate;
             exit();
         }
-        echo "Selected Date: " . $newDate ."<br>";
+        echo "<p class = 'title'> Selected Date: " . $newDate ."<p><br>";
 
        // Fetch heart rates for the given date
        $query = $db->prepare('SELECT Heart_Rate FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = :dogID');
@@ -256,26 +243,29 @@
     </script>
 
     <div class="chart">
-        <canvas id="lineGraph" style="width:100%;max-width:700px;"></canvas>
+        <canvas id="lineGraph" ></canvas>
     </div>
 
     <div class="main">
+        <form class = "TraffContainer">
             <?php 
-                echo "The current Heart Rate of the dog is: ". $currentHR .".<br>";
+                echo "Current Heart Rate: ". $currentHR .".<br>";
 
                 if($currentHR > $upperBound){
-                    echo "<label>This is higher than normal.</label><br>";
                     echo "<span class='trafficLight' style='background-color: red'></span>";
+                    echo "<label>This is higher than normal.</label><br>";
+
                 }
                 else if($currentHR < $lowerBound){
-                    echo "<label>This is lower than normal.</label><br>";
                     echo "<span class='trafficLight' style='background-color: red'></span>";
+                    echo "<label>This is lower than normal.</label><br>";
                 }
                 else{
-                    echo "<label>This is normal.</label><br>";
                     echo "<span class='trafficLight' style='background-color: green'></span>";
+                    echo "<label>This is normal.</label><br>";
                 }
             ?>
+        </form>
     </div>
 
 </body>
