@@ -11,9 +11,41 @@
     <title>Steps</title>
 
     <style>
-        div.graphText{
-            margin-top: 5%;
+        div.chart{
+            height: 300px;
+            width: 1200px;
+            margin-left: 20%;
         }
+
+        form.stepNotes {
+            float: right;
+            margin-right: 8%;
+            margin-bottom: 100px;
+            margin-top: 8%;
+            border-color: black;
+            padding: 8px;
+            text-align: left;
+            width: 300px;
+            padding: 20px;
+            background: lightblue;
+            border-radius: 8px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
+        form.descNotes {
+            float: left;
+            margin-left: 40%;
+            margin-top: 20px;
+            border-color: black;
+            padding: 8px;
+            text-align: left;
+            width: 300px;
+            padding: 20px;
+            background: lightblue;
+            border-radius: 8px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        
     </style>
 </head>
 
@@ -276,16 +308,17 @@
         };
     </script>
 
-    <div class="chart">
-        <canvas id="barChart" style="width:100%;max-width:700px;"></canvas>
-    </div>
-
-    <form class = "notes">
+<form class = "stepNotes">
         <label>The average steps per day for your dog is: <strong><?php echo $avgSteps; ?></strong>.</label>
         <label>Your dog has completed <strong><?php echo $totalSteps; ?></strong> today.</label>
     </form>
 
-    <form class = "notes">
+    <div class="chart">
+        <canvas id="barChart" style="width:100%;max-width:700px;"></canvas>
+    </div>
+
+
+    <form class = "descNotes">
         <label>This graph shows the steps per hour completed by the dog, throughout the selected date.</label>
     </form>
 </body>

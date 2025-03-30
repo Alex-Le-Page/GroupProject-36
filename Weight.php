@@ -10,9 +10,38 @@
     <title>Weight</title>
 
     <style>
-        div.chart{
-            height: 500px;
+
+        h1{
+            text-decoration: underline; 
+            margin-left: 43%;
+            margin-bottom: 15px;
+            margin-top: 15px;
+            font-weight: bold;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 16px;
         }
+
+        div.chart{
+            height: 300px;
+            width: 1000px;
+            margin-left: 15%;
+        }
+
+        form.weightNotes {
+            float: left;
+            
+            margin-left: 40%;
+            
+            border-color: black;
+            padding: 8px;
+            text-align: left;
+            width: 300px;
+            padding: 20px;
+            background: lightblue;
+            border-radius: 8px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
     </style>
 
 </head>
@@ -92,7 +121,6 @@
 
     <?php echo "<p class = 'title'> Selected year: " . $calYear ."<p><br>"; ?>
 
-    <div class="main">
 
         <script>
             window.onload=function(){
@@ -111,9 +139,10 @@
         <div class="chart">
             <canvas id="weightGraph"></canvas>
         </div>
-        <form class = "notes">
+
+        <form class = "weightNotes">
             <label>This graph shows the average weight of the dog per month over the course of a year.</label>
         </form>
-    </div>
+
 </body>
 </html>

@@ -15,6 +15,21 @@
         width: 110% !important;
         max-width: 1000px; /* Adjust this to make it bigger */
     }
+
+    form.calNotes {
+            float: left;
+            
+            margin-left: 40%;
+            
+            border-color: black;
+            padding: 8px;
+            text-align: left;
+            width: 300px;
+            padding: 20px;
+            background: lightblue;
+            border-radius: 8px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
     </style>
 </head>
 
@@ -154,7 +169,7 @@
         <canvas id="lineGraph" style="height: 300px;"></canvas>
     </div>
 
-    <form class = "notes">
+    <form class = "calNotes">
         <label>This graph shows the dog's calories burnt per hour, throughout the selected date.</label>
     </form>
 </body>
