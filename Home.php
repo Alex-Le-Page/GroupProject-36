@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel"></script>
     <script src="chart.js"></script>
     <style>
-         form.notes {
+         form.notes { 
             float: left;
             margin-top: 5%;
             margin-left: 10%;
@@ -273,7 +273,7 @@
 
             // if we found a weight for the specific hour, use it
             if ($hourWeightRow) {
-                $weightValue = $hourWeightRow['Weight'];
+                $weightValue = round($hourWeightRow['Weight'], 2);
             } elseif ($weightRecordCount > 0) {
                 // if no weight for specific hour but we have data for the day,
                 // use the average weight of the day
@@ -359,22 +359,25 @@
     $barking = $row['Barking_Frequency'];
 
 ?>
-    <h2 class="h2Header">Here is <?php echo $dogID; ?>'s Summary:</h2>
+    <h2 class="h2Header">Here is <?php echo $dogID; ?>'s recent activity:</h2>
     <div class="Main">
-         <form class = "notes">
+
+        <form class = "notes">
+            <label>Heart-Rate: <?php echo $heartRate; ?> BPM</label>
+            <br><br><br>
             <label>Behaviour Pattern: <?php echo $behaviour; ?></label>
             <br><br><br>
-            <label>Barking Frequency: <?php echo $barking;?> </label>
+            <label>Barking Frequency: <?php echo $barking; ?> </label>
             <br><br><br>
-            <label>Weight: <?php echo $weightValue; ?></label>
+            <label>Weight: <?php echo $weightValue; ?> KG</label>
             <br><br><br>
-            <label>Temperature: <?php echo $temp; ?></label>
+            <label>Food Intake: <?php echo $calIntake ;?> (Calories)</label>
             <br><br><br>
-            <label>Calorie Intake: <?php echo $calIntake ;?></label>
+            <label>Water Intake: <?php echo $wtrIntake; ?> ML</label>
+            <br><br><br>
+            <label>Temperature: <?php echo $temp; ?>°C</label>
             <br><br><br>
             <label>Calories Burnt: <?php echo $calBurnt; ?></label>
-            <br><br><br>
-            <label>Water Intake: <?php echo $wtrIntake; ?></label>
             <br><br><br>
             <label> Steps: <?php echo $steps; ?></label>
         </form>

@@ -54,42 +54,37 @@ ul {
     overflow: hidden;
     border: 1px solid #0E253E;
     background-color: #0E253E;
-  }
-  
-  li {
+}
+
+li {
     float: left;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  }
- 
-  
-  li a:not(.Logo) {
+}
+
+li a:not(.Logo) {
     display: block;
     color: white;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-  }
-  
-  li a:hover:not(.Logo) {
-    background-color:white;
+}
+
+li a:hover:not(.Logo) {
+    background-color: white;
     color: black;
+}
 
-  }
-  
-  
-
-img.Logo{
+img.Logo {
     margin-top: 5px;
 }
 
-
-h2{
+h2 {
     margin-top: 40px;
     margin-left: 8%;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-img.Placeholder{
+img.Placeholder {
     float: left;
     margin-left: 10%;
     margin-top: 80px;

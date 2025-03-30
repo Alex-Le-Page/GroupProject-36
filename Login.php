@@ -48,23 +48,38 @@
     </style>
     </head>
     <body>
+
+    <?php
+        session_start();
+
+        if (isset($_POST['selectAccountType']) && isset($_POST['selectDog'])) {
+            $accountType = $_POST['selectAccountType'];
+            $selectedDog = $_POST['selectDog'];
+
+            $_SESSION['AccountType'] = $accountType;
+            $_SESSION['Dog'] = $selectedDog;
+
+            header("Location: Home.php");
+            exit;
+        }
+    ?>
         <div>
             <img class ="Logo" src = "ElancoLogo.png" alt = "Elanco Logo" width="200" height="100">
         </div>
-        <form class="form-container" action="Home.php" method="post">
+        <form class="form-container" method="post">
             <label>Select account type:</label> 
             <br><br>
-            <select>
-                <option value = "#PetOwner">Pet Owner</option>
-                <option value = "#Vet">Vet</option>
+            <select name = "selectAccountType" id = "selectAccountType">
+                <option value = "PetOwner">Pet Owner</option>
+                <option value = "Vet">Vet</option>
             </select>
             <br><br>
             <label>Select Dog:</label> 
             <br><br>
-            <select>
-                <option value = "#Canine001">Dog 1</option>
-                <option value = "#Canine002">Dog 2</option>
-                <option value = "#Canine003">Dog 3</option>
+            <select name = "selectDog" id = "selectDog">
+                <option value = "CANINE001">CANINE001</option>
+                <option value = "CANINE002">CANINE002</option>
+                <option value = "CANINE003">CANINE003</option>
             </select>
             <br><br>
             <button type = "submit">Submit</button>

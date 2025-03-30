@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel = "stylesheet" href = "titleStyle.css">
     <script src="Chart.js"></script>
     <title>Breathing Rate</title>
     <style>
@@ -13,13 +14,6 @@
             margin-left: 15%;
             width: 110% !important;
             max-width: 1000px; /* Adjust this to make it bigger */
-        }
-
-        .trafficLight {
-            height: 75px;
-            width: 75px;
-            border-radius: 50%;
-            display: inline-block;
         }
     </style>
 </head>
@@ -89,7 +83,7 @@
             echo "No data found for the selected date: " . $newDate;
             exit();
         }
-        echo "<p style = 'text-decoration: underline; margin-bottom: 1px;'> Selected Date: " . $newDate ."<br></p>";
+        echo "<p class = 'title'> Selected Date: " . $newDate ."<br></p>";
 
         // Fetch breathing rates for the given date
         $query = $db->prepare('SELECT Breathing_Rate FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = :dogID');
@@ -218,22 +212,26 @@
     </div>
 
     <div class="main">
+        <form class = "TraffContainer">
             <?php 
-                echo "The current Breathing Rate of the dog is: ". $currentBR .".<br>";
+                echo "Current Breathing Rate: ". $currentBR .".<br>";
 
                 if($currentBR > $upperBound){
-                    echo "<label>This is higher than normal.</label><br>";
                     echo "<span class='trafficLight' style='background-color: red'></span>";
+                    echo "<label>This is higher than normal.</label><br>";
                 }
                 else if($currentBR < $lowerBound){
-                    echo "<label>This is lower than normal.</label><br>";
                     echo "<span class='trafficLight' style='background-color: red'></span>";
+                    echo "<label>This is lower than normal.</label><br>";
+
                 }
                 else{
-                    echo "<label>This is normal.</label><br>";
                     echo "<span class='trafficLight' style='background-color: green'></span>";
+                    echo "<label>This is normal.</label><br>";
+
                 }
             ?>
+        </form>
     </div>
 </body>
 

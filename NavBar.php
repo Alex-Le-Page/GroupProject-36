@@ -12,15 +12,17 @@
             width: 40px;
             height: 40px;
             margin-top: 3px;
-            position: absolute;right: 0;
+            position: absolute;right: 5%;
             cursor: pointer;
+        }
+        a.logout{
+            position: absolute;right: 0;
         }
 
         .date-picker-icon {
             cursor: pointer;
             width: 40px;
             height: 40px;
-            
         }
 
         #datePicker {
@@ -36,24 +38,32 @@
     $db = new SQLite3('ElancoDB.db');
     session_start();
 
+    if (!isset($_SESSION['AccountType'])) {
+        header("Location: login.php"); // Redirect if not logged in
+        exit;
+    }
+    $accountType = $_SESSION['AccountType'];
+
     if (isset($_SESSION['Date'])) {
-        $date = $_SESSION['Date']; // retrieves the selected date (from navbar)
+        $date = $_SESSION['Date']; // retrieves the selected date from the navbar
     }
     
-    // Get the date the user clicked
+    // set the date the user clicked
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['datePicker'])) {
         $date = $_POST['datePicker'];
 
         $hour = substr($date, 11, 2);
         $date = substr($date, 0, -3);
+        $month = substr($date, 3, 2);
         $year = substr($date, 6, 8);
         
         if($hour < 10){
             $hour = substr($hour, 1, 1);
         }
 
-        $_SESSION['Date'] = $date;
         $_SESSION['Hour'] = $hour;
+        $_SESSION['Date'] = $date;
+        $_SESSION['Month'] = $month;
         $_SESSION['Year'] = $year;
     }
 
@@ -89,7 +99,7 @@
         <li><a href="BreathingRate.php">Breathing Rate</a></li>
         <li><a href="Steps.php">Steps</a></li>
         <li><a href="CalorieBurn.php">Calorie Burn</a></li>
-
+        <?php if($accountType == "Vet"): ?>
         <li>
             <form method="post">
             <select id="selectDog" name="selectDog" onchange="this.form.submit()">
@@ -102,7 +112,8 @@
             </select>
             </form>
         </li>
-
+        <?php endif; ?>
+        <li><a class = "logout" href="Login.php">Logout</a></li>
         <li>
             <!-- Date picker -->
             <form class = "calendar"  method="post">
@@ -110,6 +121,8 @@
                 <img class = "calendar" src="CalendarIcon.png" alt="Date Picker Icon" id="datePickerIcon" class="date-picker-icon">
             </form>
         </li>
+
+      
 
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script>

@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel = "stylesheet" href = "titleStyle.css">
     <script src="Chart.js"></script>
-    <title>Document</title>
+    <title>Steps</title>
 
     <style>
         div.graphText{
@@ -19,12 +20,15 @@
 <body>
     <?php include("NavBar.php");
     
-        if (!isset($_SESSION['Date'])) {
+        if (!isset($_SESSION['Date']) || !isset($_SESSION['Month'])) {
             echo "No date Selected";
             exit;
         }
         else{
+            $calHour = $_SESSION['Hour'];
             $newDate = $_SESSION['Date']; // retrieves the selected date (from navbar)
+            $calMonth = $_SESSION['Month'];
+            $calYear = $_SESSION['Year'];
         }
 
         if (!isset($_SESSION['Dog'])) {
@@ -70,7 +74,7 @@
             echo "No data found for the selected date: " . $newDate;
             exit();
         }
-        echo "Selected Date: " . $newDate ."<br>";
+        echo "<p class = 'title'> Selected Date: " . $newDate ."<p><br>";
 
         // Fetch steps for the given date
         $query = $db->prepare('SELECT Activity_Level FROM Activity WHERE Date = :newDate AND Hour >= 0 AND Hour <= 23 AND DogID = :dogID');
@@ -175,6 +179,83 @@
         exit();
     }
 
+    $query = $db-> prepare('
+    SELECT Sum(Activity_Level) As totalSteps From Activity
+    Where   Date = :newDate 
+    AND     DogID = :dogID 
+    ');
+
+    $query->bindValue(":newDate", $newDate, SQLITE3_TEXT);
+    $query->bindValue(":dogID", $dogID);
+    $result = $query->execute();
+
+    if($row = $result->fetchArray(SQLITE3_ASSOC)){
+        $totalSteps = $row['totalSteps'];
+    }
+    else {
+        echo "No data found for month.";
+    }
+
+    $query = $db-> prepare('
+    SELECT Sum(Activity_Level) As totalSteps From Activity
+    Where   substr(Date, 7, 4) = :calYear 
+    AND     substr(Date, 4, 2) = :calMonth 
+    AND     DogID = :dogID 
+    ');
+
+    $query->bindValue(":calYear", $calYear, SQLITE3_TEXT);
+    $query->bindValue(":calMonth", $calMonth, SQLITE3_TEXT);
+    $query->bindValue(":dogID", $dogID);
+    $result = $query->execute();
+
+    if($row = $result->fetchArray(SQLITE3_ASSOC)){
+        $totalSteps = $row['totalSteps'];
+    }
+    else {
+        echo "No data found for month.";
+    }
+
+    switch($calMonth){// switch case to find average steps per day depending on the month
+        case '01':
+        case '03':
+        case '05':
+        case '07':
+        case '08':
+        case '10':
+        case '12': // months with 31 days
+            $avgSteps = round($totalSteps/31, 0);
+            break;
+        case '04':
+        case '06':
+        case '09':
+        case '11': // months with 30 days
+            $avgSteps = round($totalSteps/30, 0);
+            break;
+        case '02'; // months with 28 days, only feb (doesnt account for leap years, but none of the data falls in a leap year)
+            $avgSteps = round($totalSteps/28, 0);
+            break;
+        default:
+            $avgSteps = 0;
+            break;
+    }
+
+    $query = $db-> prepare('
+    SELECT Sum(Activity_Level) As totalSteps From Activity
+    Where   Date = :calDate 
+    AND     DogID = :dogID 
+    ');
+
+    $query->bindValue(":calDate", $newDate, SQLITE3_TEXT);
+    $query->bindValue(":dogID", $dogID);
+    $result = $query->execute();
+
+    if($row = $result->fetchArray(SQLITE3_ASSOC)){
+        $totalSteps = $row['totalSteps'];
+    }
+    else {
+        echo "No data found for month.";
+    }
+
     $db->close();
     ?>
     </div>
@@ -182,10 +263,11 @@
     <script> 
         window.onload = function() {
             loadBarChart(
+                'bar', //type of bar chart
                 'barChart', // chart ID
                 <?php echo json_encode($activityLevelData); ?>, // dataset to be displayed as the line
                 <?php echo json_encode($behaviourData); ?>, // dataset to be displayed when hoverin over a point on the graph
-                <?php echo json_encode($hours); ?>,
+                <?php echo json_encode($hours); ?>, //data for the x axis label
                 'Activity Level', // line label
                 'Steps', // y axes label
                 'Hour', // x axes label
@@ -197,6 +279,9 @@
     <div class="chart">
         <canvas id="barChart" style="width:100%;max-width:700px;"></canvas>
     </div>
+
+    <p>The average steps per day for your dog is: <strong><?php echo $avgSteps; ?></strong>.</p>
+    <p>Your dog has completed <strong><?php echo $totalSteps; ?></strong> today.</p>
 </body>
 
 </html>
