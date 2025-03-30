@@ -181,7 +181,7 @@
         $query->bindValue(':dogID', $dogID, SQLITE3_TEXT);
         $result = $query->execute();
 
-        // Populate $behaviourData array with breathing rates
+        //fill an array with the behaviour data over the day
         while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
             $behaviourData[] = $row['Behaviour_Pattern'];
         }
@@ -197,17 +197,19 @@
     <script>
         window.onload = function() {
             loadBarChart(
-                'foodChart',
-                <?php echo json_encode($foodIntakeData); ?>,
-                <?php echo json_encode($behaviourData); ?>, // dataset to be displayed when hoverin over a point on the graph
-                <?php echo json_encode($hours); ?>,
-                'Calories',
-                'Food Intake',
-                'Hour',
-                'Activity:'
+                'bar', //type of bar chart
+                'foodChart', //canvas ID
+                <?php echo json_encode($foodIntakeData); ?>, //data to be displayed
+                <?php echo json_encode($behaviourData); ?>, //data to be shown when hovering over a point
+                <?php echo json_encode($hours); ?>, //data for the x axis label
+                'Calories', //label at the top of the chart
+                'Food Intake', //y label
+                'Hour', //x label
+                'Activity:' //label for the data shown when hovering over a point
             );
 
             loadBarChart(
+                'bar',
                 'waterChart',
                 <?php echo json_encode($waterIntakeData)?>,
                 <?php echo json_encode($behaviourData); ?>, 

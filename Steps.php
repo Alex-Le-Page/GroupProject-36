@@ -182,10 +182,11 @@
     <script> 
         window.onload = function() {
             loadBarChart(
+                'bar', //type of bar chart
                 'barChart', // chart ID
                 <?php echo json_encode($activityLevelData); ?>, // dataset to be displayed as the line
                 <?php echo json_encode($behaviourData); ?>, // dataset to be displayed when hoverin over a point on the graph
-                <?php echo json_encode($hours); ?>,
+                <?php echo json_encode($hours); ?>, //data for the x axis label
                 'Activity Level', // line label
                 'Steps', // y axes label
                 'Hour', // x axes label

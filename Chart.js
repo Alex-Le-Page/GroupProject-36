@@ -87,7 +87,7 @@ function loadLineGraph(canvasId, dataset, outputDataset, graphLabel, yLabel, xLa
     }
 }
 
-function loadBarChart(canvasId, dataset, outputDataset, xValues, graphLabel, yLabel, xLabel, extraOutputLabel){
+function loadBarChart(barType, canvasId, dataset, outputDataset, xValues, graphLabel, yLabel, xLabel, extraOutputLabel, xDataLabels = null){
 
     if (!dataset.length || !outputDataset.length) {
         alert("Some data is missing for the selected date.");
@@ -98,7 +98,7 @@ function loadBarChart(canvasId, dataset, outputDataset, xValues, graphLabel, yLa
         const ctx = document.getElementById(canvasId);
 
         return new Chart(ctx, { 
-        type: "bar",
+        type: barType, //bar chart type i.e. "bar", "horizontalBar"
         data: {
                 labels: xValues,
                 datasets: [{
@@ -113,14 +113,22 @@ function loadBarChart(canvasId, dataset, outputDataset, xValues, graphLabel, yLa
                         scaleLabel:{
                             display: true,
                             labelString: yLabel
-                        }
+                        },
                     }],
                     xAxes: [{
                         scaleLabel: {
                             display: true,
                             labelString: xLabel
-                        }
-
+                        },
+                        //manually changes the values of the label ticks on the graph
+                        ticks: xDataLabels ? { //if the xDataLabel isnt null
+                            callback: function(value) { //format the label values for the graph
+                                return xDataLabels[value-1] //adjust index for graphs layout
+                            },
+                            min: 1,
+                            max: 4,
+                            stepSize: 1 //the size of the gaps between y labels
+                        }: {} //if xDataLabels is null use the default tick labels
                     }]
                 },
                 tooltips: { // change the text when hovering over a bar
@@ -311,12 +319,14 @@ function loadRadarChart(canvasId, data ){
                 ticks: {
                     //set the min and max values for the chart
                     min:0,
-                    max:12,
+                    max:14,
                 },
                 pointLabels:{
                     fontSize: 14,
                 }
-            }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
         }
     })
 }

@@ -13,11 +13,8 @@
             float: left;
             margin-top: 5%;
             margin-left: 10%;
-<<<<<<< HEAD
-=======
             margin-right: 5%;
 
->>>>>>> a29b859770932253a99df0b87919516e049a18fd
             border-color: black;
             padding: 8px;
             text-align: left;
@@ -362,7 +359,7 @@
     $barking = $row['Barking_Frequency'];
 
 ?>
-    <h2 class="h2Header">Here is <?php echo $dogID; ?>'s Summary:</h2>
+    <h2 class="h2Header">Here is <?php echo $dogID; ?>'s recent activity:</h2>
     <div class="Main">
          <form class = "notes">
             <label>Behaviour Pattern: <?php echo $behaviour; ?></label>
