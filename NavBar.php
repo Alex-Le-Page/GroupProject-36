@@ -43,7 +43,7 @@
     $accountType = $_SESSION['AccountType'];
 
     if (isset($_SESSION['Date'])) {
-        $date = $_SESSION['Date']; // retrieves the selected date (from navbar)
+        $date = $_SESSION['Date']; // retrieves the selected date from the navbar
     }
     
     // set the date the user clicked

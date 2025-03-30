@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-doughnutlabel"></script>
     <script src="chart.js"></script>
     <style>
-         form.notes {
+         form.notes { 
             float: left;
             margin-top: 5%;
             margin-left: 10%;
