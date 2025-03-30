@@ -459,62 +459,7 @@
         }
 
         /* Add to your existing style section */
-.box {
-    width: 60%; /* Keep your original width */
-    max-width: 800px; /* Prevent it from getting too wide */
-    height: auto; /* Allow height to adjust based on content */
-    overflow: auto; /* Add scrolling if needed */
-}
 
-.charts {
-    width: 100%;
-    height: auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 5px;
-}
-
-.chart {
-    width: 100%;
-    height: 0;
-    padding-bottom: 100%; /* Create square proportions */
-    position: relative;
-}
-
-.chart a {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.chart canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Adjust form size */
-form.notes {
-    width: 25%;
-    min-width: 250px;
-    max-width: 300px;
-}
-
-
-.h2Header {
-    font-size: 1.5rem; /* Relative to base font */
-}
 
     </style>
     <div class="charts">
