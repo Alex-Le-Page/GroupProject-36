@@ -39,10 +39,10 @@
             top: 125px;
         }
         .barChart{
-            width: 400px;
-            height: 400px;
+            width: 550px;
+            height: 375px;
             position: absolute;
-            left: 885px;
+            left: 825px;
             top: 190px;
         }
 
@@ -182,16 +182,15 @@
         window.onload = function() {
             loadRadarChart('behaviour', [<?php echo $hours?>]);
 
-            //note all x and y labels will switch due to it being horizontal
             loadBarChart(
-                'horizontalBar', //type of bar chart
+                'bar', //type of bar chart
                 'barking', //canvas ID
                 <?php echo json_encode($barkingData);?>, //data to be displayed
                 'N/A', //data to be shown when hovering
-                <?php echo json_encode($barkingHours);?>, //data for the x label (y label due to being horizontal)
+                <?php echo json_encode($barkingHours);?>, //data for the x label 
                 'Barking Level', //label at the top of the chart
-                'Hours', //y label (x label due to horizontal)
-                'Frequency', //x label (y label due to horizontal)
+                'Frequency', //y label 
+                'Hours', //x label
                 'N/A',  //label for the data shown hovering over a point
                 ["None", "Low", "Medium", "High"] //tick labels for the x axis
             );

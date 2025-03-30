@@ -114,12 +114,6 @@ function loadBarChart(barType, canvasId, dataset, outputDataset, xValues, graphL
                             display: true,
                             labelString: yLabel
                         },
-                    }],
-                    xAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: xLabel
-                        },
                         //manually changes the values of the label ticks on the graph
                         ticks: xDataLabels ? { //if the xDataLabel isnt null
                             callback: function(value) { //format the label values for the graph
@@ -129,6 +123,12 @@ function loadBarChart(barType, canvasId, dataset, outputDataset, xValues, graphL
                             max: 4,
                             stepSize: 1 //the size of the gaps between y labels
                         }: {} //if xDataLabels is null use the default tick labels
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: xLabel
+                        },
                     }]
                 },
                 tooltips: { // change the text when hovering over a bar
