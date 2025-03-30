@@ -20,7 +20,6 @@
             cursor: pointer;
             width: 40px;
             height: 40px;
-            
         }
 
         #datePicker {
@@ -120,6 +119,8 @@
                 <img class = "calendar" src="CalendarIcon.png" alt="Date Picker Icon" id="datePickerIcon" class="date-picker-icon">
             </form>
         </li>
+
+        <li><a href="Login.php">Logout</a></li>
 
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script>

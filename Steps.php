@@ -8,7 +8,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel = "stylesheet" href = "titleStyle.css">
     <script src="Chart.js"></script>
-    <title>Document</title>
+    <title>Steps</title>
 
     <style>
         div.graphText{
@@ -20,7 +20,7 @@
 <body>
     <?php include("NavBar.php");
     
-        if (!isset($_SESSION['Date'])) {
+        if (!isset($_SESSION['Date']) || !isset($_SESSION['Month'])) {
             echo "No date Selected";
             exit;
         }
@@ -231,7 +231,7 @@
         case '11': // months with 30 days
             $avgSteps = round($totalSteps/30, 0);
             break;
-        case 02; // months with 28 days, only feb (doesnt account for leap years, but none of the data falls in a leap year)
+        case '02'; // months with 28 days, only feb (doesnt account for leap years, but none of the data falls in a leap year)
             $avgSteps = round($totalSteps/28, 0);
             break;
         default:
