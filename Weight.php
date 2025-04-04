@@ -37,7 +37,6 @@
             text-align: left;
             width: 300px;
             padding: 20px;
-            background: lightblue;
             border-radius: 8px;
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }

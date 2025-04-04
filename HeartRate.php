@@ -9,7 +9,8 @@
     <link href='titleStyle.css' rel='stylesheet'>
     <title>HeartRate</title>
 
-    <style>  
+    <style> 
+ 
     div.chart{
         margin-left: 15%;
         height: 300px;
@@ -238,8 +239,8 @@
         <canvas id="lineGraph" ></canvas>
     </div>
 
-    <div class="main">
-        <form class = "TraffContainer">
+    <div class="main" >
+        <form class = "TraffContainer" style="background: linear-gradient(to bottom right, #ffffff, #f0f8ff); border: 3px solid #0E253E; background-color: white; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);">
             <?php 
                 echo "Current Heart Rate: ". $currentHR .".<br>";
 
