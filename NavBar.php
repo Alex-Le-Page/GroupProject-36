@@ -101,8 +101,8 @@
         <li><a href="CalorieBurn.php">Calorie Burn</a></li>
         <?php if($accountType == "Vet"): ?>
         <li>
-            <form method="post">
-            <select id="selectDog" name="selectDog" onchange="this.form.submit()">
+            <form method="post" class = "selectDog">
+            <select class = "selectDog" id="selectDog" name="selectDog" onchange="this.form.submit()">
             <option value="">Select a Dog</option>
                 <?php foreach ($dogIDs as $dogID): ?>
                     <option value="<?= $dogID ?>" <?= $selectedDog == $dogID ? 'selected' : '' ?>>
