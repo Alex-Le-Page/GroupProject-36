@@ -90,9 +90,9 @@
     }
 
     if ($newDate != null) {
-
+        //get the row number of the date from activity 
         $rowID = $db->prepare('
-        WITH cte AS (
+        WITH cte AS ( --using CTE tables in sql https://www.simplilearn.com/tutorials/sql-tutorial/row-number-funtion-in-sql#:~:text=1)%20How%20do%20I%20get,based%20on%20the%20specified%20ordering.
             SELECT Date, ROW_NUMBER() OVER() AS row_num 
             FROM (SELECT DISTINCT Date FROM Activity)
         )
