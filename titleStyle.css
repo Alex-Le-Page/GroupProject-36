@@ -23,6 +23,10 @@ div.main{
 }
 
 form.TraffContainer{
+    background: linear-gradient(to bottom right, #ffffff, #f0f8ff); 
+    border: 3px solid #0E253E; 
+    background-color: white; 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);
     float: left;    
     border-color: black;
     padding: 8px;
@@ -39,29 +43,29 @@ div.noteWrapper{
     margin-left: -15%;
 }
 
-form{
-    background: linear-gradient(to bottom right, #ffffff, #f0f8ff); 
-    border: 3px solid #0E253E; 
-    background-color: white; 
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);
-} 
 
 form.notes {
     float: left;
     margin-left: 25%;    
-    border-color: black;
     padding: 8px;
     text-align: left;
     width: 300px;
     padding: 10px;
     border-radius: 8px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background: linear-gradient(to bottom right, #ffffff, #f0f8ff); 
+    border: 3px solid #0E253E; 
+    background-color: white; 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);
 }
 form.breathNotes {
+    background: linear-gradient(to bottom right, #ffffff, #f0f8ff); 
+    border: 3px solid #0E253E; 
+    background-color: white; 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);
     float: left;
     margin-left: 8%;   
     margin-bottom: 5%;
-    border-color: black;
     padding: 8px;
     text-align: left;
     width: 300px;
@@ -70,14 +74,55 @@ form.breathNotes {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 form.heartNotes {
+    background: linear-gradient(to bottom right, #ffffff, #f0f8ff); 
+    border: 3px solid #0E253E; 
+    background-color: white; 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);
     float: left;
     margin-left: 8%;   
     margin-bottom: 5%;
-    border-color: black;
     padding: 8px;
     text-align: left;
     width: 300px;
     padding: 10px;
     border-radius: 8px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+form.foodNote{
+    background: linear-gradient(to bottom right, #ffffff, #f0f8ff); 
+    border: 3px solid #0E253E; 
+    background-color: white; 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);
+}
+form.waterNote{
+    background: linear-gradient(to bottom right, #ffffff, #f0f8ff); 
+    border: 3px solid #0E253E; 
+    background-color: white; 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);
+}
+
+form.weightNotes{
+    background: linear-gradient(to bottom right, #ffffff, #f0f8ff); 
+    border: 3px solid #0E253E; 
+    background-color: white; 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);
+}
+form.descNotes{
+    background: linear-gradient(to bottom right, #ffffff, #f0f8ff); 
+    border: 3px solid #0E253E; 
+    background-color: white; 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);
+}
+form.stepNotes{
+    background: linear-gradient(to bottom right, #ffffff, #f0f8ff); 
+    border: 3px solid #0E253E; 
+    background-color: white; 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);
+}
+form.calNotes{
+    background: linear-gradient(to bottom right, #ffffff, #f0f8ff); 
+    border: 3px solid #0E253E; 
+    background-color: white; 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);
 }

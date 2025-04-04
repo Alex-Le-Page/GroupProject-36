@@ -102,14 +102,14 @@
         <?php if($accountType == "Vet"): ?>
         <li>
             <form method="post" class = "selectDog">
-            <select class = "selectDog" id="selectDog" name="selectDog" onchange="this.form.submit()">
-            <option value="">Select a Dog</option>
-                <?php foreach ($dogIDs as $dogID): ?>
-                    <option value="<?= $dogID ?>" <?= $selectedDog == $dogID ? 'selected' : '' ?>>
-                        <?= $dogID ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+                <select class = "selectDog" id="selectDog" name="selectDog" onchange="this.form.submit()">
+                <option value="">Select a Dog</option>
+                    <?php foreach ($dogIDs as $dogID): ?>
+                        <option value="<?= $dogID ?>" <?= $selectedDog == $dogID ? 'selected' : '' ?>>
+                            <?= $dogID ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </form>
         </li>
         <?php endif; ?>
