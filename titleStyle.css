@@ -35,7 +35,7 @@ form.TraffContainer{
     border-radius: 8px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     text-align: center;
-    
+
 }
 
 div.noteWrapper{
@@ -103,6 +103,12 @@ form.waterNote{
 }
 
 form.weightNotes{
+    background: linear-gradient(to bottom right, #ffffff, #f0f8ff); 
+    border: 3px solid #0E253E; 
+    background-color: white; 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);
+}
+form.predictionNotes{
     background: linear-gradient(to bottom right, #ffffff, #f0f8ff); 
     border: 3px solid #0E253E; 
     background-color: white; 
