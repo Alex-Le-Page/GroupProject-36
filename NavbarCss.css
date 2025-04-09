@@ -90,3 +90,12 @@ img.Placeholder {
     margin-top: 80px;
 
 }
+select.selectDog{
+    margin-top: 13px;
+    margin-left: 3px;
+    background-color: white;
+    width: 100%;
+    border-color: #0E253E;
+    border-radius: 10px;
+    text-align: center;
+}

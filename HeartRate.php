@@ -9,7 +9,8 @@
     <link href='titleStyle.css' rel='stylesheet'>
     <title>HeartRate</title>
 
-    <style>  
+    <style> 
+ 
     div.chart{
         margin-left: 15%;
         height: 300px;
@@ -90,9 +91,9 @@
     }
 
     if ($newDate != null) {
-
+        //get the row number of the date from activity 
         $rowID = $db->prepare('
-        WITH cte AS (
+        WITH cte AS ( --using CTE tables in sql https://www.simplilearn.com/tutorials/sql-tutorial/row-number-funtion-in-sql#:~:text=1)%20How%20do%20I%20get,based%20on%20the%20specified%20ordering.
             SELECT Date, ROW_NUMBER() OVER() AS row_num 
             FROM (SELECT DISTINCT Date FROM Activity)
         )
@@ -238,8 +239,8 @@
         <canvas id="lineGraph" ></canvas>
     </div>
 
-    <div class="main">
-        <form class = "TraffContainer">
+    <div class="main" >
+        <form class = "TraffContainer" style="background: linear-gradient(to bottom right, #ffffff, #f0f8ff); border: 3px solid #0E253E; background-color: white; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 25px rgba(30, 144, 255, 0.3);">
             <?php 
                 echo "Current Heart Rate: ". $currentHR .".<br>";
 

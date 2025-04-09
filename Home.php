@@ -25,13 +25,6 @@
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         } 
 
-        select {
-            background-color: white;
-            width: 100%;
-            border-color: #0E253E;
-            border-radius: 10px;
-            text-align: center;
-        }
 
         li.dogOption {
             margin-top: 14px;

@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> 
-    <link href='titleStyle.css' rel='stylesheet'>    
+    <link href='titleStyle.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/regression@2.0.1/dist/regression.min.js"></script>   
     <script src="Chart.js"></script>    
     <title>Weight</title>
 
@@ -24,20 +25,38 @@
         div.chart{
             height: 300px;
             width: 1000px;
-            margin-left: 15%;
+            margin-left: 5%;
+        }
+
+        div.predictionChart{
+            height: 300px;
+            width: 1000px;
+            margin-left: 5%;
+            margin-top: 5%;
         }
 
         form.weightNotes {
-            float: left;
-            
-            margin-left: 40%;
-            
+            position: absolute;
+            top: 290px;
+            right: 100px;
             border-color: black;
             padding: 8px;
             text-align: left;
             width: 300px;
             padding: 20px;
-            background: lightblue;
+            border-radius: 8px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+
+        form.predictionNotes {
+            position: absolute;
+            bottom: 10px;
+            right: 100px;
+            border-color: black;
+            padding: 8px;
+            text-align: left;
+            width: 300px;
+            padding: 20px;
             border-radius: 8px;
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
@@ -115,6 +134,16 @@
     
             $weightData[] = $row['avgWeight'];
         }    
+
+        //dictionary to store the data for the prediction
+        $formattedWeight = [];
+        $counter = 1; //this is for the month in the foreach loop below to index each weight
+
+        //add each average weight into the dictionary 
+        foreach($weightData as $avg){
+            $formattedWeight[] = [$counter, $avg];
+            $counter += 1;
+        }
     ?>
     </div>
     <h2>Here is <?php echo $dogID; ?>'s info for Weight:</h2>
@@ -124,6 +153,27 @@
 
         <script>
             window.onload=function(){
+
+                //take the weights from the php 
+                const weights = <?php echo json_encode($formattedWeight); ?>;
+
+                //perform the prediction based of the data, the prediction uses linear regression
+                //the prediction works off linear regression the formula for which is y = mx + b
+                //y is the predicted value
+                //m is the change in value between each x 
+                //x is the individual value (the weight)
+                //b is the value of y when x invercepts the y axis (x = 0) for almost all data in our database this is redundant as we have no negative values or 0 values
+                const result = regression.linear(weights);
+
+                const predictedWeights = [];
+
+                //get each predicted value for the next six months
+                for (let i = 13; i <= 18; i++) {
+                    const prediction = result.predict(i);
+                    //put the prediction in the array 
+                    predictedWeights.push(prediction[1]);
+                }
+
                 loadLineGraph(
                 'weightGraph', 
                 <?php echo json_encode($weightData) ?>, 
@@ -133,6 +183,17 @@
                 "Months", 
                 'N/A', 
                 ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]); //y labels 
+        
+                loadLineGraph(
+                'predictionGraph',
+                predictedWeights,
+                'N/A',
+                'Dogs Predicted Weight',
+                'Weight(kg)',
+                'Months',
+                'N/A',
+                ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
+                );
             }
         </script>
 
@@ -142,6 +203,14 @@
 
         <form class = "weightNotes">
             <label>This graph shows the average weight of the dog per month over the course of a year.</label>
+        </form>
+
+        <div class="predictionChart">
+            <canvas id="predictionGraph"></canvas>
+        </div>
+
+        <form class = "predictionNotes">
+            <label>This graph shows the predicted weight of your dog over the next 6 months</label>
         </form>
 
 </body>
