@@ -25,20 +25,20 @@
         div.chart{
             height: 300px;
             width: 1000px;
-            margin-left: 15%;
+            margin-left: 5%;
         }
 
         div.predictionChart{
             height: 300px;
             width: 1000px;
-            margin-left: 15%;
+            margin-left: 5%;
             margin-top: 5%;
         }
 
         form.weightNotes {
             position: absolute;
             top: 290px;
-            right: 160px;
+            right: 100px;
             border-color: black;
             padding: 8px;
             text-align: left;
@@ -50,8 +50,8 @@
 
         form.predictionNotes {
             position: absolute;
-            bottom: 190px;
-            right: 160px;
+            bottom: 10px;
+            right: 100px;
             border-color: black;
             padding: 8px;
             text-align: left;
