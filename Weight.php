@@ -188,7 +188,7 @@
                 'predictionGraph',
                 predictedWeights,
                 'N/A',
-                'Dogs predicted Weight',
+                'Dogs Predicted Weight',
                 'Weight(kg)',
                 'Months',
                 'N/A',
